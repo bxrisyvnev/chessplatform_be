@@ -2,6 +2,7 @@ variables:
 GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 stages:
+  - run
   - build
   - test
 
