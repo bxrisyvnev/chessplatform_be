@@ -1,6 +1,7 @@
-package org.example.chessplatformbe.persistence;
+package org.example.chessplatformbe.persistence.impl;
 
 import org.example.chessplatformbe.domain.User;
+import org.example.chessplatformbe.persistence.IUserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 

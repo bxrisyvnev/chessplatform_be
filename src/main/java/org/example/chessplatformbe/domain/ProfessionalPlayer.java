@@ -12,9 +12,9 @@ public class ProfessionalPlayer extends User {
     private int followerCount;
     private String chroma;
 
-    public ProfessionalPlayer(String username, String password, int age, String displayName, String nationality,
+    public ProfessionalPlayer(String username, int age, String displayName, String nationality,
                               int playerElo, double winRate, int noOfGamesPlayed, int followerCount, String chroma) {
-        super(username, password, age, displayName, nationality);
+        super(username, age, displayName, nationality);
         this.playerElo = playerElo;
         this.winRate = winRate;
         this.noOfGamesPlayed = noOfGamesPlayed;

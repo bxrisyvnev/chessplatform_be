@@ -11,9 +11,9 @@ public class Admin extends User {
     private LocalDate contractEndDate;
     private String address;
 
-    public Admin(String username, String password, int age, String displayName, String nationality,
+    public Admin(String username, int age, String displayName, String nationality,
                  double monthlySalary, LocalDate contractStartDate, LocalDate contractEndDate, String address) {
-        super(username, password, age, displayName, nationality);
+        super(username, age, displayName, nationality);
         this.monthlySalary = monthlySalary;
         this.contractStartDate = contractStartDate;
         this.contractEndDate = contractEndDate;

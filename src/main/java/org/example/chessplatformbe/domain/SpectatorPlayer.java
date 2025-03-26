@@ -13,9 +13,9 @@ public class SpectatorPlayer extends User {
     private String chroma;
     private boolean hasPass;
 
-    public SpectatorPlayer(String username, String password, int age, String displayName, String nationality,
+    public SpectatorPlayer(String username, int age, String displayName, String nationality,
                            int playerElo, boolean isChatBanned, boolean isGameBanned, int noOfGamesPlayed, String chroma, boolean hasPass) {
-        super(username, password, age, displayName, nationality);
+        super(username, age, displayName, nationality);
         this.playerElo = playerElo;
         this.isChatBanned = isChatBanned;
         this.isGameBanned = isGameBanned;
