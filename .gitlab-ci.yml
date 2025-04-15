@@ -4,6 +4,7 @@ variables:
 stages:
   - build
   - test
+  - build-sonar
 
 build:
   stage: build
@@ -14,3 +15,28 @@ test:
   stage: test
   script:
     - ./gradlew test
+
+build-sonar:
+  stage: build-sonar
+  environment:
+    name: PC
+  cache:
+    policy: pull-push
+    key: "sonar-cache-$CI_COMMIT_REF_SLUG"
+    paths:
+      - "${SONAR_USER_HOME}/cache"
+      - sonar-scanner/
+  script:
+    - echo "TOKEN:" $env:SONAR_TOKEN
+    - echo "TOKEN LENGTH:" $env:SONAR_TOKEN.length
+    - echo "ALL ENV VARS:"
+    - powershell -Command "Get-ChildItem Env:"
+    - ./gradlew.bat test
+    - ./gradlew.bat jacocoTestReport
+    - ./gradlew.bat "-Dsonar.host.url=$env:SONAR_HOST_URL" "-Dsonar.login=$env:SONAR_TOKEN" sonar
+  allow_failure: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
