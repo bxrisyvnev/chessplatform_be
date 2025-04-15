@@ -1,0 +1,21 @@
+package org.example.chessplatformbe.controller.DTO.Response;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Getter
+public class ProfessionalResponseDTO extends UserResponseDTO {
+
+    private Integer playerElo;
+
+    private double winRate;
+
+    private Integer noOfGamesPlayed;
+
+    private Integer followerCount;
+
+    private String chroma;
+}

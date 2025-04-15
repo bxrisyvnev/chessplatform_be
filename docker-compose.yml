@@ -1,6 +1,8 @@
 services:
   backend:
-    image: sha256:9a2bb598fe9f3d0fd07dd3efc7da98392acee6740cd94532619100ae2a19edd8
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: backend
     ports:
       - "8080:8080"

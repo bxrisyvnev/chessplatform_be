@@ -1,24 +1,32 @@
 package org.example.chessplatformbe.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.*;
+import org.example.chessplatformbe.enums.Chroma;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ProfessionalPlayer extends User {
-    private int playerElo;
-    private double winRate;
-    private int noOfGamesPlayed;
-    private int followerCount;
-    private String chroma;
 
-    public ProfessionalPlayer(String username, int age, String displayName, String nationality,
-                              int playerElo, double winRate, int noOfGamesPlayed, int followerCount, String chroma) {
-        super(username, age, displayName, nationality);
-        this.playerElo = playerElo;
-        this.winRate = winRate;
-        this.noOfGamesPlayed = noOfGamesPlayed;
-        this.followerCount = followerCount;
-        this.chroma = chroma;
-    }
+    @Column(nullable = false)
+    private Integer playerElo;
+
+    @Column(nullable = false)
+    private double winRate;
+
+    @Column(nullable = false)
+    private Integer noOfGamesPlayed;
+
+    @Column(nullable = false)
+    private Integer followerCount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Chroma chroma;
+
 }

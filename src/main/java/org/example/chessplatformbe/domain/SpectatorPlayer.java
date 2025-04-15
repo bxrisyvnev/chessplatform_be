@@ -1,26 +1,34 @@
 package org.example.chessplatformbe.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.*;
+import org.example.chessplatformbe.enums.Chroma;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SpectatorPlayer extends User {
-    private int playerElo;
-    private boolean isChatBanned;
-    private boolean isGameBanned;
-    private int noOfGamesPlayed;
-    private String chroma;
-    private boolean hasPass;
 
-    public SpectatorPlayer(String username, int age, String displayName, String nationality,
-                           int playerElo, boolean isChatBanned, boolean isGameBanned, int noOfGamesPlayed, String chroma, boolean hasPass) {
-        super(username, age, displayName, nationality);
-        this.playerElo = playerElo;
-        this.isChatBanned = isChatBanned;
-        this.isGameBanned = isGameBanned;
-        this.noOfGamesPlayed = noOfGamesPlayed;
-        this.chroma = chroma;
-        this.hasPass = hasPass;
-    }
+    @Column(nullable = false)
+    private int playerElo;
+
+    @Column(nullable = false)
+    private boolean isChatBanned;
+
+    @Column(nullable = false)
+    private boolean isGameBanned;
+
+    @Column(nullable = false)
+    private int noOfGamesPlayed;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Chroma chroma;
+
+    @Column(nullable = false)
+    private boolean hasPass;
 }

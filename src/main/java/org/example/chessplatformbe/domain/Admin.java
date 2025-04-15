@@ -1,22 +1,28 @@
 package org.example.chessplatformbe.domain;
-import java.time.LocalDate;
-import lombok.Getter;
-import lombok.Setter;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.*;
+
+import java.time.LocalDate;
+
+@Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Admin extends User {
-    private double monthlySalary;
-    private LocalDate contractStartDate;
-    private LocalDate contractEndDate;
-    private String address;
 
-    public Admin(String username, int age, String displayName, String nationality,
-                 double monthlySalary, LocalDate contractStartDate, LocalDate contractEndDate, String address) {
-        super(username, age, displayName, nationality);
-        this.monthlySalary = monthlySalary;
-        this.contractStartDate = contractStartDate;
-        this.contractEndDate = contractEndDate;
-        this.address = address;
-    }
+    @Column(nullable = false)
+    private double monthlySalary;
+
+    @Column(nullable = false)
+    private LocalDate contractStartDate;
+
+    @Column(nullable = false)
+    private LocalDate contractEndDate;
+
+    @Column(nullable = false)
+    private String address;
 }

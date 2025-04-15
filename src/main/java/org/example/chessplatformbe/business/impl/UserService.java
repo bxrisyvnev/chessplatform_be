@@ -1,24 +1,31 @@
 package org.example.chessplatformbe.business.impl;
 
 import org.example.chessplatformbe.business.IUserService;
+import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
+import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.domain.Admin;
 import org.example.chessplatformbe.domain.User;
-import org.example.chessplatformbe.persistence.IUserRepository;
-import org.example.chessplatformbe.persistence.impl.MockUserRepository;
-import org.springframework.stereotype.Service;
+import org.example.chessplatformbe.mapper.UserMapper;
+import org.example.chessplatformbe.persistence.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
-    private final IUserRepository userRepository;
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserService(MockUserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -27,66 +34,43 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserResponseDTO getUserById(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+        return userMapper.toResponse(user);
     }
 
     @Override
-    public User createUser(User user) {
-        String hash = UUID.randomUUID().toString();
-        user.setHash(hash);
+    public UserResponseDTO createUser(CreateUserDTO user) {
 
-        user.setPassword(passwordEncoder.encode(user.getPassword() + hash));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Convert DTO to entity
+        User userEntity = userMapper.toEntity(user);
 
-        return userRepository.save(user);
+        // Save to DB
+        User savedUser = userRepository.save(userEntity);
+
+        // Convert saved entity to response DTO
+        return userMapper.toResponse(savedUser);
     }
 
     @Override
-    public Optional<User> updateUserUsername(Long id, String updatedUsername) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setUsername(updatedUsername);
-            return userRepository.save(existingUser);
-        });
+    public UserResponseDTO updateUser(Integer id, CreateUserDTO user) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+
+        User updatedUser = userMapper.toEntity(user);
+        updatedUser.setId(existingUser.getId());
+
+        User saved = userRepository.save(updatedUser);
+        return userMapper.toResponse(saved);
     }
 
     @Override
-    public Optional<User> updateUserPassword(Long id, String updatedPassword) {
-        String hash = UUID.randomUUID().toString();
-        String hasedPass = passwordEncoder.encode(updatedPassword + hash);
-
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setPassword(hasedPass);
-            existingUser.setHash(hash);
-            return userRepository.save(existingUser);
-        });
-    }
-
-    @Override
-    public Optional<User> updateUserAge(Long id, int updatedAge) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setAge(updatedAge);
-            return userRepository.save(existingUser);
-        });
-    }
-
-    @Override
-    public Optional<User> updateUserDisplayName(Long id, String updatedDisplayName) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setDisplayName(updatedDisplayName);
-            return userRepository.save(existingUser);
-        });
-    }
-
-    @Override
-    public Optional<User> updateUseNationality(Long id, String updatedNationality) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setNationality(updatedNationality);
-            return userRepository.save(existingUser);
-        });
-    }
-
-    @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(Integer id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with ID: " + id);
+        }
         userRepository.deleteById(id);
     }
 }

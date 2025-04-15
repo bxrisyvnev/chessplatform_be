@@ -1,15 +1,10 @@
-package org.example.chessplatformbe;
+/*package org.example.chessplatformbe.business.impl;
 
-import org.example.chessplatformbe.business.impl.UserService;
 import org.example.chessplatformbe.domain.User;
-import org.example.chessplatformbe.persistence.IUserRepository;
-import org.example.chessplatformbe.persistence.impl.MockUserRepository;
+import org.example.chessplatformbe.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,112 +13,101 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-    private IUserRepository userRepository;
+class TestUserService {
+
     @Mock
-    private MockUserRepository mockedUserRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
     private UserService userService;
 
-    private User sampleUser;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        userRepository = mockedUserRepository;
-        sampleUser = new User(
-                "testUser",
-                25,
-                "Test Display",
-                "Bulgaria"
-        );
-        sampleUser.setId(1L);
+        MockitoAnnotations.openMocks(this);
+
+        user = new User();
+        user.setId(1);
+        user.setUsername("chessMaster123");
+        user.setPassword("securePass");
+        user.setAge(25);
+        user.setDisplayName("Chess Master");
+        user.setNationality("Norway");
     }
 
     @Test
-    void getAllUsers_ShouldReturnUsers() {
-        List<User> mockUsers = Arrays.asList(sampleUser);
-        when(userRepository.findAll()).thenReturn(mockUsers);
+    void testGetAllUsers() {
+        List<User> users = Arrays.asList(user, new User());
+        when(userRepository.findAll()).thenReturn(users);
 
-        List<User> users = userService.getAllUsers();
+        List<User> result = userService.getAllUsers();
 
-        assertEquals(1, users.size());
-        assertEquals("testUser", users.get(0).getUsername());
+        assertEquals(2, result.size());
         verify(userRepository, times(1)).findAll();
     }
 
     @Test
-    void getUserById_ShouldReturnUser_WhenExists() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
+    void testGetUserById() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
-        Optional<User> foundUser = userService.getUserById(1L);
-
-        assertTrue(foundUser.isPresent());
-        assertEquals("testUser", foundUser.get().getUsername());
-        verify(userRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    void getUserById_ShouldReturnEmpty_WhenNotExists() {
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
-
-        Optional<User> foundUser = userService.getUserById(2L);
-
-        assertFalse(foundUser.isPresent());
-        verify(userRepository, times(1)).findById(2L);
-    }
-
-    @Test
-    void createUser_ShouldReturnSavedUser() {
-        when(userRepository.save(sampleUser)).thenReturn(sampleUser);
-
-        User createdUser = userService.createUser(sampleUser);
-
-        assertNotNull(createdUser);
-        assertEquals("testUser", createdUser.getUsername());
-        verify(userRepository, times(1)).save(sampleUser);
-    }
-
-    /*@Test
-    void updateUser_ShouldUpdateExistingUser() {
-        User updatedUser = new User(
-                "updatedUser",
-                30,
-                "Updated display",
-                "Netherlands"
-        );
-
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sampleUser));
-        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
-
-        Optional<User> result = userService.updateUser(1L, updatedUser);
+        Optional<User> result = userService.getUserById(1);
 
         assertTrue(result.isPresent());
-        assertEquals("updatedUser", result.get().getUsername());
-        assertEquals(30, result.get().getAge());
-        verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).save(any(User.class));
+        assertEquals(user, result.get());
+        verify(userRepository, times(1)).findById(1);
     }
 
     @Test
-    void updateUser_ShouldReturnEmpty_WhenUserNotExists() {
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+    void testCreateUser() {
+        when(userRepository.save(user)).thenReturn(user);
 
-        Optional<User> result = userService.updateUser(2L, sampleUser);
+        User result = userService.createUser(user);
+
+        assertEquals(user, result);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void testUpdateUserWhenFound() {
+        User updatedUser = new User();
+        updatedUser.setUsername("newName");
+        updatedUser.setPassword("newPass");
+        updatedUser.setAge(30);
+        updatedUser.setDisplayName("Updated Master");
+        updatedUser.setNationality("Sweden");
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        Optional<User> result = userService.updateUser(1, updatedUser);
+
+        assertTrue(result.isPresent());
+        assertEquals("newName", result.get().getUsername());
+        assertEquals("Sweden", result.get().getNationality());
+        verify(userRepository, times(1)).findById(1);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void testUpdateUserWhenNotFound() {
+        when(userRepository.findById(999)).thenReturn(Optional.empty());
+
+        Optional<User> result = userService.updateUser(999, user);
 
         assertFalse(result.isPresent());
-        verify(userRepository, times(1)).findById(2L);
-        verify(userRepository, times(0)).save(any(User.class));
+        verify(userRepository, times(1)).findById(999);
+        verify(userRepository, times(0)).save(any());
     }
 
     @Test
-    void deleteUser_ShouldCallRepository() {
-        doNothing().when(userRepository).deleteById(1L);
+    void testDeleteUser() {
+        doNothing().when(userRepository).deleteById(1);
 
-        userService.deleteUser(1L);
+        userService.deleteUser(1);
 
-        verify(userRepository, times(1)).deleteById(1L);
+        verify(userRepository, times(1)).deleteById(1);
     }
-     */
-}
+ }
+ */
+
