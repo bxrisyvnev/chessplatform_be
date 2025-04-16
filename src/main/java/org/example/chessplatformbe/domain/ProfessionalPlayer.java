@@ -1,11 +1,13 @@
 package org.example.chessplatformbe.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.example.chessplatformbe.enums.Chroma;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
