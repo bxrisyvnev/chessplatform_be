@@ -30,7 +30,7 @@ sonarqube {
         property 'sonar.projectKey', 'Chessplatform'
         property 'sonar.projectName', 'Chessplatform'
         property 'sonar.host.url', 'http://localhost:9000'
-        def sonarToken = "sqp_4a0ccb9b6e183e53b17be26b93c110460fd68b4f"
+        def sonarToken = "sqp_dd5f036b015d173921446b354aa98706cf5865f5"
         property 'sonar.token', sonarToken
         // property 'sonar.junit.reportPaths', 'build/test-results/test'
         // property 'sonar.java.coveragePlugin', 'jacoco'
