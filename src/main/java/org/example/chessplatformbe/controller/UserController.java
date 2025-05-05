@@ -4,8 +4,8 @@ import org.example.chessplatformbe.business.impl.UserService;
 import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
 import org.example.chessplatformbe.controller.DTO.Request.GetUserDTO;
 import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
-import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.mapper.UserMapper;
+import org.h2.engine.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +16,9 @@ import java.util.Optional;
 
 public class UserController {
     private final UserService userService;
-    private final UserMapper userMapper;
 
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userMapper = userMapper;
     }
 
     @GetMapping()
@@ -30,9 +28,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserDTO request) {
-        User userEntity = userMapper.toEntity(request);
-        userService.createUser(request);
-        UserResponseDTO response = userMapper.toResponse(userEntity);
+
+        UserResponseDTO response = userService.createUser(request);
+
         return ResponseEntity.ok(response);
     }
 

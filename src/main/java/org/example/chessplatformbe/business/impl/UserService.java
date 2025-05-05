@@ -43,15 +43,18 @@ public class UserService implements IUserService {
     @Override
     public UserResponseDTO createUser(CreateUserDTO user) {
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // Convert DTO to entity
         User userEntity = userMapper.toEntity(user);
+
+        UserResponseDTO response = userMapper.toResponse(userEntity);
+
+        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Convert DTO to entity
 
         // Save to DB
         User savedUser = userRepository.save(userEntity);
 
         // Convert saved entity to response DTO
-        return userMapper.toResponse(savedUser);
+        return response;
     }
 
     @Override
