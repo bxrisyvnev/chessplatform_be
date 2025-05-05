@@ -4,6 +4,7 @@ import org.example.chessplatformbe.business.impl.UserService;
 import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
 import org.example.chessplatformbe.controller.DTO.Request.GetUserDTO;
 import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.mapper.UserMapper;
 import org.h2.engine.User;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<UserResponseDTO> getUser(@RequestBody GetUserDTO getUserDTO) {
+    public ResponseEntity<UserResponseDTO> getUser(@RequestBody GetUserDTO getUserDTO) throws InvalidUserException {
         return ResponseEntity.ok(userService.getUserById(getUserDTO.getUserId()));
     }
 
@@ -35,12 +36,12 @@ public class UserController {
     }
 
     @PutMapping()
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody CreateUserDTO request) {
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody CreateUserDTO request) throws InvalidUserException {
         return ResponseEntity.ok(userService.updateUser(request.getUpdateId(), request));
     }
 
     @DeleteMapping()
-    public ResponseEntity<Void> deleteUser(@RequestBody GetUserDTO getUserDTO) {
+    public ResponseEntity<Void> deleteUser(@RequestBody GetUserDTO getUserDTO) throws InvalidUserException {
         userService.deleteUser(getUserDTO.getUserId());
         return ResponseEntity.noContent().build();
     }
