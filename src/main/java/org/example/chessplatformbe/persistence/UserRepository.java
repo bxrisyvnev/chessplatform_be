@@ -1,10 +1,17 @@
 package org.example.chessplatformbe.persistence;
 
-
 import org.example.chessplatformbe.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.example.chessplatformbe.exceptions.InvalidUserException;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+import java.util.Optional;
+
+public interface UserRepository {
+
+    Optional<User> findById(Integer id) throws InvalidUserException;
+
+    User save(User user);
+
+    void delete(User user);
+
 
 }
-

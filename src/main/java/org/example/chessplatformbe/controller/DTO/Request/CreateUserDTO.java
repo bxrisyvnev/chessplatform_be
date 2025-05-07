@@ -3,7 +3,7 @@ package org.example.chessplatformbe.controller.DTO.Request;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
-
+//
 @Data
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
