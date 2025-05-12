@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface IUserService {
 
-    UserResponseDTO getUserById(Integer id) throws InvalidUserException;
+    UserResponseDTO getUserById(Integer id) throws InvalidUserException; // replace dto with object
 
     UserResponseDTO createUser(CreateUserDTO user);
 

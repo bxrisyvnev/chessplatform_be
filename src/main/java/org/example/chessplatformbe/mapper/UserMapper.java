@@ -134,6 +134,7 @@ public class UserMapper {
             adminObject.setUsername(admin.getUsername());
             adminObject.setAge(admin.getAge());
             adminObject.setId(admin.getId());
+            adminObject.setPassword(admin.getPassword());
             adminObject.setDisplayName(admin.getDisplayName());
             adminObject.setNationality(admin.getNationality());
             adminObject.setMonthlySalary(admin.getMonthlySalary());
@@ -149,6 +150,7 @@ public class UserMapper {
             ProfessionalPlayer professionalObject = new ProfessionalPlayer();
             professionalObject.setUsername(professional.getUsername());
             professionalObject.setAge(professional.getAge());
+            professionalObject.setPassword(professional.getPassword());
             professionalObject.setId(professional.getId());
             professionalObject.setDisplayName(professional.getDisplayName());
             professionalObject.setNationality(professional.getNationality());
@@ -166,6 +168,7 @@ public class UserMapper {
             SpectatorPlayer spectatorObject = new SpectatorPlayer();
             spectatorObject.setUsername(spectator.getUsername());
             spectatorObject.setAge(spectator.getAge());
+            spectatorObject.setPassword(spectator.getPassword());
             spectatorObject.setId(spectator.getId());
             spectatorObject.setDisplayName(spectator.getDisplayName());
             spectatorObject.setNationality(spectator.getNationality());
