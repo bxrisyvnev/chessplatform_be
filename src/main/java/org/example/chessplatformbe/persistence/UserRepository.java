@@ -13,5 +13,5 @@ public interface UserRepository {
 
     void delete(User user);
 
-
+    User findByUsername(String username) throws InvalidUserException;
 }

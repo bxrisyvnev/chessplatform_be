@@ -36,4 +36,9 @@ public class FakeUserRepositoryImpl implements UserRepository {
     public void delete(User user) {
         this.savedUsers.remove(user);
     }
+
+    @Override
+    public User findByUsername(String username) throws InvalidUserException {
+        return null;
+    }
 }

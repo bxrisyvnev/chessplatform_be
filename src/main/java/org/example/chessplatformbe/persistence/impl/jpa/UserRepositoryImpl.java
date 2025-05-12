@@ -45,4 +45,14 @@ public class UserRepositoryImpl implements UserRepository {
         UserEntity entity = UserMapper.objectToEntity(user);
         this.jpaUser.delete(entity);
     }
+
+    @Override
+    public User findByUsername(String username) throws InvalidUserException {
+        UserEntity userEntity = jpaUser.findByUsername(username);
+        if (userEntity == null) {
+            throw new InvalidUserException(username);
+        }
+        User user = UserMapper.entityToObject(userEntity);
+        return user;
+    }
 }
