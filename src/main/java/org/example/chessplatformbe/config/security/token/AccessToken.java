@@ -1,15 +1,18 @@
 package org.example.chessplatformbe.config.security.token;
 
+import lombok.Getter;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 
 
+@Getter
 public class AccessToken {
 
-    private String subject;
-    private int userId;
+    private final String subject;
+    private final int userId;
     private final Set<String> roles;
 
     public AccessToken(String subject, int userId, Collection<String> roles) {
@@ -19,18 +22,6 @@ public class AccessToken {
         this.subject = subject;
         this.userId = userId;
         this.roles = roles != null ? Set.copyOf(roles) : Collections.emptySet();
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
     }
 
     public boolean hasRole(String roleName) {
