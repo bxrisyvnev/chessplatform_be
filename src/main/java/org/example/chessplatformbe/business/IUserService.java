@@ -2,13 +2,7 @@ package org.example.chessplatformbe.business;
 
 import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
 import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
-import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
-import org.springframework.http.ResponseEntity;
-
-import javax.management.relation.Role;
-import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
 

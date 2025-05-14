@@ -5,12 +5,8 @@ import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
 import org.example.chessplatformbe.controller.DTO.Request.GetUserDTO;
 import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
-import org.example.chessplatformbe.mapper.UserMapper;
-import org.h2.engine.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
