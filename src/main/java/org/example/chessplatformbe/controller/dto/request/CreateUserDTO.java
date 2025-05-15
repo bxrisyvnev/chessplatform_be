@@ -1,8 +1,9 @@
-package org.example.chessplatformbe.controller.DTO.Request;
+package org.example.chessplatformbe.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
+
 //
 @Data
 @JsonTypeInfo(

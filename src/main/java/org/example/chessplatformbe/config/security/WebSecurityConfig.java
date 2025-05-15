@@ -31,16 +31,26 @@ public class WebSecurityConfig {
                 .sessionManagement(configurer ->
                         configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry ->
-                        registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/users", "/auth/**", "/login").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/users", "/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users", "/auth/**").permitAll()
-
-                                .requestMatchers(HttpMethod.GET, "/users").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/users").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users").hasRole("ADMIN")
-
+                        registry
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,
+                                        SecurityConstants.USERS_ENDPOINT,
+                                        SecurityConstants.AUTH_ENDPOINT,
+                                        "/login").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,
+                                        SecurityConstants.USERS_ENDPOINT,
+                                        SecurityConstants.AUTH_ENDPOINT).permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        SecurityConstants.USERS_ENDPOINT,
+                                        SecurityConstants.AUTH_ENDPOINT).permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        SecurityConstants.USERS_ENDPOINT).authenticated()
+                                .requestMatchers(HttpMethod.POST,
+                                        SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.PUT,
+                                        SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.DELETE,
+                                        SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 //.requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )

@@ -1,4 +1,4 @@
-package org.example.chessplatformbe.controller.DTO.Request;
+package org.example.chessplatformbe.controller.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,9 +1,9 @@
 package org.example.chessplatformbe.controller;
 
 import org.example.chessplatformbe.business.impl.UserService;
-import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
-import org.example.chessplatformbe.controller.DTO.Request.GetUserDTO;
-import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
+import org.example.chessplatformbe.controller.dto.request.GetUserDTO;
+import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

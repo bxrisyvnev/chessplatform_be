@@ -1,13 +1,11 @@
-package org.example.chessplatformbe.controller.DTO.Response;
+package org.example.chessplatformbe.controller.dto.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Getter
-public class ProfessionalResponseDTO extends UserResponseDTO {
+public class CreateProfessionalDTO extends CreateUserDTO {
 
     private Integer playerElo;
 
