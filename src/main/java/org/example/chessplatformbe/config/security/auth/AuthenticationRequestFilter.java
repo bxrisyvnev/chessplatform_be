@@ -23,8 +23,11 @@ import java.util.List;
 @Component
 public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenDecoder accessTokenDecoder;
+    private final TokenDecoder accessTokenDecoder;
+
+    public AuthenticationRequestFilter(TokenDecoder accessTokenDecoder) {
+        this.accessTokenDecoder = accessTokenDecoder;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

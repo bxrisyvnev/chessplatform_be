@@ -22,11 +22,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public Optional<User> findById(Integer id) throws InvalidUserException {
+    public Optional<User> findById(Integer id){
         Optional<UserEntity> entityOptional = this.jpaUser.findById(id);
 
         if (entityOptional.isEmpty()) {
-            throw  new InvalidUserException(id);
+            throw  new IllegalArgumentException(String.valueOf(id));
         }
 
         User country = UserMapper.entityToObject(entityOptional.get());
@@ -52,7 +52,6 @@ public class UserRepositoryImpl implements UserRepository {
         if (userEntity == null) {
             throw new InvalidUserException(username);
         }
-        User user = UserMapper.entityToObject(userEntity);
-        return user;
+        return UserMapper.entityToObject(userEntity);
     }
 }

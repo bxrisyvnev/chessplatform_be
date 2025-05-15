@@ -10,7 +10,6 @@ import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidCredentialsException;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.persistence.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     private final PasswordEncoder passwordEncoder;
     private final TokenEncoder accessTokenEncoder;
 

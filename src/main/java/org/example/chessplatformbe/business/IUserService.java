@@ -1,7 +1,7 @@
 package org.example.chessplatformbe.business;
 
-import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
-import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
+import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 
 public interface IUserService {
@@ -12,5 +12,5 @@ public interface IUserService {
 
     UserResponseDTO updateUser(Integer id, CreateUserDTO user) throws InvalidUserException;
 
-    void deleteUser(Integer id) throws InvalidUserException;
+    void deleteUser(Integer id);
 }

@@ -1,4 +1,4 @@
-package org.example.chessplatformbe.controller.DTO.Response;
+package org.example.chessplatformbe.controller.dto.response;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

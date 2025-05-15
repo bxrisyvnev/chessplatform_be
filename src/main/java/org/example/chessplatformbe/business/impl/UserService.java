@@ -2,13 +2,12 @@ package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.chessplatformbe.business.IUserService;
-import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
-import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
+import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.mapper.UserMapper;
 import org.example.chessplatformbe.persistence.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -52,6 +50,10 @@ public class UserService implements IUserService {
     public UserResponseDTO updateUser(Integer id, CreateUserDTO user) throws InvalidUserException {
         Optional<User> existingUser = userRepository.findById(id);
 
+        if (existingUser.isEmpty()) {
+            throw new InvalidUserException("User with ID " + id + " not found.");
+        }
+
         User updatedUser = UserMapper.requestToObject(user);
         updatedUser.setId(existingUser.get().getId());
 
@@ -60,11 +62,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(Integer id) throws InvalidUserException {
-        if (userRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("User not found with ID: " + id);
+    public void deleteUser(Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("User not found with ID: " + id);
         }
-        User user = userRepository.findById(id).get();
-        userRepository.delete(user);
+        userRepository.delete(optionalUser.get());
     }
 }

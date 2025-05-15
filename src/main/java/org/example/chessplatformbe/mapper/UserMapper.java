@@ -1,13 +1,13 @@
 package org.example.chessplatformbe.mapper;
 
-import org.example.chessplatformbe.controller.DTO.Request.CreateAdminDTO;
-import org.example.chessplatformbe.controller.DTO.Request.CreateProfessionalDTO;
-import org.example.chessplatformbe.controller.DTO.Request.CreateSpectatorDTO;
-import org.example.chessplatformbe.controller.DTO.Request.CreateUserDTO;
-import org.example.chessplatformbe.controller.DTO.Response.AdminResponseDTO;
-import org.example.chessplatformbe.controller.DTO.Response.ProfessionalResponseDTO;
-import org.example.chessplatformbe.controller.DTO.Response.SpectatorResponseDTO;
-import org.example.chessplatformbe.controller.DTO.Response.UserResponseDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateAdminDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateProfessionalDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateSpectatorDTO;
+import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
+import org.example.chessplatformbe.controller.dto.response.AdminResponseDTO;
+import org.example.chessplatformbe.controller.dto.response.ProfessionalResponseDTO;
+import org.example.chessplatformbe.controller.dto.response.SpectatorResponseDTO;
+import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.domain.Admin;
 import org.example.chessplatformbe.domain.ProfessionalPlayer;
 import org.example.chessplatformbe.domain.SpectatorPlayer;
@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
+
+    private UserMapper() {}
 
     public static User requestToObject(CreateUserDTO dto) {
         if (dto instanceof CreateAdminDTO adminDto) {
