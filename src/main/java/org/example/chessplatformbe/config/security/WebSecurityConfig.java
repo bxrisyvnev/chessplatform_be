@@ -51,6 +51,8 @@ public class WebSecurityConfig {
                                         SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.DELETE,
                                         SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.GET,
+                                        SecurityConstants.ARTICLE_ENDPOINT).permitAll()
                                 //.requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -64,7 +66,7 @@ public class WebSecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
+                registry.addMapping("/**").allowedOrigins("http://localhost:4173"); //change this to not be hard coded
             }
         };
     }
