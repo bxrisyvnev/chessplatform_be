@@ -3,6 +3,7 @@ variables:
 
 stages:
   - build
+  - deploy
   - test
   - build-sonar
 
@@ -10,6 +11,23 @@ build:
   stage: build
   script:
     - ./gradlew assemble
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker compose -f docker-compose.yml up -d --build
+    - echo "Waiting for MySQL to be ready..."
+    - |
+      until docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="springpass" --silent; do
+        echo "MySQL is unavailable - waiting..."
+        sleep 5
+      done
+    - docker ps  # optional: debug running containers
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "DevelopmentBranch"'
 
 test:
   stage: test
