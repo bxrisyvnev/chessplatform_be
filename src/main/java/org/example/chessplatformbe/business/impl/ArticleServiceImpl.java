@@ -1,6 +1,7 @@
 package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.chessplatformbe.business.IArticleService;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
 import org.example.chessplatformbe.domain.Article;
@@ -12,24 +13,22 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleServiceImpl {
+public class ArticleServiceImpl implements IArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleResponceDTO getArticleById(Integer id) {
+    public Article getArticleById(Integer id) {
         Optional<Article> articleOpt = articleRepository.findById(id);
-        return articleOpt.map(ArticleMapper::objectToResponse)
-                .orElseThrow(() -> new IllegalArgumentException("Article not found with ID: " + id));
+        return articleOpt.orElseThrow(() -> new IllegalArgumentException("Article not found with ID: " + id));
     }
 
 
-    public ArticleResponceDTO createArticle(CreateArticleDTO dto) {
+    public Article createArticle(CreateArticleDTO dto) {
         Article article = ArticleMapper.requestToObject(dto);
-        Article saved = articleRepository.save(article);
-        return ArticleMapper.objectToResponse(saved);
+        return articleRepository.save(article);
     }
 
-    public ArticleResponceDTO updateArticle(CreateArticleDTO dto) {
+    public Article updateArticle(CreateArticleDTO dto) {
         if (dto.getUpdateId() == null) {
             throw new IllegalArgumentException("Update ID must be provided");
         }
@@ -40,8 +39,7 @@ public class ArticleServiceImpl {
         }
 
         Article updated = ArticleMapper.requestToObject(dto);
-        Article saved = articleRepository.save(updated);
-        return ArticleMapper.objectToResponse(saved);
+        return articleRepository.save(updated);
     }
 
     public void deleteArticle(Integer articleId) {

@@ -22,11 +22,10 @@ public class UserService implements IUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponseDTO getUserById(Integer id) throws InvalidUserException {
+    public User getUserById(Integer id) throws InvalidUserException {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            User user1 = user.get();
-            return UserMapper.objectToResponce(user1);
+            return user.get();
         }
         else{
             throw new InvalidUserException("User not found");
@@ -34,20 +33,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserResponseDTO createUser(CreateUserDTO user) {
+    public User createUser(CreateUserDTO user) {
 
         User userObject = UserMapper.requestToObject(user);
-        UserResponseDTO response = UserMapper.objectToResponce(userObject);
 
         userObject.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(userObject);
 
-        return response;
+        return userObject;
     }
 
     @Override
-    public UserResponseDTO updateUser(Integer id, CreateUserDTO user) throws InvalidUserException {
+    public User updateUser(Integer id, CreateUserDTO user) throws InvalidUserException {
         Optional<User> existingUser = userRepository.findById(id);
 
         if (existingUser.isEmpty()) {
@@ -57,8 +55,7 @@ public class UserService implements IUserService {
         User updatedUser = UserMapper.requestToObject(user);
         updatedUser.setId(existingUser.get().getId());
 
-        User saved = userRepository.save(updatedUser);
-        return UserMapper.objectToResponce(saved);
+        return userRepository.save(updatedUser);
     }
 
     @Override
