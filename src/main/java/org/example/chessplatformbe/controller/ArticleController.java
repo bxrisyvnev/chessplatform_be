@@ -4,10 +4,19 @@ import org.example.chessplatformbe.business.impl.ArticleServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.controller.dto.request.GetArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
+import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.mapper.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/articles")
@@ -23,6 +32,15 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponceDTO> getArticleById(@PathVariable("id") Integer identification) {
         return ResponseEntity.ok(ArticleMapper.objectToResponse(articleService.getArticleById(identification)));
+    }
+
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getArticles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+
+        return ResponseEntity.ok(articleService.getArticlePage(page, size));
     }
 
     @PostMapping
