@@ -3,14 +3,19 @@ variables:
 
 stages:
   - build
-  - deploy
   - test
+  - deploy
   - build-sonar
 
 build:
   stage: build
   script:
     - ./gradlew assemble
+
+test:
+  stage: test
+  script:
+    - ./gradlew test
 
 deploy:
   stage: deploy
@@ -28,11 +33,6 @@ deploy:
     - docker ps
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
-
-test:
-  stage: test
-  script:
-    - ./gradlew test
 
 build-sonar:
   stage: build-sonar
