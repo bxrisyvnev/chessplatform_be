@@ -6,6 +6,7 @@ import org.example.chessplatformbe.controller.dto.response.AdminResponseDTO;
 import org.example.chessplatformbe.controller.dto.response.SpectatorResponseDTO;
 import org.example.chessplatformbe.domain.Admin;
 import org.example.chessplatformbe.domain.SpectatorPlayer;
+import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.enums.Chroma;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.mapper.UserMapper;
@@ -129,7 +130,7 @@ class UserServiceTest {
         try (MockedStatic<UserMapper> mockedMapper = mockStatic(UserMapper.class)) {
             mockedMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
 
-            AdminResponseDTO result = (AdminResponseDTO) userService.getUserById(1);
+            User result = userService.getUserById(1);
 
             assertNotNull(result);
             assertEquals("adminuser", result.getUsername());
@@ -152,7 +153,7 @@ class UserServiceTest {
             mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO)).thenReturn(testAdmin);
             mockedUserMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
 
-            AdminResponseDTO result = (AdminResponseDTO) userService.createUser(createAdminDTO);
+            User result = userService.createUser(createAdminDTO);
 
             assertNotNull(result);
             assertEquals("adminuser", result.getUsername());
@@ -170,7 +171,7 @@ class UserServiceTest {
             mockedUserMapper.when(() -> UserMapper.requestToObject(createSpectatorDTO)).thenReturn(testSpectator);
             mockedUserMapper.when(() -> UserMapper.objectToResponce(testSpectator)).thenReturn(spectatorResponseDTO);
 
-            SpectatorResponseDTO result = (SpectatorResponseDTO) userService.createUser(createSpectatorDTO);
+            User result = userService.createUser(createSpectatorDTO);
 
             assertNotNull(result);
             assertEquals("spectator", result.getUsername());
@@ -188,7 +189,7 @@ class UserServiceTest {
             mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO)).thenReturn(testAdmin);
             mockedUserMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
 
-            AdminResponseDTO result = (AdminResponseDTO) userService.updateUser(1, createAdminDTO);
+            User result = userService.updateUser(1, createAdminDTO);
 
             assertNotNull(result);
             assertEquals("adminuser", result.getUsername());

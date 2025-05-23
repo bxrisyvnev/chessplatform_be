@@ -25,9 +25,9 @@ deploy:
         echo "MySQL is unavailable - waiting..."
         sleep 5
       done
-    - docker ps  # optional: debug running containers
+    - docker ps
   rules:
-    - if: '$CI_COMMIT_BRANCH == "DevelopmentBranch"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
 
 test:
   stage: test
@@ -55,4 +55,3 @@ build-sonar:
   allow_failure: true
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH'
