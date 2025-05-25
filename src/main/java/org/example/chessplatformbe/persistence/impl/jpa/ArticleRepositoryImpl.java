@@ -50,6 +50,17 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
+    public Article update(Article article, Integer updateId) {
+        UserEntity userEntity = jpaUser.findById(article.getAuthorId())
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + article.getAuthorId() + " not found"));
+
+        ArticleEntity articleEntity = ArticleMapper.objectToEntity(article, userEntity);
+        articleEntity.setId(updateId);
+        ArticleEntity saved = jpaArticle.save(articleEntity);
+        return ArticleMapper.entityToObject(saved);
+    }
+
+    @Override
     public void delete(Article article) {
         jpaArticle.deleteById(article.getId());
     }

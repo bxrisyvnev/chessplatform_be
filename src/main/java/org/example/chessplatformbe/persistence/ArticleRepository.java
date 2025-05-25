@@ -15,4 +15,6 @@ public interface ArticleRepository {
     void delete(Article article);
 
     Page<Article> getArticlePage(Pageable pageable);
+
+    Article update(Article article, Integer updateId);
 }

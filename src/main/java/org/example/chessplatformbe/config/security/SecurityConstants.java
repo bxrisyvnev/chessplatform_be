@@ -7,4 +7,5 @@ public final class SecurityConstants {
     public static final String AUTH_ENDPOINT = "/auth/**";
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ARTICLE_ENDPOINT = "/articles/**";
+    public static final String COMMENT_ENDPOINT = "/comments";
 }
