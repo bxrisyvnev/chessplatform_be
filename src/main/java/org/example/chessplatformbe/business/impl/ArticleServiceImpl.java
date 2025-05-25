@@ -66,7 +66,7 @@ public class ArticleServiceImpl implements IArticleService {
         }
 
         Article updated = ArticleMapper.requestToObject(dto);
-        return articleRepository.save(updated);
+        return articleRepository.update(updated, dto.getUpdateId());
     }
 
     @Override

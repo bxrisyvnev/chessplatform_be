@@ -1,7 +1,6 @@
 package org.example.chessplatformbe.business;
 
 import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
-import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 

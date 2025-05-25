@@ -4,18 +4,11 @@ import org.example.chessplatformbe.business.impl.ArticleServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.controller.dto.request.GetArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
-import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.mapper.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,9 +46,9 @@ public class ArticleController {
         return ResponseEntity.ok(ArticleMapper.objectToResponse(articleService.updateArticle(dto)));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteArticle(@RequestBody GetArticleDTO dto) {
-        articleService.deleteArticle(dto.getArticleId());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable("id") Integer identification) {
+        articleService.deleteArticle(identification);
         return ResponseEntity.noContent().build();
     }
 }

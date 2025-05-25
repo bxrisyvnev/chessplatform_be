@@ -53,6 +53,9 @@ public class WebSecurityConfig {
                                         SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.GET,
                                         SecurityConstants.ARTICLE_ENDPOINT).permitAll()
+                                .requestMatchers(HttpMethod.POST,
+                                        SecurityConstants.COMMENT_ENDPOINT).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/comments/**").authenticated()
                                 //.requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )
