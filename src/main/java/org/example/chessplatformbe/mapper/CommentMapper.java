@@ -6,7 +6,9 @@ import org.example.chessplatformbe.domain.Comment;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.ArticleEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.CommentEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CommentMapper {
     private CommentMapper() {}
 

@@ -1,8 +1,6 @@
 package org.example.chessplatformbe.persistence.impl.jpa;
 
-import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.domain.Comment;
-import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.mapper.CommentMapper;
 import org.example.chessplatformbe.persistence.CommentRepository;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.ArticleEntity;

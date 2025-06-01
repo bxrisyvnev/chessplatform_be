@@ -1,8 +1,6 @@
 package org.example.chessplatformbe.persistence;
 
-import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.domain.Comment;
-import org.example.chessplatformbe.domain.User;
 
 import java.util.List;
 import java.util.Optional;
