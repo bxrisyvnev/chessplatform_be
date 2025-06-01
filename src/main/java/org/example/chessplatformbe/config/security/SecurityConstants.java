@@ -8,4 +8,6 @@ public final class SecurityConstants {
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ARTICLE_ENDPOINT = "/articles/**";
     public static final String COMMENT_ENDPOINT = "/comments";
+    public static final String STREAM_ENDPOINT = "/streams";
+    public static final String SPECTATE_ENDPOINT = "/spectate/**";
 }

@@ -56,6 +56,12 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST,
                                         SecurityConstants.COMMENT_ENDPOINT).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/comments/**").authenticated()
+                                .requestMatchers(HttpMethod.POST,
+                                        SecurityConstants.STREAM_ENDPOINT).authenticated()
+                                .requestMatchers(HttpMethod.GET, "/streams/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/ws/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        SecurityConstants.SPECTATE_ENDPOINT).authenticated()
                                 //.requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )
