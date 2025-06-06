@@ -13,4 +13,6 @@ public interface IUserService {
     User updateUser(Integer id, CreateUserDTO user) throws InvalidUserException;
 
     void deleteUser(Integer id);
+
+    public User getUserByUsername(String username) throws InvalidUserException;
 }

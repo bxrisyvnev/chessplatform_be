@@ -47,4 +47,9 @@ public class CommentServiceImpl implements ICommentService {
     public List<Comment> getCommentByArticleId(Integer articleId) {
         return commentRepository.findByArticle_Id(articleId);
     }
+
+    @Override
+    public List<Comment> getCommentByAuthorUsername(String username) {
+        return commentRepository.findCommentsByUsername(username);
+    }
 }
