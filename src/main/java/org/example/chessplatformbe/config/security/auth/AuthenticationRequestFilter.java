@@ -74,28 +74,18 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
         String username = accessToken.getSubject();
 
         // Check the user's role by looking at the class or roles in the access token
-        boolean isAdmin = accessToken.getRoles()
-                .stream()
-                .anyMatch(role -> role.equals("Admin")); // Check if the user has Admin role
+        boolean isAdmin = accessToken.getRoles().contains("Admin");
 
-        // If the user is an Admin, they can access admin routes; otherwise, normal user logic applies
         if (isAdmin) {
-            UserDetails userDetails = new User(username, "",
-                    List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            authenticationToken.setDetails(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         } else {
-            // Allow normal users, but they don't have access to admin endpoints
-            UserDetails userDetails = new User(username, "",
-                    List.of(new SimpleGrantedAuthority("ROLE_USER"))); // Normal user role
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            authenticationToken.setDetails(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_USER")));
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authToken.setDetails(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }
 }

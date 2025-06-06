@@ -66,4 +66,9 @@ public class UserService implements IUserService {
         }
         userRepository.delete(optionalUser.get());
     }
+
+    @Override
+    public User getUserByUsername(String username) throws InvalidUserException {
+        return userRepository.findByUsername(username);
+    }
 }

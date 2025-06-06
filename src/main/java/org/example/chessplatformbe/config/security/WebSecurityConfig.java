@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/ws/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,
                                         SecurityConstants.SPECTATE_ENDPOINT).authenticated()
+                                .requestMatchers(HttpMethod.GET, "/users/profile/**").authenticated()
                                 //.requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )

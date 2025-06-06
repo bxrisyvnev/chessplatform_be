@@ -64,4 +64,16 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .map(CommentMapper::entityToObject)
                 .toList();
     }
+
+    @Override
+    public List<Comment> findCommentsByUsername(String username) {
+        List<Object[]> raw = jpaComment.findCommentsByUsername(username);
+        return raw.stream().map(obj -> {
+            Comment comment = new Comment();
+            comment.setId((Integer) obj[0]);
+            comment.setText((String) obj[1]);
+            comment.setArticleId((Integer) obj[2]);
+            return comment;
+        }).toList();
+    }
 }

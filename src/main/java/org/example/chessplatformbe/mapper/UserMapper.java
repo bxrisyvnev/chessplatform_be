@@ -4,20 +4,16 @@ import org.example.chessplatformbe.controller.dto.request.CreateAdminDTO;
 import org.example.chessplatformbe.controller.dto.request.CreateProfessionalDTO;
 import org.example.chessplatformbe.controller.dto.request.CreateSpectatorDTO;
 import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
-import org.example.chessplatformbe.controller.dto.response.AdminResponseDTO;
-import org.example.chessplatformbe.controller.dto.response.ProfessionalResponseDTO;
-import org.example.chessplatformbe.controller.dto.response.SpectatorResponseDTO;
-import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
-import org.example.chessplatformbe.domain.Admin;
-import org.example.chessplatformbe.domain.ProfessionalPlayer;
-import org.example.chessplatformbe.domain.SpectatorPlayer;
-import org.example.chessplatformbe.domain.User;
+import org.example.chessplatformbe.controller.dto.response.*;
+import org.example.chessplatformbe.domain.*;
 import org.example.chessplatformbe.enums.Chroma;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.AdminEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.ProfessionalPlayerEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.SpectatorPlayerEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.UserEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -243,5 +239,58 @@ public class UserMapper {
         }
 
         throw new IllegalArgumentException("Unknown user type");
+    }
+
+    public static UserProfileDTO userToProfileDTO(User user, List<Comment> comments) {
+        List<CommentResponceDTO> commentDTOs = comments.stream()
+                .map(CommentMapper::objectToResponse)
+                .toList();
+
+        if (user instanceof Admin admin) {
+            AdminProfileDTO dto = new AdminProfileDTO();
+            dto.setUsername(admin.getUsername());
+            dto.setAge(admin.getAge());
+            dto.setDisplayName(admin.getDisplayName());
+            dto.setNationality(admin.getNationality());
+            dto.setMonthlySalary(admin.getMonthlySalary());
+            dto.setContractStartDate(admin.getContractStartDate().toString());
+            dto.setContractEndDate(admin.getContractEndDate().toString());
+            dto.setAddress(admin.getAddress());
+            dto.setComments(commentDTOs);
+            return dto;
+        }
+
+        if (user instanceof ProfessionalPlayer p) {
+            ProfessionalProfileDTO dto = new ProfessionalProfileDTO();
+            dto.setUsername(p.getUsername());
+            dto.setAge(p.getAge());
+            dto.setDisplayName(p.getDisplayName());
+            dto.setNationality(p.getNationality());
+            dto.setPlayerElo(p.getPlayerElo());
+            dto.setWinRate(p.getWinRate());
+            dto.setNoOfGamesPlayed(p.getNoOfGamesPlayed());
+            dto.setFollowerCount(p.getFollowerCount());
+            dto.setChroma(p.getChroma().toString());
+            dto.setComments(commentDTOs);
+            return dto;
+        }
+
+        if (user instanceof SpectatorPlayer s) {
+            SpectatorProfileDTO dto = new SpectatorProfileDTO();
+            dto.setUsername(s.getUsername());
+            dto.setAge(s.getAge());
+            dto.setDisplayName(s.getDisplayName());
+            dto.setNationality(s.getNationality());
+            dto.setPlayerElo(s.getPlayerElo());
+            dto.setChatBanned(s.isChatBanned());
+            dto.setGameBanned(s.isGameBanned());
+            dto.setNoOfGamesPlayed(s.getNoOfGamesPlayed());
+            dto.setChroma(s.getChroma().toString());
+            dto.setHasPass(s.isHasPass());
+            dto.setComments(commentDTOs);
+            return dto;
+        }
+
+        throw new IllegalArgumentException("Invalid user type for profile mapping");
     }
 }
