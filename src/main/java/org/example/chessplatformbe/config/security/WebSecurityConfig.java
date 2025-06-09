@@ -21,14 +21,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebSecurityConfig {
 
-    // Public endpoints like /login and /auth that don't need CSRF
     @Bean
     @Order(1)
     public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/login", "/logout", SecurityConstants.AUTH_ENDPOINT)
+                .securityMatcher("/login", "/logout", SecurityConstants.AUTH_ENDPOINT, "/register")
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, SecurityConstants.USERS_ENDPOINT).permitAll()
+                        .anyRequest().permitAll());
 
         return http.build();
     }
@@ -48,7 +49,6 @@ public class WebSecurityConfig {
                         registry
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.USERS_ENDPOINT).authenticated()
-                                .requestMatchers(HttpMethod.POST, SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.PUT, SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.DELETE, SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.ARTICLE_ENDPOINT).authenticated()
