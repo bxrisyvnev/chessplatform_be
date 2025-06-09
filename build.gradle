@@ -27,13 +27,17 @@ repositories {
 
 sonarqube {
     properties {
-        property 'sonar.projectKey', 'Chessplatform'
-        property 'sonar.projectName', 'Chessplatform'
-        property 'sonar.host.url', 'http://localhost:9000'
+        property "sonar.projectKey", "Chessplatform"
+        property "sonar.projectName", "Chessplatform"
+        property "sonar.host.url", System.getenv("SONAR_HOST_URL") ?: "http://localhost:9000"
         def sonarToken = "sqp_dd5f036b015d173921446b354aa98706cf5865f5"
         property 'sonar.token', sonarToken
+        property "sonar.login", System.getenv("SONAR_TOKEN")
         property "sonar.tests", "src/test/java"
-        property "sonar.coverage.exclusions", "**/mapper/**, **/controller/**, **/domain/**, **/enums/**, **/persistence/**, **/exceptions/**, **/config/**"
+        property "sonar.coverage.exclusions", """
+      **/mapper/**,**/controller/**,**/domain/**,
+      **/enums/**,**/persistence/**,**/exceptions/**,**/config/**
+    """.trim()
     }
 }
 

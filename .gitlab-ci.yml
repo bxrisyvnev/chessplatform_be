@@ -36,8 +36,6 @@ deploy:
 
 build-sonar:
   stage: build-sonar
-  environment:
-    name: PC
   cache:
     policy: pull-push
     key: "sonar-cache-$CI_COMMIT_REF_SLUG"
@@ -45,17 +43,9 @@ build-sonar:
       - "${SONAR_USER_HOME}/cache"
       - sonar-scanner/
   script:
-    - echo "TOKEN:" $env:SONAR_TOKEN
-    - echo "TOKEN LENGTH:" $env:SONAR_TOKEN.length
-    - echo "ALL ENV VARS:"
-    - powershell -Command "Get-ChildItem Env:"
-    - ./gradlew.bat test
-    - ./gradlew.bat jacocoTestReport
-    - ./gradlew.bat \
-      "-Dsonar.host.url=$env:SONAR_HOST_URL" \
-      "-Dsonar.login=$env:SONAR_TOKEN" \
-      "-Dsonar.qualitygate.wait=true" \
-      "-Dsonar.qualitygate.timeout=300" \
-      sonar
+    - 'echo SONAR_HOST_URL=%SONAR_HOST_URL%'
+    - 'echo TOKEN_LEN=%SONAR_TOKEN:~0,0%%SONAR_TOKEN%'    # shows non-zero length
+    - cmd /C "gradlew.bat -Dsonar.host.url=%SONAR_HOST_URL% -Dsonar.login=%SONAR_TOKEN% -Dsonar.qualitygate.wait=true -Dsonar.qualitygate.timeout=300 test jacocoTestReport sonarqube"
+  allow_failure: false
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
