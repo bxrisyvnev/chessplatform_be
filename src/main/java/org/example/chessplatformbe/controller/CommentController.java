@@ -2,7 +2,6 @@ package org.example.chessplatformbe.controller;
 
 import org.example.chessplatformbe.business.impl.CommentServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateCommentDTO;
-import org.example.chessplatformbe.controller.dto.request.GetCommentDTO;
 import org.example.chessplatformbe.controller.dto.response.CommentResponceDTO;
 import org.example.chessplatformbe.domain.Comment;
 import org.example.chessplatformbe.mapper.CommentMapper;

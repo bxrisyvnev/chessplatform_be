@@ -6,7 +6,6 @@ import org.example.chessplatformbe.controller.dto.request.CreateSpectatorDTO;
 import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
 import org.example.chessplatformbe.controller.dto.response.*;
 import org.example.chessplatformbe.domain.*;
-import org.example.chessplatformbe.enums.Chroma;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.AdminEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.ProfessionalPlayerEntity;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.SpectatorPlayerEntity;
@@ -46,7 +45,6 @@ public class UserMapper {
             proPlayer.setWinRate(professionalDTO.getWinRate());
             proPlayer.setNoOfGamesPlayed(professionalDTO.getNoOfGamesPlayed());
             proPlayer.setFollowerCount(professionalDTO.getFollowerCount());
-            proPlayer.setChroma(Chroma.valueOf(professionalDTO.getChroma().toString().toUpperCase()));
 
             return proPlayer;
         }
@@ -62,7 +60,6 @@ public class UserMapper {
             specPlayer.setChatBanned(spectatorDTO.isChatBanned());
             specPlayer.setGameBanned(spectatorDTO.isGameBanned());
             specPlayer.setNoOfGamesPlayed(spectatorDTO.getNoOfGamesPlayed());
-            specPlayer.setChroma(Chroma.valueOf(spectatorDTO.getChroma().toString().toUpperCase()));
             specPlayer.setHasPass(spectatorDTO.isHasPass());
 
             return specPlayer;
@@ -99,7 +96,6 @@ public class UserMapper {
             professionalResponseDTO.setWinRate(professional.getWinRate());
             professionalResponseDTO.setNoOfGamesPlayed(professional.getNoOfGamesPlayed());
             professionalResponseDTO.setFollowerCount(professional.getFollowerCount());
-            professionalResponseDTO.setChroma(professional.getChroma().toString().toUpperCase());
 
             return professionalResponseDTO;
         }
@@ -117,7 +113,6 @@ public class UserMapper {
             spectatorResponseDTO.setGameBanned(spectator.isGameBanned());
             spectatorResponseDTO.setHasPass(spectator.isHasPass());
             spectatorResponseDTO.setNoOfGamesPlayed(spectator.getNoOfGamesPlayed());
-            spectatorResponseDTO.setChroma(spectator.getChroma().toString().toUpperCase());
 
             return spectatorResponseDTO;
         }
@@ -156,7 +151,6 @@ public class UserMapper {
             professionalObject.setWinRate(professional.getWinRate());
             professionalObject.setNoOfGamesPlayed(professional.getNoOfGamesPlayed());
             professionalObject.setFollowerCount(professional.getFollowerCount());
-            professionalObject.setChroma(Chroma.valueOf(professional.getChroma().toString().toUpperCase()));
 
             return professionalObject;
         }
@@ -175,7 +169,6 @@ public class UserMapper {
             spectatorObject.setGameBanned(spectator.isGameBanned());
             spectatorObject.setHasPass(spectator.isHasPass());
             spectatorObject.setNoOfGamesPlayed(spectator.getNoOfGamesPlayed());
-            spectatorObject.setChroma(Chroma.valueOf(spectator.getChroma().toString().toUpperCase()));
 
             return spectatorObject;
         }
@@ -214,7 +207,6 @@ public class UserMapper {
             professionalEntity.setPassword(user.getPassword());
             professionalEntity.setNoOfGamesPlayed(professional.getNoOfGamesPlayed());
             professionalEntity.setFollowerCount(professional.getFollowerCount());
-            professionalEntity.setChroma(Chroma.valueOf(professional.getChroma().toString().toUpperCase()));
 
             return professionalEntity;
         }
@@ -233,7 +225,6 @@ public class UserMapper {
             spectatorEntity.setGameBanned(spectator.isGameBanned());
             spectatorEntity.setHasPass(spectator.isHasPass());
             spectatorEntity.setNoOfGamesPlayed(spectator.getNoOfGamesPlayed());
-            spectatorEntity.setChroma(Chroma.valueOf(spectator.getChroma().toString().toUpperCase()));
 
             return spectatorEntity;
         }
@@ -270,7 +261,6 @@ public class UserMapper {
             dto.setWinRate(p.getWinRate());
             dto.setNoOfGamesPlayed(p.getNoOfGamesPlayed());
             dto.setFollowerCount(p.getFollowerCount());
-            dto.setChroma(p.getChroma().toString());
             dto.setComments(commentDTOs);
             return dto;
         }
@@ -285,7 +275,6 @@ public class UserMapper {
             dto.setChatBanned(s.isChatBanned());
             dto.setGameBanned(s.isGameBanned());
             dto.setNoOfGamesPlayed(s.getNoOfGamesPlayed());
-            dto.setChroma(s.getChroma().toString());
             dto.setHasPass(s.isHasPass());
             dto.setComments(commentDTOs);
             return dto;

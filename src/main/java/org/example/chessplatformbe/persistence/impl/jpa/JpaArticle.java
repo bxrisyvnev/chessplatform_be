@@ -7,4 +7,8 @@ import org.springframework.data.domain.Page;
 
 public interface JpaArticle extends JpaRepository<ArticleEntity, Integer> {
     Page<ArticleEntity> findAll(Pageable pageable);
+
+    ArticleEntity findByArticleTitle(String title);
+
+    Page<ArticleEntity> findByArticleTitleContainingIgnoreCase(String title, Pageable pageable);
 }

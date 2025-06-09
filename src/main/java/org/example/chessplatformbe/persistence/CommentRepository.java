@@ -12,7 +12,7 @@ public interface CommentRepository {
 
     void delete(Comment user);
 
-    List<Comment> findByArticle_Id(Integer articleId);
+    List<Comment> findByArticleId(Integer articleId);
 
     List<Comment> findCommentsByUsername(String username);
 }

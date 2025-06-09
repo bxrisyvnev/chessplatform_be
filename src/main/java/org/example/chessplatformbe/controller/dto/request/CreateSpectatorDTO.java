@@ -15,7 +15,6 @@ public class CreateSpectatorDTO extends CreateUserDTO {
 
     private int noOfGamesPlayed;
 
-    private String chroma;
 
     private boolean hasPass;
 }

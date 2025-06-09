@@ -51,7 +51,11 @@ build-sonar:
     - powershell -Command "Get-ChildItem Env:"
     - ./gradlew.bat test
     - ./gradlew.bat jacocoTestReport
-    - ./gradlew.bat "-Dsonar.host.url=$env:SONAR_HOST_URL" "-Dsonar.login=$env:SONAR_TOKEN" sonar
-  allow_failure: true
+    - ./gradlew.bat \
+      "-Dsonar.host.url=$env:SONAR_HOST_URL" \
+      "-Dsonar.login=$env:SONAR_TOKEN" \
+      "-Dsonar.qualitygate.wait=true" \
+      "-Dsonar.qualitygate.timeout=300" \
+      sonar
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

@@ -16,6 +16,4 @@ public class ProfessionalResponseDTO extends UserResponseDTO {
     private Integer noOfGamesPlayed;
 
     private Integer followerCount;
-
-    private String chroma;
 }
