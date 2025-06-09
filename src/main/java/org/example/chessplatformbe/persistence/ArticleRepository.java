@@ -1,6 +1,7 @@
 package org.example.chessplatformbe.persistence;
 
 import org.example.chessplatformbe.domain.Article;
+import org.example.chessplatformbe.exceptions.InvalidArticleException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -17,4 +18,8 @@ public interface ArticleRepository {
     Page<Article> getArticlePage(Pageable pageable);
 
     Article update(Article article, Integer updateId);
+
+    Article findByTitle(String title) throws InvalidArticleException;
+
+    Page<Article> getArticlesByTitlePage(String title, Pageable pageable);
 }

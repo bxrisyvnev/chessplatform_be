@@ -14,6 +14,4 @@ public class CreateProfessionalDTO extends CreateUserDTO {
     private Integer noOfGamesPlayed;
 
     private Integer followerCount;
-
-    private String chroma;
 }

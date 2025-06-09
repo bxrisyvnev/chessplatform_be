@@ -7,7 +7,6 @@ import org.example.chessplatformbe.controller.dto.response.SpectatorResponseDTO;
 import org.example.chessplatformbe.domain.Admin;
 import org.example.chessplatformbe.domain.SpectatorPlayer;
 import org.example.chessplatformbe.domain.User;
-import org.example.chessplatformbe.enums.Chroma;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.mapper.UserMapper;
 import org.example.chessplatformbe.persistence.impl.jpa.UserRepositoryImpl;
@@ -93,7 +92,6 @@ class UserServiceTest {
         testSpectator.setChatBanned(false);
         testSpectator.setGameBanned(false);
         testSpectator.setNoOfGamesPlayed(10);
-        testSpectator.setChroma(Chroma.DEFAULT);
         testSpectator.setHasPass(true);
 
         createSpectatorDTO = new CreateSpectatorDTO();
@@ -106,7 +104,6 @@ class UserServiceTest {
         createSpectatorDTO.setChatBanned(false);
         createSpectatorDTO.setGameBanned(false);
         createSpectatorDTO.setNoOfGamesPlayed(10);
-        createSpectatorDTO.setChroma("Default");
         createSpectatorDTO.setHasPass(true);
 
         spectatorResponseDTO = new SpectatorResponseDTO();
@@ -119,7 +116,6 @@ class UserServiceTest {
         spectatorResponseDTO.setChatBanned(false);
         spectatorResponseDTO.setGameBanned(false);
         spectatorResponseDTO.setNoOfGamesPlayed(10);
-        spectatorResponseDTO.setChroma("Default");
         spectatorResponseDTO.setHasPass(true);
     }
 

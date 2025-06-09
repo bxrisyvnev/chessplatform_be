@@ -1,10 +1,12 @@
 package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.example.chessplatformbe.business.IArticleService;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
 import org.example.chessplatformbe.domain.Article;
+import org.example.chessplatformbe.exceptions.InvalidArticleException;
 import org.example.chessplatformbe.mapper.ArticleMapper;
 import org.example.chessplatformbe.persistence.ArticleRepository;
 import org.springframework.data.domain.Page;
@@ -74,5 +76,27 @@ public class ArticleServiceImpl implements IArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("Article not found with ID: " + articleId));
         articleRepository.delete(article);
+    }
+
+    @Override
+    public Article getByTitle(String title) throws InvalidArticleException {
+        return articleRepository.findByTitle(title);
+    }
+
+    @Override
+    public Map<String, Object> getArticlePageByTitle(String title, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Article> articlePage = articleRepository.getArticlesByTitlePage(title, pageable);
+
+        List<ArticleResponceDTO> dtos = articlePage.getContent().stream()
+                .map(ArticleMapper::objectToResponse)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("articles", dtos);
+        response.put("currentPage", articlePage.getNumber());
+        response.put("totalItems", articlePage.getTotalElements());
+        response.put("totalPages", articlePage.getTotalPages());
+        return response;
     }
 }

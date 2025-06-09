@@ -33,7 +33,7 @@ sonarqube {
         def sonarToken = "sqp_dd5f036b015d173921446b354aa98706cf5865f5"
         property 'sonar.token', sonarToken
         property "sonar.tests", "src/test/java"
-        property "sonar.inclusions", "**/business/**/*.java"
+        property "sonar.coverage.exclusions", "**/mapper/**, **/controller/**, **/domain/**, **/enums/**, **/persistence/**, **/exceptions/**, **/config/**"
     }
 }
 

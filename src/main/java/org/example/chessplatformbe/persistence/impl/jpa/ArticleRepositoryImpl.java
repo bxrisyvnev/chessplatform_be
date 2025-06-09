@@ -1,7 +1,10 @@
 package org.example.chessplatformbe.persistence.impl.jpa;
 
 import org.example.chessplatformbe.domain.Article;
+import org.example.chessplatformbe.exceptions.InvalidArticleException;
+import org.example.chessplatformbe.exceptions.InvalidUserException;
 import org.example.chessplatformbe.mapper.ArticleMapper;
+import org.example.chessplatformbe.mapper.UserMapper;
 import org.example.chessplatformbe.persistence.ArticleRepository;
 import org.example.chessplatformbe.persistence.impl.jpa.entity.ArticleEntity;
 
@@ -71,6 +74,27 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
         List<Article> articles = entityPage.getContent()
                 .stream()
+                .map(ArticleMapper::entityToObject)
+                .toList();
+
+        return new PageImpl<>(articles, pageable, entityPage.getTotalElements());
+    }
+
+    @Override
+    public Article findByTitle(String title) throws InvalidArticleException {
+        ArticleEntity articleEntity = jpaArticle.findByArticleTitle(title);
+        if (articleEntity == null) {
+            throw new InvalidArticleException(title);
+        }
+        return ArticleMapper.entityToObject(articleEntity);
+    }
+
+    @Override
+    public Page<Article> getArticlesByTitlePage(String title, Pageable pageable) {
+        Page<ArticleEntity> entityPage =
+                jpaArticle.findByArticleTitleContainingIgnoreCase(title, pageable);
+
+        List<Article> articles = entityPage.getContent().stream()
                 .map(ArticleMapper::entityToObject)
                 .toList();
 

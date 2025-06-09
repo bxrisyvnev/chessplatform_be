@@ -1,7 +1,6 @@
 package org.example.chessplatformbe.domain;
 
 import lombok.*;
-import org.example.chessplatformbe.enums.Chroma;
 
 @Getter
 @Setter
@@ -17,7 +16,5 @@ public class ProfessionalPlayer extends User {
     private Integer noOfGamesPlayed;
 
     private Integer followerCount;
-
-    private Chroma chroma;
 
 }

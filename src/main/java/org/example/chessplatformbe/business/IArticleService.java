@@ -2,6 +2,7 @@ package org.example.chessplatformbe.business;
 
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.domain.Article;
+import org.example.chessplatformbe.exceptions.InvalidArticleException;
 
 import java.util.Map;
 
@@ -16,4 +17,8 @@ public interface IArticleService {
     Article updateArticle(CreateArticleDTO dto);
 
     void deleteArticle(Integer articleId);
+
+    Article getByTitle(String title) throws InvalidArticleException;
+
+    Map<String, Object> getArticlePageByTitle(String title, Integer page, Integer size);
 }

@@ -57,7 +57,7 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findByArticle_Id(Integer articleId) {
+    public List<Comment> findByArticleId(Integer articleId) {
         List<CommentEntity> commentEntities = jpaComment.findByArticle_Id(articleId);
 
         return commentEntities.stream()

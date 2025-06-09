@@ -2,7 +2,6 @@ package org.example.chessplatformbe.controller;
 
 import org.example.chessplatformbe.business.impl.ArticleServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
-import org.example.chessplatformbe.controller.dto.request.GetArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
 import org.example.chessplatformbe.mapper.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;

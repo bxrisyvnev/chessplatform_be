@@ -10,6 +10,5 @@ public class SpectatorProfileDTO extends UserProfileDTO{
     private boolean isChatBanned;
     private boolean isGameBanned;
     private int noOfGamesPlayed;
-    private String chroma;
     private boolean hasPass;
 }
