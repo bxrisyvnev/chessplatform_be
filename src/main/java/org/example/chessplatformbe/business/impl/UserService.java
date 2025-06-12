@@ -11,6 +11,7 @@ import org.example.chessplatformbe.persistence.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,15 +34,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createUser(CreateUserDTO user) {
+    public User createUser(CreateUserDTO user) throws InvalidUserException {
+        try{
+            userRepository.findByUsername(user.getUsername());
+        }
+        catch (InvalidUserException e){
+            User userObject = UserMapper.requestToObject(user);
 
-        User userObject = UserMapper.requestToObject(user);
+            userObject.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userObject.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(userObject);
 
-        userRepository.save(userObject);
-
-        return userObject;
+            return userObject;
+        }
+        throw new InvalidUserException(user.getUsername());
     }
 
     @Override
