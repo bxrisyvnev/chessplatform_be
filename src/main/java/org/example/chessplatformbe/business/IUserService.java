@@ -6,9 +6,9 @@ import org.example.chessplatformbe.exceptions.InvalidUserException;
 
 public interface IUserService {
 
-    User getUserById(Integer id) throws InvalidUserException; // replace dto with object
+    User getUserById(Integer id) throws InvalidUserException;
 
-    User createUser(CreateUserDTO user);
+    User createUser(CreateUserDTO user) throws InvalidUserException;
 
     User updateUser(Integer id, CreateUserDTO user) throws InvalidUserException;
 

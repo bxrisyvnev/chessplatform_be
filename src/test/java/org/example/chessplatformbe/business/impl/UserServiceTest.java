@@ -141,38 +141,49 @@ class UserServiceTest {
     }
 
     @Test
-    void createUser_validAdmin_returnsResponse() {
+    void createUser_validAdmin_returnsResponse() throws InvalidUserException {
+        when(userRepository.findByUsername(createAdminDTO.getUsername()))
+                .thenThrow(new InvalidUserException("User not found"));
         when(passwordEncoder.encode("plainpass")).thenReturn("hashedpass");
         when(userRepository.save(any(Admin.class))).thenReturn(testAdmin);
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO)).thenReturn(testAdmin);
-            mockedUserMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
+            mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO))
+                    .thenReturn(testAdmin);
 
             User result = userService.createUser(createAdminDTO);
 
             assertNotNull(result);
             assertEquals("adminuser", result.getUsername());
-            verify(userRepository).save(testAdmin);
+
+            verify(userRepository).findByUsername("adminuser");
             verify(passwordEncoder).encode("plainpass");
+            verify(userRepository).save(testAdmin);
         }
     }
 
     @Test
-    void createUser_validSpectator_returnsResponse() {
+    void createUser_validSpectator_returnsResponse() throws InvalidUserException {
+        when(userRepository.findByUsername(createSpectatorDTO.getUsername()))
+                .thenThrow(new InvalidUserException("User not found"));
+        // 2) Stub encoder + save
         when(passwordEncoder.encode("plainpass2")).thenReturn("hashedpass2");
         when(userRepository.save(any(SpectatorPlayer.class))).thenReturn(testSpectator);
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.requestToObject(createSpectatorDTO)).thenReturn(testSpectator);
-            mockedUserMapper.when(() -> UserMapper.objectToResponce(testSpectator)).thenReturn(spectatorResponseDTO);
+            mockedUserMapper.when(() -> UserMapper.requestToObject(createSpectatorDTO))
+                    .thenReturn(testSpectator);
 
             User result = userService.createUser(createSpectatorDTO);
 
             assertNotNull(result);
             assertEquals("spectator", result.getUsername());
-            verify(userRepository).save(testSpectator);
+
+            verify(userRepository).findByUsername("spectator");
             verify(passwordEncoder).encode("plainpass2");
+            verify(userRepository).save(testSpectator);
+        } catch (InvalidUserException e) {
+            throw new RuntimeException(e);
         }
     }
 

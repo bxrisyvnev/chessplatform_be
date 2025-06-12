@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserDTO request) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserDTO request) throws InvalidUserException {
         return ResponseEntity.ok(UserMapper.objectToResponce(userService.createUser(request)));
     }
 
