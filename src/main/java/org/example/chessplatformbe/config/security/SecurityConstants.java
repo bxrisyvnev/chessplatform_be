@@ -11,4 +11,5 @@ public final class SecurityConstants {
     public static final String STREAM_ENDPOINT = "/streams";
     public static final String SPECTATE_ENDPOINT = "/spectate/**";
     public static final String NEWS_ENDPOINT = "/news";
+    public static final String CHESS_ENDPOINT = "/chess";
 }
