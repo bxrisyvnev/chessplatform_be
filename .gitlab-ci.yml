@@ -17,23 +17,22 @@ test:
   script:
     - ./gradlew test
 
-default:
-  shell: bash
-
 deploy:
   stage: deploy
   image: docker:s3-chessplatform-backend:latest
   before_script:
     - apk add --no-cache docker-cli-compose
   script:
-    - docker compose -f docker-compose.yml down
+    - docker compose -f docker-compose.yml down || true
     - docker compose -f docker-compose.yml up -d --build
     - echo "Waiting for MySQL to be ready..."
-    - |
-      until docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="${DATASOURCE_PASS}" --silent; do
-        echo "MySQL is unavailable - waiting..."
-        sleep 5
-      done
+    - >
+      bash -c '
+        until docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="${DATASOURCE_PASS}" --silent; do
+          echo "MySQL is unavailable - waiting..."
+          sleep 5
+        done
+      '
     - docker ps
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
