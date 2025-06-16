@@ -77,4 +77,9 @@ public class UserService implements IUserService {
     public User getUserByUsername(String username) throws InvalidUserException {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public Double getAverageCommentPerArticle(Integer userId) {
+        return userRepository.getAverageCommentsByUser(userId);
+    }
 }

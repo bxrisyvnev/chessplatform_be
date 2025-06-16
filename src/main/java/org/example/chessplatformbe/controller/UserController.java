@@ -51,6 +51,6 @@ public class UserController {
 
     @GetMapping("/profile/{username}")
     public ResponseEntity<UserProfileDTO> getProfile(@PathVariable String username) throws InvalidUserException {
-        return ResponseEntity.ok(UserMapper.userToProfileDTO(userService.getUserByUsername(username), commentService.getCommentByAuthorUsername(username)));
+        return ResponseEntity.ok(UserMapper.userToProfileDTO(userService.getUserByUsername(username), commentService.getCommentByAuthorUsername(username), userService.getAverageCommentPerArticle(userService.getUserByUsername(username).getId())));
     }
 }

@@ -232,7 +232,7 @@ public class UserMapper {
         throw new IllegalArgumentException("Unknown user type");
     }
 
-    public static UserProfileDTO userToProfileDTO(User user, List<Comment> comments) {
+    public static UserProfileDTO userToProfileDTO(User user, List<Comment> comments, Double averageCommentsPerArticle) {
         List<CommentResponceDTO> commentDTOs = comments.stream()
                 .map(CommentMapper::objectToResponse)
                 .toList();
@@ -248,6 +248,7 @@ public class UserMapper {
             dto.setContractEndDate(admin.getContractEndDate().toString());
             dto.setAddress(admin.getAddress());
             dto.setComments(commentDTOs);
+            dto.setAverageCommentsPerArticle(averageCommentsPerArticle);
             return dto;
         }
 
@@ -262,6 +263,7 @@ public class UserMapper {
             dto.setNoOfGamesPlayed(p.getNoOfGamesPlayed());
             dto.setFollowerCount(p.getFollowerCount());
             dto.setComments(commentDTOs);
+            dto.setAverageCommentsPerArticle(averageCommentsPerArticle);
             return dto;
         }
 
@@ -277,6 +279,7 @@ public class UserMapper {
             dto.setNoOfGamesPlayed(s.getNoOfGamesPlayed());
             dto.setHasPass(s.isHasPass());
             dto.setComments(commentDTOs);
+            dto.setAverageCommentsPerArticle(averageCommentsPerArticle);
             return dto;
         }
 
