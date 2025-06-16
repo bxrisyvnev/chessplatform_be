@@ -19,32 +19,33 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:s3-chessplatform-backend:latest
-  before_script:
-    - apk add --no-cache docker-cli-compose
   script:
-      - docker compose -f docker-compose.yml down || true
-      - docker compose -f docker-compose.yml up -d --build
-      - echo "Waiting for MySQL to be ready..."
-      - |
-        $maxAttempts = 20
-        $attempt = 0
-        while ($true) {
-          $result = docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="$Env:DATASOURCE_PASS" --silent
-          if ($LASTEXITCODE -eq 0) {
-            Write-Host "MySQL is ready."
-            break
-          } else {
-            Write-Host "MySQL is unavailable - waiting..."
-            Start-Sleep -Seconds 5
-            $attempt++
-            if ($attempt -ge $maxAttempts) {
-              Write-Host "MySQL did not become ready in time. Exiting..."
-              exit 1
-            }
+    - Write-Host "Shutting down existing containers (if any)..."
+    - docker compose -f docker-compose.yml down
+    - Write-Host "Starting containers..."
+    - docker compose -f docker-compose.yml up -d --build
+    - Write-Host "Waiting for MySQL to be ready..."
+
+    - |
+      $maxAttempts = 20
+      $attempt = 0
+      while ($true) {
+        docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="$Env:DATASOURCE_PASS" --silent
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "✅ MySQL is ready."
+          break
+        } else {
+          Write-Host "❌ MySQL is unavailable - waiting..."
+          Start-Sleep -Seconds 5
+          $attempt++
+          if ($attempt -ge $maxAttempts) {
+            Write-Host "❌ Timed out waiting for MySQL."
+            exit 1
           }
         }
-      - docker ps
+      }
+
+    - docker ps
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
 
