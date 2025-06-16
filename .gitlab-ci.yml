@@ -19,28 +19,35 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:s3-chessplatform-backend
-  services:
-    - name: docker:dind
-      alias: docker
-  variables:
-    DOCKER_HOST:       tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
-  before_script:
-    - apk add --no-cache docker-cli-compose
 
+  # (no image/services—uses your Windows runner’s native Docker & Compose)
   script:
-    - bash -lc "docker compose -f docker-compose.yml down || true"
-    - bash -lc "docker compose -f docker-compose.yml up -d --build"
-    - bash -lc 'echo "Waiting for MySQL to be ready..."'
-    - bash -lc '
-      until docker exec mysql mysqladmin ping -h "localhost" \
-      --user="springuser" --password="${DATASOURCE_PASS}" --silent; do
-      echo "MySQL is unavailable - waiting..."
-      sleep 5
-      done
-      '
-    - bash -lc "docker ps"
+    # 1) Tear down any old stack (ignore errors if nothing’s up)
+    - |
+      try {
+        docker-compose down
+      } catch {
+        Write-Host "Nothing to tear down."
+      }
+
+    # 2) Build & start everything
+    - docker-compose up -d --build
+
+    # 3) Wait for MySQL to accept connections
+    - Write-Host "Waiting for MySQL to be ready..."
+    - |
+      while (-not (
+        docker exec mysql mysqladmin ping -h "localhost" `
+          --user="springuser" `
+          --password=$Env:DATASOURCE_PASS `
+          --silent
+      )) {
+        Write-Host "MySQL is unavailable - waiting..."
+        Start-Sleep -Seconds 5
+      }
+
+    # 4) Show running containers
+    - docker ps
 
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
