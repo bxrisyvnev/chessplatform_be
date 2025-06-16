@@ -1,5 +1,11 @@
 FROM gradle:8.7-jdk17-alpine AS build
 
+ARG JWT_SECRET
+ARG DATASOURCE_PASS
+
+ENV SPRING_DATASOURCE_PASSWORD=${DATASOURCE_PASS}
+ENV JWT_SECRET=${JWT_SECRET}
+
 RUN mkdir -p /workspace
 WORKDIR /workspace
 COPY build.gradle /workspace
