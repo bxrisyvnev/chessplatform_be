@@ -14,5 +14,7 @@ public interface IUserService {
 
     void deleteUser(Integer id);
 
-    public User getUserByUsername(String username) throws InvalidUserException;
+    User getUserByUsername(String username) throws InvalidUserException;
+
+    Double getAverageCommentPerArticle(Integer userId);
 }

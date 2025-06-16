@@ -16,4 +16,5 @@ public abstract class UserProfileDTO {
     private String displayName;
     private String nationality;
     private List<CommentResponceDTO> comments;
+    private Double averageCommentsPerArticle;
 }

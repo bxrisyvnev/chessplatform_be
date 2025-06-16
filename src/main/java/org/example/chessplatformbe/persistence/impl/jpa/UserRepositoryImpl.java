@@ -54,4 +54,9 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return UserMapper.entityToObject(userEntity);
     }
+
+    @Override
+    public Double getAverageCommentsByUser(Integer userId) {
+        return jpaUser.findAverageCommentsByUser(userId);
+    }
 }
