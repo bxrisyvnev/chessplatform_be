@@ -20,22 +20,24 @@ test:
 deploy:
   stage: deploy
   script:
-    - Write-Host "Shutting down existing containers (if any)..."
-    - docker compose -f docker-compose.yml down
+    - Write-Host "Stopping old containers..."
+    - docker compose -f docker-compose.yml down || Write-Host "No containers to stop."
+
     - Write-Host "Starting containers..."
     - docker compose -f docker-compose.yml up -d --build
-    - Write-Host "Waiting for MySQL to be ready..."
+
+    - Write-Host "Waiting for MySQL to be ready using mysql CLI..."
 
     - |
       $maxAttempts = 20
       $attempt = 0
       while ($true) {
-        docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="$Env:DATASOURCE_PASS" --silent
+        docker exec mysql mysql -hlocalhost -uspringuser -pspringpass -e "SELECT 1" > $null 2>&1
         if ($LASTEXITCODE -eq 0) {
           Write-Host "✅ MySQL is ready."
           break
         } else {
-          Write-Host "❌ MySQL is unavailable - waiting..."
+          Write-Host "❌ MySQL is unavailable (attempt $attempt) - waiting..."
           Start-Sleep -Seconds 5
           $attempt++
           if ($attempt -ge $maxAttempts) {
@@ -45,6 +47,7 @@ deploy:
         }
       }
 
+    - Write-Host "✅ MySQL is up. Listing containers..."
     - docker ps
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
