@@ -19,6 +19,12 @@ test:
 
 deploy:
   stage: deploy
+  variables:
+    JWT_SECRET: ${JWT_SECRET}
+    DATASOURCE_PASS: ${DATASOURCE_PASS}
+    SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chessplatform_db
+    SPRING_DATASOURCE_USERNAME: springuser
+    SPRING_DATASOURCE_PASSWORD: springpass
   image: s3-chessplatform-backend
   services:
     - docker:dind
