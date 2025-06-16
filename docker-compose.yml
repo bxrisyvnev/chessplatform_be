@@ -6,7 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: chessplatform_db
       MYSQL_USER: springuser
-      MYSQL_PASSWORD: springpass
+      MYSQL_PASSWORD: ${DATASOURCE_PASS}
     ports:
       - "3307:3306"
     volumes:
@@ -18,6 +18,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        JWT_SECRET: ${JWT_SECRET}
+        DATASOURCE_PASS: ${DATASOURCE_PASS}
     container_name: backend
     depends_on:
       - mysql
@@ -26,7 +29,8 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chessplatform_db
       SPRING_DATASOURCE_USERNAME: springuser
-      SPRING_DATASOURCE_PASSWORD: springpass
+      SPRING_DATASOURCE_PASSWORD: ${DATASOURCE_PASS}
+      SECURITY_JWT_SECRET: ${JWT_SECRET}
     networks:
       - my-network
 
