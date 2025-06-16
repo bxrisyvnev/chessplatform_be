@@ -19,23 +19,34 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:s3-chessplatform-backend
-  services:
-    - docker:dind
+
+  # remove image/services—on Shell exec these are ignored
   before_script:
-    - apk add --no-cache docker-cli-compose
+    # if you need to auth to a private registry
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+
   script:
-    - docker compose -f docker-compose.yml down || true
+    # tear down any old stack
+    - docker compose -f docker-compose.yml down
+
+    # bring up MySQL + BE
     - docker compose -f docker-compose.yml up -d --build
-    - echo "Waiting for MySQL to be ready..."
+
+    # wait for mysql
+    - Write-Host "Waiting for MySQL to be ready..."
     - |
-      until docker exec mysql mysqladmin ping -h "localhost" --user="springuser" --password="${DATASOURCE_PASS}" --silent; do
-        echo "MySQL is unavailable - waiting..."
-        sleep 5
-      done
+      while (-not (docker exec mysql mysqladmin ping -h 'localhost' `
+            --user 'springuser' --password $env:DATASOURCE_PASS --silent)) {
+        Write-Host "MySQL is unavailable - waiting..."
+        Start-Sleep -Seconds 5
+      }
+
+    # sanity check
     - docker ps
+
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "DevelopmentBranch"'
+
 
 build-sonar:
   stage: build-sonar
