@@ -19,7 +19,7 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:latest
+  image: docker:s3-chessplatform-backend
   services:
     - docker:dind
   script:
