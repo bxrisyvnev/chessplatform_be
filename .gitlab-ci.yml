@@ -17,6 +17,9 @@ test:
   script:
     - ./gradlew test
 
+default:
+  shell: bash
+
 deploy:
   stage: deploy
   image: docker:s3-chessplatform-backend:latest
