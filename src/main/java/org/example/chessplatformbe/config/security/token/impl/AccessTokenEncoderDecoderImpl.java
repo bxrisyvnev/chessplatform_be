@@ -32,7 +32,7 @@ public class AccessTokenEncoderDecoderImpl implements TokenEncoder, TokenDecoder
     private final ChronoUnit expirationUnit;
 
 
-    public AccessTokenEncoderDecoderImpl(@Value("${jwt.access-token.secret}") String secretKey
+    public AccessTokenEncoderDecoderImpl(@Value("${JWT_SECRET}") String secretKey
             , @Value("${jwt.access-token.exp}")long expiration
             , @Value("${jwt.access-token.exp-unit}")String expirationUnit) {
         this.expiration = expiration;
