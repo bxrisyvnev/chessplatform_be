@@ -29,7 +29,7 @@ public class LoginController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
         LoginToken loginToken = authenticationService.login(loginRequest.getUsername(), loginRequest.getPassword());
         LoginResponseDTO loginResponse = LogInTokenMapper.objectToResponse(loginToken);
-        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
+        return ResponseEntity.ok().body(loginResponse);
     }
 
     @PostMapping("/logout")

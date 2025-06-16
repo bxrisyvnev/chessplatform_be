@@ -1,5 +1,6 @@
 package org.example.chessplatformbe.controller;
 
+import jakarta.validation.Valid;
 import org.example.chessplatformbe.business.impl.StreamServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateStreamDTO;
 import org.example.chessplatformbe.controller.dto.response.StreamResponseDTO;
@@ -24,13 +25,13 @@ public class StreamController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamResponseDTO> createStream(@RequestBody CreateStreamDTO dto) {
+    public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody CreateStreamDTO dto) {
         return ResponseEntity.ok(StreamMapper.objectToResponse(streamService.createStream(dto)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStream(@PathVariable("id") Integer identification) {
         streamService.deleteStream(identification);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

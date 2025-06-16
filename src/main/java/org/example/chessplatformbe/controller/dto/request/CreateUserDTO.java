@@ -2,6 +2,8 @@ package org.example.chessplatformbe.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 //
@@ -20,13 +22,18 @@ public abstract class CreateUserDTO {
 
     private Integer updateId;
 
+    @NotBlank(message = "Username is required")
     private String username;
 
+    @NotBlank(message = "Password is required")
     private String password;
 
+    @NotNull(message = "Age is required")
     private Integer age;
 
+    @NotBlank(message = "Display Name is required")
     private String displayName;
 
+    @NotBlank(message = "Nationality is required")
     private String nationality;
 }

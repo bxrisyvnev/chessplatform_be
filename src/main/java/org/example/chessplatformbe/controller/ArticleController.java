@@ -1,5 +1,6 @@
 package org.example.chessplatformbe.controller;
 
+import jakarta.validation.Valid;
 import org.example.chessplatformbe.business.impl.ArticleServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.controller.dto.response.ArticleResponceDTO;
@@ -36,18 +37,18 @@ public class ArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<ArticleResponceDTO> createArticle(@RequestBody CreateArticleDTO dto) {
+    public ResponseEntity<ArticleResponceDTO> createArticle(@Valid @RequestBody CreateArticleDTO dto) {
         return ResponseEntity.ok(ArticleMapper.objectToResponse(articleService.createArticle(dto)));
     }
 
     @PutMapping
-    public ResponseEntity<ArticleResponceDTO> updateArticle(@RequestBody CreateArticleDTO dto) {
+    public ResponseEntity<ArticleResponceDTO> updateArticle(@Valid @RequestBody CreateArticleDTO dto) {
         return ResponseEntity.ok(ArticleMapper.objectToResponse(articleService.updateArticle(dto)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") Integer identification) {
         articleService.deleteArticle(identification);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
