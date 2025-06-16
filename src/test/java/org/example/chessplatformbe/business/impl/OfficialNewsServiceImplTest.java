@@ -3,7 +3,6 @@ package org.example.chessplatformbe.business.impl;
 import org.example.chessplatformbe.controller.dto.request.CreateOfficialNewsDTO;
 import org.example.chessplatformbe.domain.OfficialNews;
 import org.example.chessplatformbe.persistence.OfficialNewsRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,11 +31,6 @@ class OfficialNewsServiceImplTest {
 
     @InjectMocks
     private OfficialNewsServiceImpl service;
-
-    @BeforeEach
-    void setUp() {
-        // No setup required as repository is mocked and injected
-    }
 
     @Test
     void getLatestFive_shouldReturnUpToFiveItems() throws Exception {

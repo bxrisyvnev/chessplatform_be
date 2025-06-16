@@ -76,7 +76,6 @@ class AuthenticationServiceTest {
 
     @Test
     void logout_doesNothing() {
-        // Since logout is empty, just make sure no exceptions occur.
         assertDoesNotThrow(() -> authenticationService.logout(1));
     }
 }

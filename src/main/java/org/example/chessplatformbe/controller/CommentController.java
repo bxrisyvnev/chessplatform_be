@@ -1,5 +1,6 @@
 package org.example.chessplatformbe.controller;
 
+import jakarta.validation.Valid;
 import org.example.chessplatformbe.business.impl.CommentServiceImpl;
 import org.example.chessplatformbe.controller.dto.request.CreateCommentDTO;
 import org.example.chessplatformbe.controller.dto.response.CommentResponceDTO;
@@ -31,18 +32,18 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponceDTO> createComment(@RequestBody CreateCommentDTO dto) {
+    public ResponseEntity<CommentResponceDTO> createComment(@Valid @RequestBody CreateCommentDTO dto) {
         return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.createComment(dto)));
     }
 
     @PutMapping
-    public ResponseEntity<CommentResponceDTO> updateComment(@RequestBody CreateCommentDTO dto) {
+    public ResponseEntity<CommentResponceDTO> updateComment(@Valid @RequestBody CreateCommentDTO dto) {
         return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.updateComment(dto)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable("id") Integer identification) {
         commentService.deleteComment(identification);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

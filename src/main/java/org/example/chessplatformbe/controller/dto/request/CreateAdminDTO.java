@@ -2,6 +2,7 @@ package org.example.chessplatformbe.controller.dto.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDate;
 
 @Data
