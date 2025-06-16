@@ -35,6 +35,16 @@ services:
     networks:
       - my-network
 
+  frontend:
+    image: s3-chessplatformfe-frontend:latest
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    networks:
+      - my-network
+
 volumes:
   mysql-data:
 
