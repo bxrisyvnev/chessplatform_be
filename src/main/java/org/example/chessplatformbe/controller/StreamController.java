@@ -26,7 +26,7 @@ public class StreamController {
 
     @PostMapping
     public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody CreateStreamDTO dto) {
-        return ResponseEntity.ok(StreamMapper.objectToResponse(streamService.createStream(dto)));
+        return ResponseEntity.ok(StreamMapper.objectToResponse(streamService.createStream(StreamMapper.requestToObject(dto))));
     }
 
     @DeleteMapping("/{id}")

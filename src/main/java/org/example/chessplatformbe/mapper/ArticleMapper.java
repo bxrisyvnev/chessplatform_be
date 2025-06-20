@@ -17,6 +17,7 @@ public class ArticleMapper {
         Article article = new Article();
         article.setId(articleEntity.getId());
         article.setArticleTitle(articleEntity.getArticleTitle());
+        article.setAuthorName(articleEntity.getAuthorName());
         article.setAuthorId(articleEntity.getUser().getId());
         article.setImageUrl(articleEntity.getImageUrl());
         article.setContentText(articleEntity.getContentText());
@@ -35,6 +36,7 @@ public class ArticleMapper {
     public static ArticleEntity objectToEntity(Article article, UserEntity userEntity) {
         ArticleEntity articleEntity = new ArticleEntity();
 
+        articleEntity.setAuthorName(article.getAuthorName());
         articleEntity.setArticleTitle(article.getArticleTitle());
         articleEntity.setImageUrl(article.getImageUrl());
         articleEntity.setContentText(article.getContentText());
@@ -70,6 +72,7 @@ public class ArticleMapper {
         dto.setId(article.getId());
         dto.setArticleTitle(article.getArticleTitle());
         dto.setImageUrl(article.getImageUrl());
+        dto.setAuthorName(article.getAuthorName());
         dto.setAuthorId(article.getAuthorId());
         dto.setContentText(article.getContentText());
         dto.setCommentsIds(article.getCommentsIds());

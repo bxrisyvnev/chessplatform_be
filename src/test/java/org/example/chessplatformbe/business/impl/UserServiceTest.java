@@ -1,33 +1,25 @@
 package org.example.chessplatformbe.business.impl;
 
-import org.example.chessplatformbe.controller.dto.request.CreateAdminDTO;
-import org.example.chessplatformbe.controller.dto.request.CreateSpectatorDTO;
-import org.example.chessplatformbe.controller.dto.response.AdminResponseDTO;
-import org.example.chessplatformbe.controller.dto.response.SpectatorResponseDTO;
 import org.example.chessplatformbe.domain.Admin;
 import org.example.chessplatformbe.domain.SpectatorPlayer;
 import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
-import org.example.chessplatformbe.mapper.UserMapper;
-import org.example.chessplatformbe.persistence.impl.jpa.UserRepositoryImpl;
+import org.example.chessplatformbe.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
     @Mock
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -35,197 +27,143 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private Admin testAdmin;
-    private CreateAdminDTO createAdminDTO;
-    private AdminResponseDTO adminResponseDTO;
-
-    private SpectatorPlayer testSpectator;
-    private CreateSpectatorDTO createSpectatorDTO;
-    private SpectatorResponseDTO spectatorResponseDTO;
+    private Admin admin;
+    private SpectatorPlayer spectator;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        testAdmin = new Admin();
-        testAdmin.setId(1);
-        testAdmin.setUsername("adminuser");
-        testAdmin.setPassword("hashedpass");
-        testAdmin.setAge(30);
-        testAdmin.setDisplayName("AdminDisplay");
-        testAdmin.setNationality("US");
-        testAdmin.setMonthlySalary(5000.0);
-        testAdmin.setContractStartDate(LocalDate.of(2024, 1, 1));
-        testAdmin.setContractEndDate(LocalDate.of(2025, 1, 1));
-        testAdmin.setAddress("123 Street");
+        admin = new Admin();
+        admin.setId(1);
+        admin.setUsername("adminuser");
+        admin.setPassword("hashedpass");
+        admin.setAge(30);
+        admin.setDisplayName("AdminDisplay");
+        admin.setNationality("US");
+        admin.setMonthlySalary(5000.0);
+        admin.setContractStartDate(LocalDate.of(2024, 1, 1));
+        admin.setContractEndDate(LocalDate.of(2025, 1, 1));
+        admin.setAddress("123 Street");
 
-        createAdminDTO = new CreateAdminDTO();
-        createAdminDTO.setUsername("adminuser");
-        createAdminDTO.setPassword("plainpass");
-        createAdminDTO.setAge(30);
-        createAdminDTO.setDisplayName("AdminDisplay");
-        createAdminDTO.setNationality("US");
-        createAdminDTO.setMonthlySalary(5000.0);
-        createAdminDTO.setContractStartDate(LocalDate.of(2024, 1, 1));
-        createAdminDTO.setContractEndDate(LocalDate.of(2025, 1, 1));
-        createAdminDTO.setAddress("123 Street");
+        spectator = new SpectatorPlayer();
+        spectator.setId(2);
+        spectator.setUsername("spectator");
+        spectator.setPassword("hashedpass2");
+        spectator.setAge(25);
+        spectator.setDisplayName("SpecUser");
+        spectator.setNationality("UK");
+        spectator.setPlayerElo(1200);
+        spectator.setChatBanned(false);
+        spectator.setGameBanned(false);
+        spectator.setNoOfGamesPlayed(10);
+        spectator.setHasPass(true);
+    }
 
-        adminResponseDTO = new AdminResponseDTO();
-        adminResponseDTO.setId(1);
-        adminResponseDTO.setUsername("adminuser");
-        adminResponseDTO.setAge(30);
-        adminResponseDTO.setDisplayName("AdminDisplay");
-        adminResponseDTO.setNationality("US");
-        adminResponseDTO.setMonthlySalary(5000.0);
-        adminResponseDTO.setContractStartDate("2024-01-01");
-        adminResponseDTO.setContractEndDate("2025-01-01");
-        adminResponseDTO.setAddress("123 Street");
+    /* ---------- get by id ---------- */
+    @Test
+    void getUserById_found_returnsUser() throws InvalidUserException {
+        when(userRepository.findById(1)).thenReturn(Optional.of(admin));
 
-        testSpectator = new SpectatorPlayer();
-        testSpectator.setId(2);
-        testSpectator.setUsername("spectator");
-        testSpectator.setPassword("hashedpass2");
-        testSpectator.setAge(25);
-        testSpectator.setDisplayName("SpecUser");
-        testSpectator.setNationality("UK");
-        testSpectator.setPlayerElo(1200);
-        testSpectator.setChatBanned(false);
-        testSpectator.setGameBanned(false);
-        testSpectator.setNoOfGamesPlayed(10);
-        testSpectator.setHasPass(true);
+        User result = userService.getUserById(1);
 
-        createSpectatorDTO = new CreateSpectatorDTO();
-        createSpectatorDTO.setUsername("spectator");
-        createSpectatorDTO.setPassword("plainpass2");
-        createSpectatorDTO.setAge(25);
-        createSpectatorDTO.setDisplayName("SpecUser");
-        createSpectatorDTO.setNationality("UK");
-        createSpectatorDTO.setPlayerElo(1200);
-        createSpectatorDTO.setChatBanned(false);
-        createSpectatorDTO.setGameBanned(false);
-        createSpectatorDTO.setNoOfGamesPlayed(10);
-        createSpectatorDTO.setHasPass(true);
-
-        spectatorResponseDTO = new SpectatorResponseDTO();
-        spectatorResponseDTO.setId(2);
-        spectatorResponseDTO.setUsername("spectator");
-        spectatorResponseDTO.setAge(25);
-        spectatorResponseDTO.setDisplayName("SpecUser");
-        spectatorResponseDTO.setNationality("UK");
-        spectatorResponseDTO.setPlayerElo(1200);
-        spectatorResponseDTO.setChatBanned(false);
-        spectatorResponseDTO.setGameBanned(false);
-        spectatorResponseDTO.setNoOfGamesPlayed(10);
-        spectatorResponseDTO.setHasPass(true);
+        assertThat(result).isEqualTo(admin);
     }
 
     @Test
-    void getUserById_validId_returnsUser() throws InvalidUserException {
-        when(userRepository.findById(1)).thenReturn(Optional.of(testAdmin));
-
-        try (MockedStatic<UserMapper> mockedMapper = mockStatic(UserMapper.class)) {
-            mockedMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
-
-            User result = userService.getUserById(1);
-
-            assertNotNull(result);
-            assertEquals("adminuser", result.getUsername());
-        }
-    }
-
-    @Test
-    void getUserById_userNotFound_throwsException() {
+    void getUserById_notFound_throwsException() {
         when(userRepository.findById(999)).thenReturn(Optional.empty());
 
-        assertThrows(InvalidUserException.class, () -> userService.getUserById(999));
+        assertThatThrownBy(() -> userService.getUserById(999))
+                .isInstanceOf(InvalidUserException.class)
+                .hasMessage("User not found is not a valid user");
     }
 
+    /* ---------- create ---------- */
     @Test
-    void createUser_validAdmin_returnsResponse() throws InvalidUserException {
-        when(userRepository.findByUsername(createAdminDTO.getUsername()))
+    void createUser_admin_success() throws InvalidUserException {
+        when(userRepository.findByUsername("adminuser"))
                 .thenThrow(new InvalidUserException("User not found"));
         when(passwordEncoder.encode("plainpass")).thenReturn("hashedpass");
-        when(userRepository.save(any(Admin.class))).thenReturn(testAdmin);
+        admin.setPassword("plainpass");
 
-        try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO))
-                    .thenReturn(testAdmin);
+        when(userRepository.save(admin)).thenReturn(admin);
 
-            User result = userService.createUser(createAdminDTO);
+        User result = userService.createUser(admin);
 
-            assertNotNull(result);
-            assertEquals("adminuser", result.getUsername());
-
-            verify(userRepository).findByUsername("adminuser");
-            verify(passwordEncoder).encode("plainpass");
-            verify(userRepository).save(testAdmin);
-        }
+        assertThat(result.getUsername()).isEqualTo("adminuser");
+        verify(passwordEncoder).encode("plainpass");
+        verify(userRepository).save(admin);
     }
 
     @Test
-    void createUser_validSpectator_returnsResponse() throws InvalidUserException {
-        when(userRepository.findByUsername(createSpectatorDTO.getUsername()))
-                .thenThrow(new InvalidUserException("User not found"));
-        // 2) Stub encoder + save
-        when(passwordEncoder.encode("plainpass2")).thenReturn("hashedpass2");
-        when(userRepository.save(any(SpectatorPlayer.class))).thenReturn(testSpectator);
+    void createUser_existingUsername_throws() throws InvalidUserException {
+        when(userRepository.findByUsername("adminuser")).thenReturn(admin);
 
-        try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.requestToObject(createSpectatorDTO))
-                    .thenReturn(testSpectator);
+        admin.setPassword("plainpass");
 
-            User result = userService.createUser(createSpectatorDTO);
+        assertThatThrownBy(() -> userService.createUser(admin))
+                .isInstanceOf(InvalidUserException.class)
+                .hasMessage("adminuser is not a valid user");
+    }
 
-            assertNotNull(result);
-            assertEquals("spectator", result.getUsername());
+    /* ---------- update ---------- */
+    @Test
+    void updateUser_existingUser_success() throws InvalidUserException {
+        when(userRepository.findById(1)).thenReturn(Optional.of(admin));
+        when(userRepository.save(admin)).thenReturn(admin);
 
-            verify(userRepository).findByUsername("spectator");
-            verify(passwordEncoder).encode("plainpass2");
-            verify(userRepository).save(testSpectator);
-        } catch (InvalidUserException e) {
-            throw new RuntimeException(e);
-        }
+        User result = userService.updateUser(1, admin);
+
+        assertThat(result).isEqualTo(admin);
+        assertThat(result.getId()).isEqualTo(1);
     }
 
     @Test
-    void updateUser_validId_returnsUpdatedUser() throws InvalidUserException {
-        when(userRepository.findById(1)).thenReturn(Optional.of(testAdmin));
-        when(userRepository.save(any(Admin.class))).thenReturn(testAdmin);
-
-        try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.requestToObject(createAdminDTO)).thenReturn(testAdmin);
-            mockedUserMapper.when(() -> UserMapper.objectToResponce(testAdmin)).thenReturn(adminResponseDTO);
-
-            User result = userService.updateUser(1, createAdminDTO);
-
-            assertNotNull(result);
-            assertEquals("adminuser", result.getUsername());
-        }
-    }
-
-    @Test
-    void updateUser_userNotFound_throwsException() {
+    void updateUser_userNotFound_throws() {
         when(userRepository.findById(999)).thenReturn(Optional.empty());
 
-        assertThrows(InvalidUserException.class, () -> userService.updateUser(999, createAdminDTO));
+        assertThatThrownBy(() -> userService.updateUser(999, admin))
+                .isInstanceOf(InvalidUserException.class)
+                .hasMessage("User with ID 999 not found. is not a valid user");
+    }
+
+    /* ---------- delete ---------- */
+    @Test
+    void deleteUser_found_deletes() {
+        when(userRepository.findById(1)).thenReturn(Optional.of(admin));
+
+        userService.deleteUser(1);
+
+        verify(userRepository).delete(admin);
     }
 
     @Test
-    void deleteUser_validId_deletesSuccessfully() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(testAdmin));
-
-        assertDoesNotThrow(() -> userService.deleteUser(1));
-        verify(userRepository).delete(testAdmin);
-    }
-
-    @Test
-    void deleteUser_userNotFound_throwsException() {
+    void deleteUser_notFound_throws() {
         when(userRepository.findById(999)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.deleteUser(999);
-        });
+        assertThatThrownBy(() -> userService.deleteUser(999))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("User not found with ID: 999");
+    }
 
-        assertEquals("User not found with ID: 999", exception.getMessage());
+    /* ---------- get by username ---------- */
+    @Test
+    void getUserByUsername_found() throws InvalidUserException {
+        when(userRepository.findByUsername("adminuser")).thenReturn(admin);
+
+        User result = userService.getUserByUsername("adminuser");
+
+        assertThat(result).isEqualTo(admin);
+    }
+
+    /* ---------- get average comments ---------- */
+    @Test
+    void getAverageCommentPerArticle_validId() {
+        when(userRepository.getAverageCommentsByUser(1)).thenReturn(2.67);
+
+        Double avg = userService.getAverageCommentPerArticle(1);
+
+        assertThat(avg).isEqualTo(2.67);
     }
 }

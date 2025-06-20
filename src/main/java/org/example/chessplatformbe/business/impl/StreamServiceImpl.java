@@ -2,10 +2,7 @@ package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.chessplatformbe.business.IStreamService;
-import org.example.chessplatformbe.controller.dto.request.CreateStreamDTO;
-import org.example.chessplatformbe.controller.dto.response.StreamResponseDTO;
 import org.example.chessplatformbe.domain.Stream;
-import org.example.chessplatformbe.mapper.StreamMapper;
 import org.example.chessplatformbe.persistence.StreamRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -31,8 +25,8 @@ public class StreamServiceImpl implements IStreamService {
     }
 
     @Override
-    public Stream createStream(CreateStreamDTO dto) {
-        return streamRepository.save(StreamMapper.requestToObject(dto));
+    public Stream createStream(Stream stream) {
+        return streamRepository.save(stream);
     }
 
     @Override
@@ -43,20 +37,9 @@ public class StreamServiceImpl implements IStreamService {
     }
 
     @Override
-    public Map<String, java. lang. Object> getStreamPage(Integer page, Integer size) {
+    public Page<Stream> getStreamPage(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        Page<Stream> streamPage = streamRepository.getStreamPage(pageable);
 
-        List<StreamResponseDTO> streams = streamPage.getContent().stream()
-                .map(StreamMapper::objectToResponse)
-                .toList();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("streams", streams);
-        response.put("currentPage", streamPage.getNumber());
-        response.put("totalItems", streamPage.getTotalElements());
-        response.put("totalPages", streamPage.getTotalPages());
-
-        return response;
+        return streamRepository.getStreamPage(pageable);
     }
 }

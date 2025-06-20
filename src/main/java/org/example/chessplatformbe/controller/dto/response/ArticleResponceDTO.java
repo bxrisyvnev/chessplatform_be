@@ -20,6 +20,8 @@ public class ArticleResponceDTO {
 
     private String imageUrl;
 
+    private String authorName;
+
     private Integer authorId;
 
     private String contentText;

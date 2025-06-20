@@ -1,8 +1,6 @@
 package org.example.chessplatformbe.business.impl;
 
-import org.example.chessplatformbe.controller.dto.request.CreateCommentDTO;
 import org.example.chessplatformbe.domain.Comment;
-import org.example.chessplatformbe.mapper.CommentMapper;
 import org.example.chessplatformbe.persistence.CommentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,68 +25,53 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void testCreateComment_Success() {
-        CreateCommentDTO dto = new CreateCommentDTO();
-        dto.setUpdateId(null);
-        dto.setText("Updated text");
-        dto.setArticleId(1);
-        dto.setUserId(1);
-        Comment expected = CommentMapper.requestToObject(dto);
+    void createComment_success() {
+        Comment comment = new Comment(null, "Text", 1, 1);
+        when(commentRepository.save(comment)).thenReturn(comment);
 
-        when(commentRepository.save(any(Comment.class))).thenReturn(expected);
+        Comment result = commentService.createComment(comment);
 
-        Comment result = commentService.createComment(dto);
-
-        assertEquals(expected.getText(), result.getText());
-        assertEquals(expected.getArticleId(), result.getArticleId());
+        assertEquals("Text", result.getText());
+        assertEquals(1, result.getArticleId());
+        assertEquals(1, result.getUserId());
     }
 
     @Test
-    void testUpdateComment_Success() {
-        CreateCommentDTO dto = new CreateCommentDTO();
-        dto.setUpdateId(10);
-        dto.setText("Updated text");
-        dto.setArticleId(1);
-        dto.setUserId(1);
-        Comment comment = CommentMapper.requestToObject(dto);
+    void updateComment_success() {
+        Comment updated = new Comment(null, "Updated text", 1, 1);
 
-        when(commentRepository.findById(10)).thenReturn(Optional.of(comment));
-        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(commentRepository.findById(10)).thenReturn(Optional.of(updated));
+        when(commentRepository.save(updated)).thenReturn(updated);
 
-        Comment result = commentService.updateComment(dto);
+        Comment result = commentService.updateComment(updated, 10);
 
         assertEquals("Updated text", result.getText());
     }
 
     @Test
-    void testUpdateComment_MissingId() {
-        CreateCommentDTO dto = new CreateCommentDTO();
-        dto.setUpdateId(null);
-        dto.setText("Updated");
-        dto.setArticleId(1);
-        dto.setUserId(1);
+    void updateComment_missingId() {
+        Comment updated = new Comment(null, "Updated", 1, 1);
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> commentService.updateComment(dto));
+        Exception ex = assertThrows(IllegalArgumentException.class,
+                () -> commentService.updateComment(updated, null));
+
         assertEquals("Update ID must be provided", ex.getMessage());
     }
 
     @Test
-    void testUpdateComment_NotFound() {
-        CreateCommentDTO dto = new CreateCommentDTO();
-        dto.setUpdateId(5);
-        dto.setText("Updated");
-        dto.setArticleId(1);
-        dto.setUserId(1);
-
+    void updateComment_notFound() {
+        Comment updated = new Comment(null, "Updated", 1, 1);
         when(commentRepository.findById(5)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> commentService.updateComment(dto));
-        assertTrue(ex.getMessage().contains("Comment not found"));
+        Exception ex = assertThrows(IllegalArgumentException.class,
+                () -> commentService.updateComment(updated, 5));
+
+        assertEquals("Comment not found with ID: 5", ex.getMessage());
     }
 
     @Test
-    void testDeleteComment_Success() {
-        Comment comment = new Comment(1, "Test", 1, 1);
+    void deleteComment_success() {
+        Comment comment = new Comment(1, "Text", 1, 1);
         when(commentRepository.findById(1)).thenReturn(Optional.of(comment));
 
         commentService.deleteComment(1);
@@ -97,15 +80,17 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void testDeleteComment_NotFound() {
+    void deleteComment_notFound() {
         when(commentRepository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> commentService.deleteComment(1));
-        assertTrue(ex.getMessage().contains("Comment not found"));
+        Exception ex = assertThrows(IllegalArgumentException.class,
+                () -> commentService.deleteComment(1));
+
+        assertEquals("Comment not found with ID: 1", ex.getMessage());
     }
 
     @Test
-    void testGetCommentByArticleId_Success() {
+    void getCommentByArticleId_success() {
         Comment comment = new Comment(1, "Text", 2, 3);
         when(commentRepository.findByArticleId(3)).thenReturn(List.of(comment));
 
@@ -116,7 +101,7 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void testGetCommentByUsername_Success() {
+    void getCommentByAuthorUsername_success() {
         Comment comment = new Comment(1, "Text", 2, 3);
         when(commentRepository.findCommentsByUsername("john")).thenReturn(List.of(comment));
 

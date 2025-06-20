@@ -1,120 +1,118 @@
 package org.example.chessplatformbe.business.impl;
 
-import org.example.chessplatformbe.controller.dto.request.CreateStreamDTO;
 import org.example.chessplatformbe.domain.Stream;
-import org.example.chessplatformbe.mapper.StreamMapper;
 import org.example.chessplatformbe.persistence.StreamRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class StreamServiceImplTest {
 
     @Mock
-    private StreamRepository streamRepository;
+    private StreamRepository repository;
 
     @InjectMocks
-    private StreamServiceImpl streamService;
+    private StreamServiceImpl service;
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    // GET STREAM BY ID
+    /* ---------- get by id ---------- */
     @Test
-    void testGetStreamById_Success() {
-        Stream stream = new Stream();
-        stream.setId(1);
-        stream.setStreamUrl("TwitchLink");
-        stream.setName("Description");
-        stream.setStreamerId(3);
-        when(streamRepository.findById(1)).thenReturn(Optional.of(stream));
+    void getStreamById_success() {
+        Stream s = new Stream(); s.setId(1); s.setStreamUrl("url"); s.setName("name"); s.setStreamerId(3);
+        when(repository.findById(1)).thenReturn(Optional.of(s));
 
-        Stream result = streamService.getStreamById(1);
+        Stream result = service.getStreamById(1);
 
-        assertEquals(stream.getId(), result.getId());
-        assertEquals("TwitchLink", result.getStreamUrl());
+        assertThat(result).isEqualTo(s);
     }
 
     @Test
-    void testGetStreamById_NotFound() {
-        when(streamRepository.findById(1)).thenReturn(Optional.empty());
+    void getStreamById_notFound() {
+        when(repository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> streamService.getStreamById(1));
-        assertTrue(ex.getMessage().contains("Stream not found"));
+        Throwable ex = catchThrowable(() -> service.getStreamById(1));
+
+        assertThat(ex)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Stream not found with ID: 1");
     }
 
-    // CREATE STREAM
+    /* ---------- create ---------- */
     @Test
-    void testCreateStream_Success() {
-        CreateStreamDTO dto = new CreateStreamDTO();
-        dto.setStreamUrl("Link");
-        dto.setName("Desc");
-        dto.setStreamerId(1);
+    void createStream_success() {
+        Stream s = new Stream(); s.setStreamUrl("url"); s.setName("name"); s.setStreamerId(2);
+        when(repository.save(s)).thenReturn(s);
 
-        Stream stream = StreamMapper.requestToObject(dto);
+        Stream result = service.createStream(s);
 
-        when(streamRepository.save(any(Stream.class))).thenReturn(stream);
-
-        Stream result = streamService.createStream(dto);
-
-        assertEquals("Link", result.getStreamUrl());
-        assertEquals("Desc", result.getName());
+        assertThat(result).isEqualTo(s);
+        verify(repository).save(s);
     }
 
-    // DELETE STREAM
+    /* ---------- delete ---------- */
     @Test
-    void testDeleteStream_Success() {
-        Stream stream = new Stream();
-        stream.setId(1);
-        stream.setStreamUrl("Link");
-        stream.setName("Desc");
-        stream.setStreamerId(1);
+    void deleteStream_success() {
+        Stream s = new Stream(); s.setId(1);
+        when(repository.findById(1)).thenReturn(Optional.of(s));
 
-        when(streamRepository.findById(1)).thenReturn(Optional.of(stream));
+        service.deleteStream(1);
 
-        streamService.deleteStream(1);
-
-        verify(streamRepository).delete(stream);
+        verify(repository).delete(s);
     }
 
     @Test
-    void testDeleteStream_NotFound() {
-        when(streamRepository.findById(1)).thenReturn(Optional.empty());
+    void deleteStream_notFound() {
+        when(repository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> streamService.deleteStream(1));
-        assertTrue(ex.getMessage().contains("Stream not found"));
+        Throwable ex = catchThrowable(() -> service.deleteStream(1));
+
+        assertThat(ex)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Stream not found with ID: 1");
     }
 
-    // GET STREAM PAGE
+    /* ---------- paging ---------- */
     @Test
-    void testGetStreamPage_Success() {
-        Stream stream = new Stream();
-        stream.setId(1);
-        stream.setStreamUrl("Link");
-        stream.setName("Desc");
-        stream.setStreamerId(1);
+    void getStreamPage_withContent() {
+        Stream s1 = new Stream(); s1.setId(1);
+        Stream s2 = new Stream(); s2.setId(2);
+        Page<Stream> page =
+                new PageImpl<>(List.of(s1, s2),
+                        PageRequest.of(0, 2, Sort.by("id").descending()),
+                        6);
 
-        Page<Stream> page = new PageImpl<>(List.of(stream));
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").descending());
+        when(repository.getStreamPage(any(Pageable.class))).thenReturn(page);
 
-        when(streamRepository.getStreamPage(pageable)).thenReturn(page);
+        Page<Stream> result = service.getStreamPage(0, 2);
 
-        Map<String, Object> result = streamService.getStreamPage(0, 5);
+        assertThat(result.getContent()).hasSize(2);
+        assertThat(result.getNumber()).isZero();
+        assertThat(result.getTotalElements()).isEqualTo(6);
+        assertThat(result.getTotalPages()).isEqualTo(3);
+    }
 
-        List<?> streams = (List<?>) result.get("streams");
+    @Test
+    void getStreamPage_empty() {
+        Page<Stream> empty =
+                new PageImpl<>(Collections.emptyList(),
+                        PageRequest.of(1, 5),
+                        0);
 
-        assertEquals(1, streams.size());
-        assertEquals(0, result.get("currentPage"));
-        assertEquals(1L, result.get("totalItems"));
-        assertEquals(1, result.get("totalPages"));
+        when(repository.getStreamPage(any(Pageable.class))).thenReturn(empty);
+
+        Page<Stream> result = service.getStreamPage(1, 5);
+
+        assertThat(result.getContent()).isEmpty();
+        assertThat(result.getNumber()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isZero();
+        assertThat(result.getTotalPages()).isZero();
     }
 }

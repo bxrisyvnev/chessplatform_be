@@ -1,9 +1,7 @@
 package org.example.chessplatformbe.business.impl;
 
-import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.exceptions.InvalidArticleException;
-import org.example.chessplatformbe.mapper.ArticleMapper;
 import org.example.chessplatformbe.persistence.ArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +26,20 @@ class ArticleServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetArticleById_Success() {
-        Article article = new Article();
-        article.setId(1);
-        article.setArticleTitle("title");
-        article.setImageUrl("img");
-        article.setContentText("text");
-        article.setAuthorId(2);
+    private Article buildArticle(Integer id, String title, String img, String text, Integer authorId, String authorName) {
+        Article art = new Article();
+        art.setId(id);
+        art.setArticleTitle(title);
+        art.setImageUrl(img);
+        art.setContentText(text);
+        art.setAuthorId(authorId);
+        art.setAuthorName(authorName);
+        return art;
+    }
 
+    @Test
+    void getArticleById_success() {
+        Article article = buildArticle(1, "title", "img", "text", 2, "Mime");
         when(articleRepository.findById(1)).thenReturn(Optional.of(article));
 
         Article result = articleService.getArticleById(1);
@@ -45,107 +48,88 @@ class ArticleServiceImplTest {
     }
 
     @Test
-    void testGetArticleById_NotFound() {
+    void getArticleById_notFound() {
         when(articleRepository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> articleService.getArticleById(1));
-        assertTrue(ex.getMessage().contains("Article not found"));
+        IllegalArgumentException ex =
+                assertThrows(IllegalArgumentException.class,
+                        () -> articleService.getArticleById(1));
+
+        assertEquals("Article not found with ID: 1", ex.getMessage());
     }
 
     @Test
-    void testGetArticlePage_Success() {
-        Article article = new Article();
-        article.setId(1);
-        article.setArticleTitle("title");
-        article.setImageUrl("img");
-        article.setContentText("text");
-        article.setAuthorId(2);
-
-        List<Article> articleList = List.of(article);
-        Page<Article> articlePage = new PageImpl<>(articleList);
-
+    void getArticlePage_success() {
+        Article article = buildArticle(1, "title", "img", "text", 2, "Mime");
         Pageable pageable = PageRequest.of(0, 5, Sort.by("id").descending());
-        when(articleRepository.getArticlePage(pageable)).thenReturn(articlePage);
+        Page<Article> mockPage = new PageImpl<>(List.of(article));
 
-        Map<String, Object> result = articleService.getArticlePage(0, 5);
+        when(articleRepository.getArticlePage(pageable)).thenReturn(mockPage);
 
-        assertEquals(1, ((List<?>) result.get("articles")).size());
-        assertEquals(0, result.get("currentPage"));
-        assertEquals(1L, result.get("totalItems"));
-        assertEquals(1, result.get("totalPages"));
+        Page<Article> result = articleService.getArticlePage(0, 5);
+
+        assertEquals(1, result.getContent().size());
+        assertEquals(1, result.getTotalElements());
+        assertEquals(1, result.getTotalPages());
+        assertEquals(0, result.getNumber());
     }
 
     @Test
-    void testCreateArticle_Success() {
-        CreateArticleDTO dto = new CreateArticleDTO();
-        dto.setUpdateId(1);
-        dto.setArticleTitle("title");
-        dto.setImageUrl("img");
-        dto.setContentText("text");
-        dto.setAuthorId(1);
-        Article article = ArticleMapper.requestToObject(dto);
-        when(articleRepository.save(any(Article.class))).thenReturn(article);
+    void getArticlePageByTitle_success() {
+        Article article = buildArticle(1, "title", "img", "text", 2, "Mime");
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").descending());
+        Page<Article> mockPage = new PageImpl<>(List.of(article));
 
-        Article result = articleService.createArticle(dto);
+        when(articleRepository.getArticlesByTitlePage("title", pageable))
+                .thenReturn(mockPage);
 
-        assertEquals(article.getArticleTitle(), result.getArticleTitle());
+        Page<Article> result =
+                articleService.getArticlePageByTitle("title", 0, 5);
+
+        assertEquals(1, result.getContent().size());
+        assertEquals("title", result.getContent()
+                .get(0)
+                .getArticleTitle());
     }
 
     @Test
-    void testUpdateArticle_Success() {
-        CreateArticleDTO dto = new CreateArticleDTO();
-        dto.setUpdateId(1);
-        dto.setArticleTitle("newTitle");
-        dto.setImageUrl("img");
-        dto.setContentText("text");
-        dto.setAuthorId(1);
-        Article updated = ArticleMapper.requestToObject(dto);
+    void updateArticle_success() {
+        Article updated = buildArticle(null, "newTitle", "img", "text", 1, "Mime");
 
         when(articleRepository.findById(1)).thenReturn(Optional.of(updated));
-        when(articleRepository.update(any(), eq(1))).thenReturn(updated);
+        when(articleRepository.update(updated, 1)).thenReturn(updated);
 
-        Article result = articleService.updateArticle(dto);
+        Article result = articleService.updateArticle(updated, 1);
 
         assertEquals("newTitle", result.getArticleTitle());
     }
 
     @Test
-    void testUpdateArticle_NoId() {
-        CreateArticleDTO dto = new CreateArticleDTO();
-        dto.setUpdateId(null);
-        dto.setArticleTitle("title");
-        dto.setImageUrl("img");
-        dto.setContentText("text");
-        dto.setAuthorId(1);
+    void updateArticle_noId() {
+        Article updated = buildArticle(null, "title", "img", "text", 1, "Mime");
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> articleService.updateArticle(dto));
+        IllegalArgumentException ex =
+                assertThrows(IllegalArgumentException.class,
+                        () -> articleService.updateArticle(updated, null));
+
         assertEquals("Update ID must be provided", ex.getMessage());
     }
 
     @Test
-    void testUpdateArticle_NotFound() {
-        CreateArticleDTO dto = new CreateArticleDTO();
-        dto.setUpdateId(1);
-        dto.setArticleTitle("title");
-        dto.setImageUrl("img");
-        dto.setContentText("text");
-        dto.setAuthorId(1);
-
+    void updateArticle_notFound() {
+        Article updated = buildArticle(null, "title", "img", "text", 1, "Mime");
         when(articleRepository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> articleService.updateArticle(dto));
-        assertTrue(ex.getMessage().contains("Article not found"));
+        IllegalArgumentException ex =
+                assertThrows(IllegalArgumentException.class,
+                        () -> articleService.updateArticle(updated, 1));
+
+        assertEquals("Article not found with ID: 1", ex.getMessage());
     }
 
     @Test
-    void testDeleteArticle_Success() {
-        Article article = new Article();
-        article.setId(1);
-        article.setArticleTitle("title");
-        article.setImageUrl("img");
-        article.setContentText("text");
-        article.setAuthorId(1);
-
+    void deleteArticle_success() {
+        Article article = buildArticle(1, "title", "img", "text", 1, "mime");
         when(articleRepository.findById(1)).thenReturn(Optional.of(article));
 
         articleService.deleteArticle(1);
@@ -154,22 +138,19 @@ class ArticleServiceImplTest {
     }
 
     @Test
-    void testDeleteArticle_NotFound() {
+    void deleteArticle_notFound() {
         when(articleRepository.findById(1)).thenReturn(Optional.empty());
 
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> articleService.deleteArticle(1));
-        assertTrue(ex.getMessage().contains("Article not found"));
+        IllegalArgumentException ex =
+                assertThrows(IllegalArgumentException.class,
+                        () -> articleService.deleteArticle(1));
+
+        assertEquals("Article not found with ID: 1", ex.getMessage());
     }
 
     @Test
-    void testGetByTitle_Success() throws InvalidArticleException {
-        Article article = new Article();
-        article.setId(1);
-        article.setArticleTitle("title");
-        article.setImageUrl("img");
-        article.setContentText("text");
-        article.setAuthorId(1);
-
+    void getByTitle_success() throws InvalidArticleException {
+        Article article = buildArticle(1, "title", "img", "text", 1, "Mime");
         when(articleRepository.findByTitle("title")).thenReturn(article);
 
         Article result = articleService.getByTitle("title");
@@ -178,9 +159,11 @@ class ArticleServiceImplTest {
     }
 
     @Test
-    void testGetByTitle_Throws() throws InvalidArticleException {
-        when(articleRepository.findByTitle("title")).thenThrow(new InvalidArticleException("title"));
+    void getByTitle_throws() throws InvalidArticleException {
+        when(articleRepository.findByTitle("title"))
+                .thenThrow(new InvalidArticleException("title"));
 
-        assertThrows(InvalidArticleException.class, () -> articleService.getByTitle("title"));
+        assertThrows(InvalidArticleException.class,
+                () -> articleService.getByTitle("title"));
     }
 }

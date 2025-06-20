@@ -33,12 +33,12 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentResponceDTO> createComment(@Valid @RequestBody CreateCommentDTO dto) {
-        return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.createComment(dto)));
+        return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.createComment(CommentMapper.requestToObject(dto))));
     }
 
     @PutMapping
     public ResponseEntity<CommentResponceDTO> updateComment(@Valid @RequestBody CreateCommentDTO dto) {
-        return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.updateComment(dto)));
+        return ResponseEntity.ok(CommentMapper.objectToResponse(commentService.updateComment(CommentMapper.requestToObject(dto), dto.getUpdateId())));
     }
 
     @DeleteMapping("/{id}")

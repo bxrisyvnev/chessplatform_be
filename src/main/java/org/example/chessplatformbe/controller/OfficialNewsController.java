@@ -7,8 +7,11 @@ import org.example.chessplatformbe.controller.dto.response.OfficialNewsResponceD
 import org.example.chessplatformbe.domain.OfficialNews;
 import org.example.chessplatformbe.mapper.OfficialNewsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,19 @@ public class OfficialNewsController {
             @RequestParam(defaultValue = "5") int size
     ) {
 
-        return ResponseEntity.ok(officialNewsService.getOfficialNewsPage(page, size));
+        Page<OfficialNews> officialNewsPage = officialNewsService.getOfficialNewsPage(page, size);
+
+        List<OfficialNewsResponceDTO> officialNews = officialNewsPage.getContent().stream()
+                .map(OfficialNewsMapper::objectToResponse)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("officialNews", officialNews);
+        response.put("currentPage", officialNewsPage.getNumber());
+        response.put("totalItems", officialNewsPage.getTotalElements());
+        response.put("totalPages", officialNewsPage.getTotalPages());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

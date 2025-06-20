@@ -1,15 +1,14 @@
 package org.example.chessplatformbe.business;
 
-import org.example.chessplatformbe.controller.dto.request.CreateCommentDTO;
 import org.example.chessplatformbe.domain.Comment;
 
 import java.util.List;
 
 public interface ICommentService {
 
-    Comment createComment(CreateCommentDTO dto);
+    Comment createComment(Comment comment);
 
-    Comment updateComment(CreateCommentDTO dto);
+    Comment updateComment(Comment comment, Integer updateId);
 
     void deleteComment(Integer commentId);
 
