@@ -39,8 +39,9 @@ public class WebSecurityConfig {
     @Order(1)
     public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/login", "/logout", SecurityConstants.AUTH_ENDPOINT, "/register")
+                .securityMatcher(SecurityConstants.LOGIN_ENDPOINT, SecurityConstants.LOGOUT_ENDPOINT, SecurityConstants.AUTH_ENDPOINT, SecurityConstants.REGISTER_ENDPOINT)
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll());
 
@@ -61,7 +62,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry ->
                         registry
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.USERS_ENDPOINT).permitAll()
                                 .requestMatchers(HttpMethod.PUT, SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
                                 .requestMatchers(HttpMethod.DELETE, SecurityConstants.USERS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
@@ -69,19 +69,22 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, SecurityConstants.ARTICLE_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.DELETE, SecurityConstants.ARTICLE_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.PUT, SecurityConstants.ARTICLE_ENDPOINT).authenticated()
-                                .requestMatchers(HttpMethod.GET, "/comments/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, SecurityConstants.GET_COMMENTS_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.POST, SecurityConstants.COMMENT_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.DELETE, SecurityConstants.COMMENT_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.PUT, SecurityConstants.COMMENT_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.POST, SecurityConstants.STREAM_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.DELETE, SecurityConstants.STREAM_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.PUT, SecurityConstants.STREAM_ENDPOINT).authenticated()
-                                .requestMatchers(HttpMethod.GET, "/streams/**").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/ws/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, SecurityConstants.GET_STREAMS_ENDPOINT).authenticated()
+                                .requestMatchers(HttpMethod.GET, SecurityConstants.WEBSOCKET_ENDPOINT).permitAll()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.SPECTATE_ENDPOINT).authenticated()
-                                .requestMatchers(HttpMethod.GET, "/users/profile/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, SecurityConstants.PROFILE_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.NEWS_ENDPOINT).authenticated()
                                 .requestMatchers(HttpMethod.GET, SecurityConstants.CHESS_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.GET, SecurityConstants.REPORT_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, SecurityConstants.REPORT_ENDPOINT).hasRole(SecurityConstants.ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.POST, SecurityConstants.REPORT_ENDPOINT).authenticated()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(config -> config.authenticationEntryPoint(authenticationEntryPoint))

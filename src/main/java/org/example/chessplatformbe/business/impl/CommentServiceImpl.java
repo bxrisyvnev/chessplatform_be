@@ -2,9 +2,7 @@ package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.chessplatformbe.business.ICommentService;
-import org.example.chessplatformbe.controller.dto.request.CreateCommentDTO;
 import org.example.chessplatformbe.domain.Comment;
-import org.example.chessplatformbe.mapper.CommentMapper;
 import org.example.chessplatformbe.persistence.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +16,22 @@ public class CommentServiceImpl implements ICommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public Comment createComment(CreateCommentDTO dto) {
-        return commentRepository.save(CommentMapper.requestToObject(dto));
+    public Comment createComment(Comment comment) {
+        return commentRepository.save(comment);
     }
 
     @Override
-    public Comment updateComment(CreateCommentDTO dto) {
-        if (dto.getUpdateId() == null) {
+    public Comment updateComment(Comment comment, Integer updateId) {
+        if (updateId == null) {
             throw new IllegalArgumentException("Update ID must be provided");
         }
 
-        Optional<Comment> existing = commentRepository.findById(dto.getUpdateId());
+        Optional<Comment> existing = commentRepository.findById(updateId);
         if (existing.isEmpty()) {
-            throw new IllegalArgumentException("Comment not found with ID: " + dto.getUpdateId());
+            throw new IllegalArgumentException("Comment not found with ID: " + updateId);
         }
 
-        return commentRepository.save(CommentMapper.requestToObject(dto));
+        return commentRepository.save(comment);
     }
 
     @Override

@@ -20,6 +20,6 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO request) throws InvalidUserException {
-        return ResponseEntity.ok(UserMapper.objectToResponce(userService.createUser(request)));
+        return ResponseEntity.ok(UserMapper.objectToResponce(userService.createUser(UserMapper.requestToObject(request))));
     }
 }

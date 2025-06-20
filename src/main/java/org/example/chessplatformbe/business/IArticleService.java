@@ -1,24 +1,22 @@
 package org.example.chessplatformbe.business;
 
-import org.example.chessplatformbe.controller.dto.request.CreateArticleDTO;
 import org.example.chessplatformbe.domain.Article;
 import org.example.chessplatformbe.exceptions.InvalidArticleException;
-
-import java.util.Map;
+import org.springframework.data.domain.Page;
 
 public interface IArticleService {
 
     Article getArticleById(Integer id);
 
-    Map<String, Object> getArticlePage(Integer page, Integer size);
+    Page<Article> getArticlePage(Integer page, Integer size);
 
-    Article createArticle(CreateArticleDTO dto);
+    Article createArticle(Article article);
 
-    Article updateArticle(CreateArticleDTO dto);
+    Article updateArticle(Article article, Integer updatedId);
 
     void deleteArticle(Integer articleId);
 
     Article getByTitle(String title) throws InvalidArticleException;
 
-    Map<String, Object> getArticlePageByTitle(String title, Integer page, Integer size);
+    Page<Article> getArticlePageByTitle(String title, Integer page, Integer size);
 }

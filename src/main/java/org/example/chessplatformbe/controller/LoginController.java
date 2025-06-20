@@ -3,7 +3,7 @@ package org.example.chessplatformbe.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.chessplatformbe.business.AuthenticationService;
+import org.example.chessplatformbe.business.IAuthenticationService;
 import org.example.chessplatformbe.config.security.token.AccessToken;
 import org.example.chessplatformbe.controller.dto.request.LoginRequestDTO;
 import org.example.chessplatformbe.controller.dto.response.LoginResponseDTO;
@@ -23,7 +23,7 @@ public class LoginController {
 
     private AccessToken requestAccessToken;
 
-    private final AuthenticationService authenticationService;
+    private final IAuthenticationService authenticationService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequest) {

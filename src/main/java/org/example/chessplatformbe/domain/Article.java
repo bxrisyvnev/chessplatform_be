@@ -22,6 +22,8 @@ public class Article {
 
     private Integer authorId;
 
+    private String authorName;
+
     private String contentText;
 
     private List<Integer> commentsIds = new ArrayList<>();

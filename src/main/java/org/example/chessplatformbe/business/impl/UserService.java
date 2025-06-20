@@ -2,16 +2,12 @@ package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.chessplatformbe.business.IUserService;
-import org.example.chessplatformbe.controller.dto.request.CreateUserDTO;
-import org.example.chessplatformbe.controller.dto.response.UserResponseDTO;
 import org.example.chessplatformbe.domain.User;
 import org.example.chessplatformbe.exceptions.InvalidUserException;
-import org.example.chessplatformbe.mapper.UserMapper;
 import org.example.chessplatformbe.persistence.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,34 +30,31 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createUser(CreateUserDTO user) throws InvalidUserException {
+    public User createUser(User user) throws InvalidUserException {
         try{
             userRepository.findByUsername(user.getUsername());
         }
         catch (InvalidUserException e){
-            User userObject = UserMapper.requestToObject(user);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            userObject.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
 
-            userRepository.save(userObject);
-
-            return userObject;
+            return user;
         }
         throw new InvalidUserException(user.getUsername());
     }
 
     @Override
-    public User updateUser(Integer id, CreateUserDTO user) throws InvalidUserException {
+    public User updateUser(Integer id, User user) throws InvalidUserException {
         Optional<User> existingUser = userRepository.findById(id);
 
         if (existingUser.isEmpty()) {
             throw new InvalidUserException("User with ID " + id + " not found.");
         }
 
-        User updatedUser = UserMapper.requestToObject(user);
-        updatedUser.setId(existingUser.get().getId());
+        user.setId(existingUser.get().getId());
 
-        return userRepository.save(updatedUser);
+        return userRepository.save(user);
     }
 
     @Override

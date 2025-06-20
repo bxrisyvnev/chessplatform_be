@@ -35,12 +35,12 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserDTO request) throws InvalidUserException {
-        return ResponseEntity.ok(UserMapper.objectToResponce(userService.createUser(request)));
+        return ResponseEntity.ok(UserMapper.objectToResponce(userService.createUser(UserMapper.requestToObject(request))));
     }
 
     @PutMapping()
     public ResponseEntity<UserResponseDTO> updateUser(@RequestBody CreateUserDTO request) throws InvalidUserException {
-        return ResponseEntity.ok(UserMapper.objectToResponce(userService.updateUser(request.getUpdateId(), request)));
+        return ResponseEntity.ok(UserMapper.objectToResponce(userService.updateUser(request.getUpdateId(), UserMapper.requestToObject(request))));
     }
 
     @DeleteMapping()

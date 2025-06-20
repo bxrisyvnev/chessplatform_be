@@ -49,6 +49,7 @@ CREATE TABLE articles (
                           article_title VARCHAR(255),
                           image_url VARCHAR(255),
                           content_text TEXT,
+                          author_name VARCHAR(255),
                           author_id INT NOT NULL,
                           FOREIGN KEY (author_id) REFERENCES users(id)
 );

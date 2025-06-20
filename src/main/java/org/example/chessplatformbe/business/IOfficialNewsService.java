@@ -2,9 +2,9 @@ package org.example.chessplatformbe.business;
 
 import org.example.chessplatformbe.controller.dto.request.CreateOfficialNewsDTO;
 import org.example.chessplatformbe.domain.OfficialNews;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IOfficialNewsService {
 
@@ -12,5 +12,5 @@ public interface IOfficialNewsService {
 
     List<OfficialNews> createOfficialNews(List<CreateOfficialNewsDTO> dtos);
 
-    Map<String, Object> getOfficialNewsPage(Integer page, Integer size);
+    Page<OfficialNews> getOfficialNewsPage(Integer page, Integer size);
 }

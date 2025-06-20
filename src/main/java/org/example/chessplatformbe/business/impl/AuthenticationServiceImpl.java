@@ -1,7 +1,7 @@
 package org.example.chessplatformbe.business.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.chessplatformbe.business.AuthenticationService;
+import org.example.chessplatformbe.business.IAuthenticationService;
 import org.example.chessplatformbe.config.security.token.AccessToken;
 import org.example.chessplatformbe.config.security.token.TokenEncoder;
 import org.example.chessplatformbe.domain.LoginToken;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
