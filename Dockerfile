@@ -11,9 +11,9 @@ WORKDIR /workspace
 COPY build.gradle /workspace
 COPY settings.gradle /workspace
 COPY src /workspace/src
-RUN gradle build --no-daemon
+RUN gradle build -x test
 
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk
 
 COPY --from=build /workspace/build/libs/*.jar app.jar
 
