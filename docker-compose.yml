@@ -36,7 +36,10 @@ services:
       - my-network
 
   frontend:
-    image: s3-chessplatformfe-frontend:latest
+    build:
+      context: ../chessplatform_fe
+      dockerfile: Dockerfile
+    image: s3-chessplatform_fe:latest
     container_name: frontend
     depends_on:
       - backend
