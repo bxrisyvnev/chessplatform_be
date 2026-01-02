@@ -3,7 +3,7 @@ package org.example.chessplatformbe.config.logging;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
-
+//wer
 @Configuration
 public class RequestLoggingFilterConfig {
 
