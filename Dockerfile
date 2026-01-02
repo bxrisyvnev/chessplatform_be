@@ -1,23 +1,22 @@
+# ---- build stage ----
 FROM gradle:8.7-jdk17-alpine AS build
 
-ARG JWT_SECRET
-ARG DATASOURCE_PASS
-
-ENV SPRING_DATASOURCE_PASSWORD=${DATASOURCE_PASS}
-ENV JWT_SECRET=${JWT_SECRET}
-
 WORKDIR /workspace
+
+# copy only gradle files first for caching
 COPY build.gradle settings.gradle ./
 COPY src ./src
+
+# build boot jar
 RUN gradle bootJar -x test
 
-FROM eclipse-temurin:21-jdk
+# ---- runtime stage ----
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-# copy ONLY the boot jar (exclude -plain.jar)
+# copy the bootJar (exclude *plain.jar)
 COPY --from=build /workspace/build/libs/*[^plain].jar /app/app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
-

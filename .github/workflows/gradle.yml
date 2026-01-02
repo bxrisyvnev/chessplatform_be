@@ -1,9 +1,8 @@
-name: CI
+name: Backend CI
 
 on:
   push:
-    branches:
-      - "**"
+    branches: ["**"]
   pull_request:
 
 jobs:
@@ -11,10 +10,12 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
+          java-version: "17"
       - name: Build
         run: ./gradlew assemble --no-daemon
 
@@ -23,13 +24,17 @@ jobs:
     needs: build
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      SECURITY_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
-      SPRING_DATASOURCE_USERNAME: sa
-      SPRING_DATASOURCE_PASSWORD: ""
+      DATASOURCE_PASS: ${{ secrets.DATASOURCE_PASS }}
     steps:
       - uses: actions/checkout@v4
-      - run: ./gradlew test --no-daemon
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Test
+        run: ./gradlew test --no-daemon
 
   deploy:
     runs-on: self-hosted
@@ -38,34 +43,33 @@ jobs:
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       DATASOURCE_PASS: ${{ secrets.DATASOURCE_PASS }}
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chessplatform_db
-      SPRING_DATASOURCE_USERNAME: springuser
-      SPRING_DATASOURCE_PASSWORD: ${{ secrets.DATASOURCE_PASS }}
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy with Docker Compose
+
+      - name: Deploy stack (mysql + backend + existing frontend image)
         run: |
-          docker compose down
-          docker compose up -d --build
+          docker compose -p chessplatform up -d --build
           docker ps
 
   sonar:
     runs-on: self-hosted
-    needs: test
     if: github.event_name == 'pull_request'
-    env:
-      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
-      - name: SonarQube Analysis
+          java-version: "17"
+      - name: SonarQube
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./gradlew test jacocoTestReport sonarqube \
-            -Dsonar.host.url=$SONAR_HOST_URL \
-            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.host.url="$SONAR_HOST_URL" \
+            -Dsonar.login="$SONAR_TOKEN" \
             -Dsonar.qualitygate.wait=true \
-            -Dsonar.qualitygate.timeout=300
+            -Dsonar.qualitygate.timeout=300 \
+            --no-daemon

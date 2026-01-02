@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql
+    container_name: chessplatform-mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: chessplatform_db
@@ -18,10 +18,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        JWT_SECRET: ${JWT_SECRET}
-        DATASOURCE_PASS: ${DATASOURCE_PASS}
-    container_name: backend
+    image: s3-chessplatform-backend:latest
+    container_name: chessplatform-backend
     depends_on:
       - mysql
     ports:
@@ -36,11 +34,8 @@ services:
       - my-network
 
   frontend:
-    build:
-      context: ../chessplatform_fe
-      dockerfile: Dockerfile
-    image: s3-chessplatform_fe:latest
-    container_name: frontend
+    image: s3-chessplatform_fe:latest # <-- must already exist locally on server
+    container_name: chessplatform-frontend
     depends_on:
       - backend
     ports:
