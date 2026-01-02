@@ -23,23 +23,13 @@ services:
     depends_on:
       - mysql
     ports:
-      - "8082:8082"
+      - "8082:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chessplatform_db
       SPRING_DATASOURCE_USERNAME: springuser
       SPRING_DATASOURCE_PASSWORD: ${DATASOURCE_PASS}
       JWT_SECRET: ${JWT_SECRET}
       SECURITY_JWT_SECRET: ${JWT_SECRET}
-    networks:
-      - my-network
-
-  frontend:
-    image: s3-chessplatform_fe:latest # <-- must already exist locally on server
-    container_name: chessplatform-frontend
-    depends_on:
-      - backend
-    ports:
-      - "5173:5173"
     networks:
       - my-network
 
