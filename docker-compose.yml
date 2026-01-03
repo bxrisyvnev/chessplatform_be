@@ -18,8 +18,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: s3-chessplatform-backend:latest
-    container_name: chessplatform-backend
+    image: chessplatform-be:latest
+    container_name: chessplatform-be
     depends_on:
       - mysql
     ports:
