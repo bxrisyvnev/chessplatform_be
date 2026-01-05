@@ -27,7 +27,7 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://100.103.103.40:5173")
+                        .allowedOrigins("http://68.183.10.185:5173")
                         .allowCredentials(true)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*"); // Consider replacing * with explicit headers for production
