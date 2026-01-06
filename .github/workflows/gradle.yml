@@ -23,26 +23,26 @@ jobs:
       - name: Build
         run: ./gradlew assemble --no-daemon
 
-  # test:
-  #   runs-on: self-hosted
-  #   needs: build
-  #   env:
-  #     JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  #     DATASOURCE_PASS: ${{ secrets.DATASOURCE_PASS }}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Make gradlew executable
-  #       run: chmod +x ./gradlew
-  #     - uses: actions/setup-java@v4
-  #       with:
-  #         distribution: temurin
-  #         java-version: "17"
-  #     - name: Test
-  #       run: ./gradlew test --no-daemon
+  test:
+    runs-on: self-hosted
+    needs: build
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      DATASOURCE_PASS: ${{ secrets.DATASOURCE_PASS }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Test
+        run: ./gradlew test --no-daemon
 
   deploy:
     runs-on: self-hosted
-    needs: build
+    needs: test
     if: github.ref_name == 'DevelopmentBranch'
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
