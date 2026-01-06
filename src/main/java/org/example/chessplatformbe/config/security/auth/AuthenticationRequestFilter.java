@@ -1,5 +1,6 @@
 package org.example.chessplatformbe.config.security.auth;
 
+import org.example.chessplatformbe.config.security.SecurityConstants;
 import org.example.chessplatformbe.config.security.token.AccessToken;
 import org.example.chessplatformbe.config.security.token.TokenDecoder;
 import org.example.chessplatformbe.config.security.token.exception.InvalidAccessTokenException;
@@ -28,9 +29,25 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
         this.accessTokenDecoder = accessTokenDecoder;
     }
 
+    /**
+     * 🔓 Skip authentication for public endpoints
+     */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return path.equals(SecurityConstants.REGISTER_ENDPOINT)
+                || path.equals(SecurityConstants.LOGIN_ENDPOINT)
+                || path.equals(SecurityConstants.AUTH_ENDPOINT)
+                || path.equals(SecurityConstants.LOGOUT_ENDPOINT);
+    }
+
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain
+    ) throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -73,19 +90,38 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     private void setupSpringSecurityContext(AccessToken accessToken) {
         String username = accessToken.getSubject();
 
-        // Check the user's role by looking at the class or roles in the access token
+        // Check the user's role by looking at the roles in the access token
         boolean isAdmin = accessToken.getRoles().contains("Admin");
 
         if (isAdmin) {
-            UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UserDetails userDetails = new User(
+                    username,
+                    "",
+                    List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+            );
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
             authToken.setDetails(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         } else {
-            UserDetails userDetails = new User(username, "", List.of(new SimpleGrantedAuthority("ROLE_USER")));
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UserDetails userDetails = new User(
+                    username,
+                    "",
+                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
+            );
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
             authToken.setDetails(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
     }
 }
+
