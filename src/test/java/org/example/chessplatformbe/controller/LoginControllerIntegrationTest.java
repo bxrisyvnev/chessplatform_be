@@ -29,7 +29,7 @@ class LoginControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk());
@@ -41,7 +41,7 @@ class LoginControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool11");
         loginRequestDTO.setPassword("pass1234");
 
-        mockMvc.perform(post("/api/auth/login")
+        mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isBadRequest());

@@ -39,7 +39,7 @@ class OfficialNewsControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -65,7 +65,7 @@ class OfficialNewsControllerIntegrationTest {
         List<CreateOfficialNewsDTO> officialNewsList = new ArrayList<>();
         officialNewsList.add(officialNews);
 
-        mockMvc.perform(post("/api/news")
+        mockMvc.perform(post("/news")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(officialNewsList)))
@@ -83,7 +83,7 @@ class OfficialNewsControllerIntegrationTest {
         officialNews.setPublishedDate("2025-06-10 15:00:00.000000");
         officialNews.setUpdateId(1);
 
-        mockMvc.perform(post("/api/news")
+        mockMvc.perform(post("/news")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(officialNews)))
@@ -101,7 +101,7 @@ class OfficialNewsControllerIntegrationTest {
         officialNews.setPublishedDate("2025-06-10 15:00:00.000000");
         officialNews.setUpdateId(1);
 
-        mockMvc.perform(post("/api/news")
+        mockMvc.perform(post("/news")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(officialNews)))
                 .andExpect(status().isUnauthorized());
@@ -109,14 +109,14 @@ class OfficialNewsControllerIntegrationTest {
 
     @Test
     void getOfficialNews_shouldReturnList() throws Exception {
-        mockMvc.perform(get("/api/news?page=0&size=5")
+        mockMvc.perform(get("/news?page=0&size=5")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getOfficialNews_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(get("/api/news?page=0&size=5"))
+        mockMvc.perform(get("/news?page=0&size=5"))
                 .andExpect(status().isUnauthorized());
     }
 }

@@ -37,7 +37,7 @@ class ArticleControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -59,7 +59,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(post("/api/articles")
+        mockMvc.perform(post("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(article)))
@@ -76,7 +76,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(post("/api/articles")
+        mockMvc.perform(post("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(article)))
@@ -93,7 +93,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(post("/api/articles")
+        mockMvc.perform(post("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(article)))
                 .andExpect(status().isUnauthorized());
@@ -101,7 +101,7 @@ class ArticleControllerIntegrationTest {
 
     @Test
     void getArticles_shouldReturnList() throws Exception {
-        mockMvc.perform(get("/api/articles?page=0&size=5")
+        mockMvc.perform(get("/articles?page=0&size=5")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.articles").isArray());
@@ -109,20 +109,20 @@ class ArticleControllerIntegrationTest {
 
     @Test
     void getArticles_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(get("/api/articles?page=0&size=5"))
+        mockMvc.perform(get("/articles?page=0&size=5"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void deleteArticle_shouldReturnSuccess() throws Exception {
-        mockMvc.perform(delete("/api/articles/2")
+        mockMvc.perform(delete("/articles/2")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteArticle_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(delete("/api/articles/2"))
+        mockMvc.perform(delete("/articles/2"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -136,7 +136,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(put("/api/articles")
+        mockMvc.perform(put("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(article)))
@@ -153,7 +153,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(put("/api/articles")
+        mockMvc.perform(put("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(article)))
@@ -170,7 +170,7 @@ class ArticleControllerIntegrationTest {
         article.setUpdateId(1);
         article.setAuthorId(1);
 
-        mockMvc.perform(put("/api/articles")
+        mockMvc.perform(put("/articles")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(article)))
                 .andExpect(status().isUnauthorized());

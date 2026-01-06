@@ -37,7 +37,7 @@ class SpectateControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -51,14 +51,14 @@ class SpectateControllerIntegrationTest {
 
     @Test
     void getStream_shouldReturnList() throws Exception {
-        mockMvc.perform(get("/api/spectate?page=0&size=5")
+        mockMvc.perform(get("/spectate?page=0&size=5")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getStream_shouldReturnUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/spectate?page=0&size=5"))
+        mockMvc.perform(get("/spectate?page=0&size=5"))
                 .andExpect(status().isUnauthorized());
     }
 }

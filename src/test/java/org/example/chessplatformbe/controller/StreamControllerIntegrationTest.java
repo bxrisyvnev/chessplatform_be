@@ -38,7 +38,7 @@ class StreamControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ class StreamControllerIntegrationTest {
         stream.setUpdateId(1);
         stream.setCreationDateTime(LocalDateTime.parse("2025-05-26T23:15:42"));
 
-        mockMvc.perform(post("/api/streams")
+        mockMvc.perform(post("/streams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(stream)))
@@ -78,7 +78,7 @@ class StreamControllerIntegrationTest {
         stream.setUpdateId(1);
         stream.setCreationDateTime(LocalDateTime.parse("2025-05-26T23:15:42"));
 
-        mockMvc.perform(post("/api/streams")
+        mockMvc.perform(post("/streams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(stream)))
@@ -96,7 +96,7 @@ class StreamControllerIntegrationTest {
         stream.setCreationDateTime(LocalDateTime.parse("2025-05-26T23:15:42"));
 
 
-        mockMvc.perform(post("/api/streams")
+        mockMvc.perform(post("/streams")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(stream)))
                 .andExpect(status().isUnauthorized());
@@ -104,27 +104,27 @@ class StreamControllerIntegrationTest {
 
     @Test
     void getStream_shouldReturnList() throws Exception {
-        mockMvc.perform(get("/api/streams/1")
+        mockMvc.perform(get("/streams/1")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getStream_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(get("/api/streams/"))
+        mockMvc.perform(get("/streams/"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void deleteStream_shouldReturnSuccess() throws Exception {
-        mockMvc.perform(delete("/api/streams/1")
+        mockMvc.perform(delete("/streams/1")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteStream_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(delete("/api/streams/2"))
+        mockMvc.perform(delete("/streams/2"))
                 .andExpect(status().isUnauthorized());
     }
 }
