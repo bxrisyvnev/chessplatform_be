@@ -27,7 +27,7 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://chessplatform.org/")
+                        .allowedOrigins("https://chessplatform.org")
                         .allowCredentials(true)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*"); // Consider replacing * with explicit headers for production
