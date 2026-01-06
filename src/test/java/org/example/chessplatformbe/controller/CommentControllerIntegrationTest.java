@@ -38,7 +38,7 @@ class CommentControllerIntegrationTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class CommentControllerIntegrationTest {
         comment.setArticleId(1);
         comment.setUpdateId(1);
 
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(comment)))
@@ -76,7 +76,7 @@ class CommentControllerIntegrationTest {
         comment.setArticleId(1);
         comment.setUpdateId(1);
 
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(comment)))
@@ -92,7 +92,7 @@ class CommentControllerIntegrationTest {
         comment.setArticleId(1);
         comment.setUpdateId(1);
 
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(comment)))
                 .andExpect(status().isUnauthorized());
@@ -100,27 +100,27 @@ class CommentControllerIntegrationTest {
 
     @Test
     void getComments_shouldReturnList() throws Exception {
-        mockMvc.perform(get("/comments/1")
+        mockMvc.perform(get("/api/comments/1")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void getComments_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(get("/comments/1"))
+        mockMvc.perform(get("/api/comments/1"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void deleteComment_shouldReturnSuccess() throws Exception {
-        mockMvc.perform(delete("/comments/2")
+        mockMvc.perform(delete("/api/comments/2")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteComment_shouldReturnUnauthorised() throws Exception {
-        mockMvc.perform(delete("/comments/3"))
+        mockMvc.perform(delete("/api/comments/3"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -133,7 +133,7 @@ class CommentControllerIntegrationTest {
         comment.setArticleId(1);
         comment.setUpdateId(1);
 
-        mockMvc.perform(put("/comments")
+        mockMvc.perform(put("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + jwtToken)
                         .content(objectMapper.writeValueAsString(comment)))
@@ -149,7 +149,7 @@ class CommentControllerIntegrationTest {
         comment.setArticleId(1);
         comment.setUpdateId(2);
 
-        mockMvc.perform(put("/comments")
+        mockMvc.perform(put("/api/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(comment)))
                 .andExpect(status().isUnauthorized());

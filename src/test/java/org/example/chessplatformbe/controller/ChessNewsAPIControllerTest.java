@@ -36,7 +36,7 @@ class ChessNewsAPIControllerTest {
         loginRequestDTO.setUsername("BorisCool1");
         loginRequestDTO.setPassword("pass123");
 
-        MvcResult loginResult = mockMvc.perform(post("/auth/login")
+        MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequestDTO)))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ class ChessNewsAPIControllerTest {
 
     @Test
     void createChess_shouldReturnSuccess() throws Exception {
-        mockMvc.perform(get("/chess")
+        mockMvc.perform(get("/api/chess")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk());
     }

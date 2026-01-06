@@ -39,7 +39,7 @@ class RegisterControllerIntegrationTest {
         user.setNoOfGamesPlayed(25);
         user.setHasPass(true);
 
-        mockMvc.perform(post("/register")
+        mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk());
@@ -61,7 +61,7 @@ class RegisterControllerIntegrationTest {
         user.setNoOfGamesPlayed(25);
         user.setHasPass(true);
 
-        mockMvc.perform(post("/register")
+        mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isBadRequest());
