@@ -85,6 +85,13 @@ jobs:
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/chessplatform-mysql:8.0
 
+      - name: Deploy backend on home server
+        run: |
+          cd /opt/chessplatform
+          docker compose pull backend
+          docker compose up -d --no-deps backend
+          docker image prune -f
+
   sonar:
     runs-on: self-hosted
     if: github.event_name == 'pull_request'
