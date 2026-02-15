@@ -1,1 +1,1 @@
-/home/boris/Projects/chessplatform_be/target/debug/chessplatform_be: /home/boris/Projects/chessplatform_be/src/domain/comment.rs /home/boris/Projects/chessplatform_be/src/domain.rs /home/boris/Projects/chessplatform_be/src/main.rs
+/home/boris/Projects/chessplatform_be/target/debug/chessplatform_be: /home/boris/Projects/chessplatform_be/src/main.rs

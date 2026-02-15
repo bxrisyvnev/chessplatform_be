@@ -1,7 +1,6 @@
 mod domain;
 
-use domain::admin;
-use domain::professional_player;
+use domain::admin::Admin;
 
 fn main() {
     println!("smt");
