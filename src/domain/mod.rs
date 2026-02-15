@@ -3,6 +3,7 @@ pub mod article;
 pub mod comment;
 pub mod log_in_token;
 pub mod official_news;
+pub mod page;
 pub mod professional_player;
 pub mod report;
 pub mod spectator_player;
