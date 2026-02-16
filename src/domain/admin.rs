@@ -2,10 +2,10 @@ use chrono::NaiveDate;
 
 #[derive(Debug)]
 pub struct Admin {
-    id: i32,
+    id: u32,
     username: String,
     password: String,
-    age: i8,
+    age: u8,
     display_name: String,
     nationality: String,
 
@@ -17,10 +17,10 @@ pub struct Admin {
 
 impl Admin {
     pub fn new(
-        id: i32,
+        id: u32,
         username: String,
         password: String,
-        age: i8,
+        age: u8,
         display_name: String,
         nationality: String,
         monthly_salary: f32,

@@ -2,7 +2,7 @@ use chrono::NaiveDate;
 
 #[derive(Debug)]
 pub struct OfficialNews {
-    id: i32,
+    id: u32,
     title: String,
     link: String,
     published_date: NaiveDate,
@@ -12,7 +12,7 @@ pub struct OfficialNews {
 
 impl OfficialNews {
     pub fn new(
-        id: i32,
+        id: u32,
         title: String,
         link: String,
         published_date: NaiveDate,

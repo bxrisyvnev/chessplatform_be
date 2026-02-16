@@ -2,20 +2,20 @@ use chrono::NaiveDate;
 
 #[derive(Debug)]
 pub struct Stream {
-    id: i32,
+    id: u32,
     name: String,
     creation_date_time: NaiveDate,
     stream_url: String,
-    streamer_id: i32,
+    streamer_id: u32,
 }
 
 impl Stream {
     pub fn new(
-        id: i32,
+        id: u32,
         name: String,
         creation_date_time: NaiveDate,
         stream_url: String,
-        streamer_id: i32,
+        streamer_id: u32,
     ) -> Self {
         Self {
             id,

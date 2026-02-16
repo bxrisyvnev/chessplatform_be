@@ -1,13 +1,13 @@
 #[derive(Debug)]
 pub struct Comment {
-    id: i32,
+    id: u32,
     text: String,
-    user_id: i32,
-    article_id: i32,
+    user_id: u32,
+    article_id: u32,
 }
 
 impl Comment {
-    pub fn new(id: i32, text: String, user_id: i32, article_id: i32) -> Self {
+    pub fn new(id: u32, text: String, user_id: u32, article_id: u32) -> Self {
         Self {
             id,
             text,
