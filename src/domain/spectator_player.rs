@@ -1,31 +1,31 @@
 #[derive(Debug)]
 pub struct SpectatorPlayer {
-    id: i32,
+    id: u32,
     username: String,
     password: String,
-    age: i8,
+    age: u8,
     display_name: String,
     nationality: String,
 
-    player_elo: i32,
+    player_elo: u32,
     is_chat_banned: bool,
     is_game_banned: bool,
-    no_of_game_played: i32,
+    no_of_game_played: u32,
     has_pass: bool,
 }
 
 impl SpectatorPlayer {
     pub fn new(
-        id: i32,
+        id: u32,
         username: String,
         password: String,
-        age: i8,
+        age: u8,
         display_name: String,
         nationality: String,
-        player_elo: i32,
+        player_elo: u32,
         is_chat_banned: bool,
         is_game_banned: bool,
-        no_of_game_played: i32,
+        no_of_game_played: u32,
         has_pass: bool,
     ) -> Self {
         Self {

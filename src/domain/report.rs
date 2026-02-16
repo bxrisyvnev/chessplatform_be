@@ -2,20 +2,20 @@ use chrono::NaiveDate;
 
 #[derive(Debug)]
 pub struct Report {
-    id: i32,
+    id: u32,
     description: String,
     r#type: String,
     date_time: NaiveDate,
-    user_id: i32,
+    user_id: u32,
 }
 
 impl Report {
     pub fn new(
-        id: i32,
+        id: u32,
         description: String,
         r#type: String,
         date_time: NaiveDate,
-        user_id: i32,
+        user_id: u32,
     ) -> Self {
         Self {
             id,

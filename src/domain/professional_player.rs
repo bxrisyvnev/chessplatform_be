@@ -1,30 +1,30 @@
 #[derive(Debug)]
 pub struct ProfessionalPlayer {
-    id: i32,
+    id: u32,
     username: String,
     password: String,
-    age: i8,
+    age: u8,
     display_name: String,
     nationality: String,
 
-    player_elo: i32,
+    player_elo: u32,
     win_rate: f32,
-    no_of_games_played: i32,
-    follower_count: i32,
+    no_of_games_played: u32,
+    follower_count: u32,
 }
 
 impl ProfessionalPlayer {
     pub fn new(
-        id: i32,
+        id: u32,
         username: String,
         password: String,
-        age: i8,
+        age: u8,
         display_name: String,
         nationality: String,
-        player_elo: i32,
+        player_elo: u32,
         win_rate: f32,
-        no_of_games_played: i32,
-        follower_count: i32,
+        no_of_games_played: u32,
+        follower_count: u32,
     ) -> Self {
         Self {
             id,

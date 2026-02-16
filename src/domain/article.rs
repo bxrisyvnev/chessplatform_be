@@ -1,23 +1,23 @@
 #[derive(Debug)]
 pub struct Article {
-    id: i32,
+    id: u32,
     article_title: String,
     image_url: String,
-    author_id: i32,
+    author_id: u32,
     author_name: String,
     content_text: String,
-    comments_ids: Vec<i32>,
+    comments_ids: Vec<u32>,
 }
 
 impl Article {
     pub fn new(
-        id: i32,
+        id: u32,
         article_title: String,
         image_url: String,
-        author_id: i32,
+        author_id: u32,
         author_name: String,
         content_text: String,
-        comments_ids: Vec<i32>,
+        comments_ids: Vec<u32>,
     ) -> Self {
         Self {
             id,
