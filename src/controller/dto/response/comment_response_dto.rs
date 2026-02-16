@@ -1,11 +1,11 @@
-pub struct Comment {
+pub struct CommentResponseDTO {
     id: u32,
     text: String,
     user_id: u32,
     article_id: u32,
 }
 
-impl Comment {
+impl CommentResponseDTO {
     pub fn new(id: u32, text: String, user_id: u32, article_id: u32) -> Self {
         Self {
             id,

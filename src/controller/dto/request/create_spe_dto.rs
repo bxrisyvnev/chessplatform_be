@@ -1,5 +1,5 @@
-pub struct ProfessionalPlayer {
-    id: u32,
+pub struct CreateSpeDTO {
+    update_id: u32,
     username: String,
     password: String,
     age: u8,
@@ -7,35 +7,38 @@ pub struct ProfessionalPlayer {
     nationality: String,
 
     player_elo: u32,
-    win_rate: f32,
+    is_chat_banned: bool,
+    is_game_banned: bool,
     no_of_games_played: u32,
-    follower_count: u32,
+    has_pass: bool,
 }
 
-impl ProfessionalPlayer {
+impl CreateSpeDTO {
     pub fn new(
-        id: u32,
+        update_id: u32,
         username: String,
         password: String,
         age: u8,
         display_name: String,
         nationality: String,
         player_elo: u32,
-        win_rate: f32,
+        is_chat_banned: bool,
+        is_game_banned: bool,
         no_of_games_played: u32,
-        follower_count: u32,
+        has_pass: bool,
     ) -> Self {
         Self {
-            id,
+            update_id,
             username,
             password,
             age,
             display_name,
             nationality,
             player_elo,
-            win_rate,
+            is_chat_banned,
+            is_game_banned,
             no_of_games_played,
-            follower_count,
+            has_pass,
         }
     }
 }

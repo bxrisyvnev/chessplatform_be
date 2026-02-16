@@ -1,23 +1,23 @@
 use chrono::NaiveDate;
 
-pub struct Stream {
-    id: u32,
+pub struct CreateStreamDTO {
+    update_id: u32,
     name: String,
     creation_date_time: NaiveDate,
     stream_url: String,
     streamer_id: u32,
 }
 
-impl Stream {
+impl CreateStreamDTO {
     pub fn new(
-        id: u32,
+        update_id: u32,
         name: String,
         creation_date_time: NaiveDate,
         stream_url: String,
         streamer_id: u32,
     ) -> Self {
         Self {
-            id,
+            update_id,
             name,
             creation_date_time,
             stream_url,

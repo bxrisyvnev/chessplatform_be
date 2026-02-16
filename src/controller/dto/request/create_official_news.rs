@@ -1,25 +1,23 @@
-use chrono::NaiveDate;
-
-pub struct OfficialNews {
-    id: u32,
+pub struct CreateOfficialNewsDTO {
+    update_id: u32,
     title: String,
     link: String,
-    published_date: NaiveDate,
+    published_date: String,
     description: String,
     author: String,
 }
 
-impl OfficialNews {
+impl CreateOfficialNewsDTO {
     pub fn new(
-        id: u32,
+        update_id: u32,
         title: String,
         link: String,
-        published_date: NaiveDate,
+        published_date: String,
         description: String,
         author: String,
     ) -> Self {
         Self {
-            id,
+            update_id,
             title,
             link,
             published_date,
