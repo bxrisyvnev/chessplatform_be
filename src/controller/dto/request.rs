@@ -1,0 +1,15 @@
+pub mod chat_message_dto;
+pub mod create_adm_dto;
+pub mod create_article_dto;
+pub mod create_comment_dto;
+pub mod create_official_news;
+pub mod create_pro_dto;
+pub mod create_report_dto;
+pub mod create_spe_dto;
+pub mod create_stream_dto;
+pub mod get_adm_dto;
+pub mod get_article_dto;
+pub mod get_comment_dto;
+pub mod get_pro_dto;
+pub mod get_spe_dto;
+pub mod login_request_dto;

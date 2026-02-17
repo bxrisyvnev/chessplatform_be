@@ -1,5 +1,5 @@
-pub struct ProfessionalPlayer {
-    id: u32,
+pub struct CreateProDTO {
+    update_id: u32,
     username: String,
     password: String,
     age: u8,
@@ -12,9 +12,9 @@ pub struct ProfessionalPlayer {
     follower_count: u32,
 }
 
-impl ProfessionalPlayer {
+impl CreateProDTO {
     pub fn new(
-        id: u32,
+        update_id: u32,
         username: String,
         password: String,
         age: u8,
@@ -26,7 +26,7 @@ impl ProfessionalPlayer {
         follower_count: u32,
     ) -> Self {
         Self {
-            id,
+            update_id,
             username,
             password,
             age,

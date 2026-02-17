@@ -1,6 +1,6 @@
 use chrono::NaiveDate;
 
-pub struct Report {
+pub struct ReportResponseDTO {
     id: u32,
     description: String,
     r#type: String,
@@ -8,7 +8,7 @@ pub struct Report {
     user_id: u32,
 }
 
-impl Report {
+impl ReportResponseDTO {
     pub fn new(
         id: u32,
         description: String,

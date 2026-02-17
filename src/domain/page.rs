@@ -1,4 +1,3 @@
-#[derive(Debug)]
 pub struct Page<T> {
     pub items: Vec<T>,
     pub page: usize,

@@ -1,8 +1,8 @@
-pub struct LogInToken {
+pub struct LoginResponseDTO {
     access_token: String,
 }
 
-impl LogInToken {
+impl LoginResponseDTO {
     pub fn new(access_token: String) -> Self {
         Self { access_token }
     }

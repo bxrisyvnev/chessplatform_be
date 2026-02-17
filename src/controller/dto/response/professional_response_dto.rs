@@ -1,8 +1,7 @@
-pub struct ProfessionalPlayer {
+pub struct ProfessionalResponseDTO {
     id: u32,
-    username: String,
-    password: String,
     age: u8,
+    username: String,
     display_name: String,
     nationality: String,
 
@@ -12,12 +11,11 @@ pub struct ProfessionalPlayer {
     follower_count: u32,
 }
 
-impl ProfessionalPlayer {
+impl ProfessionalResponseDTO {
     pub fn new(
         id: u32,
-        username: String,
-        password: String,
         age: u8,
+        username: String,
         display_name: String,
         nationality: String,
         player_elo: u32,
@@ -27,9 +25,8 @@ impl ProfessionalPlayer {
     ) -> Self {
         Self {
             id,
-            username,
-            password,
             age,
+            username,
             display_name,
             nationality,
             player_elo,

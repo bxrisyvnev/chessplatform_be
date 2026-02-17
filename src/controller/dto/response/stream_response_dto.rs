@@ -1,6 +1,6 @@
 use chrono::NaiveDate;
 
-pub struct Stream {
+pub struct StreamResponseDTO {
     id: u32,
     name: String,
     creation_date_time: NaiveDate,
@@ -8,7 +8,7 @@ pub struct Stream {
     streamer_id: u32,
 }
 
-impl Stream {
+impl StreamResponseDTO {
     pub fn new(
         id: u32,
         name: String,

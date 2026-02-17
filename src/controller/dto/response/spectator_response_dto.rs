@@ -1,41 +1,44 @@
-pub struct ProfessionalPlayer {
+pub struct SpectatorResponseDTO {
     id: u32,
-    username: String,
-    password: String,
     age: u8,
+    username: String,
     display_name: String,
     nationality: String,
 
     player_elo: u32,
-    win_rate: f32,
+    is_chat_banned: bool,
+    is_game_banned: bool,
     no_of_games_played: u32,
-    follower_count: u32,
+    chroma: String,
+    has_pass: bool,
 }
 
-impl ProfessionalPlayer {
+impl SpectatorResponseDTO {
     pub fn new(
         id: u32,
-        username: String,
-        password: String,
         age: u8,
+        username: String,
         display_name: String,
         nationality: String,
         player_elo: u32,
-        win_rate: f32,
+        is_chat_banned: bool,
+        is_game_banned: bool,
         no_of_games_played: u32,
-        follower_count: u32,
+        chroma: String,
+        has_pass: bool,
     ) -> Self {
         Self {
             id,
-            username,
-            password,
             age,
+            username,
             display_name,
             nationality,
             player_elo,
-            win_rate,
+            is_chat_banned,
+            is_game_banned,
             no_of_games_played,
-            follower_count,
+            chroma,
+            has_pass,
         }
     }
 }

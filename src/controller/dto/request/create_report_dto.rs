@@ -1,23 +1,23 @@
 use chrono::NaiveDate;
 
-pub struct Report {
-    id: u32,
+pub struct CreateReportDTO {
+    update_id: u32,
     description: String,
     r#type: String,
     date_time: NaiveDate,
     user_id: u32,
 }
 
-impl Report {
+impl CreateReportDTO {
     pub fn new(
-        id: u32,
+        update_id: u32,
         description: String,
         r#type: String,
         date_time: NaiveDate,
         user_id: u32,
     ) -> Self {
         Self {
-            id,
+            update_id,
             description,
             r#type,
             date_time,

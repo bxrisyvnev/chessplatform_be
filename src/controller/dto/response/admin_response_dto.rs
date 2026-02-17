@@ -1,43 +1,38 @@
-use chrono::NaiveDate;
-
-pub struct Admin {
+pub struct AdminResponseDTO {
     id: u32,
-    username: String,
-    password: String,
     age: u8,
+    username: String,
     display_name: String,
     nationality: String,
 
     monthly_salary: f32,
-    contract_start_date: NaiveDate,
-    contract_end_date: NaiveDate,
-    adress: String,
+    contract_start_date: String,
+    contract_end_date: String,
+    address: String,
 }
 
-impl Admin {
+impl AdminResponseDTO {
     pub fn new(
         id: u32,
-        username: String,
-        password: String,
         age: u8,
+        username: String,
         display_name: String,
         nationality: String,
         monthly_salary: f32,
-        contract_start_date: NaiveDate,
-        contract_end_date: NaiveDate,
-        adress: String,
+        contract_start_date: String,
+        contract_end_date: String,
+        address: String,
     ) -> Self {
         Self {
             id,
-            username,
-            password,
             age,
+            username,
             display_name,
             nationality,
             monthly_salary,
             contract_start_date,
             contract_end_date,
-            adress,
+            address,
         }
     }
 }
