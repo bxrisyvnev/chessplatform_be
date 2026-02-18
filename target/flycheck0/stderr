@@ -1,5 +1,5 @@
-   0.111770970s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint: fingerprint error for chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be)/Check { test: false }/TargetInner { name: "chessplatform_be", doc: true, ..: with_path("/home/boris/Projects/chessplatform_be/src/main.rs", Edition2024) }
-   0.111794414s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/chessplatform_be-d346e258d6505f0f/bin-chessplatform_be`
+   0.117631896s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint: fingerprint error for chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be)/Check { test: false }/TargetInner { name: "chessplatform_be", doc: true, ..: with_path("/home/boris/Projects/chessplatform_be/src/main.rs", Edition2024) }
+   0.117656051s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/chessplatform_be-b7ce92cb1e98b292/bin-chessplatform_be`
 
 Caused by:
     No such file or directory (os error 2)
@@ -22,8 +22,86 @@ Stack backtrace:
   14: <unknown>
   15: __libc_start_main
   16: <unknown>
-   0.122941380s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint: fingerprint error for chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be)/Check { test: true }/TargetInner { name: "chessplatform_be", doc: true, ..: with_path("/home/boris/Projects/chessplatform_be/src/main.rs", Edition2024) }
-   0.122953553s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/chessplatform_be-29a343e9c52c29a3/test-bin-chessplatform_be`
+   0.121854411s  INFO prepare_target{force=false package_id=sea-orm-cli v1.1.19 target="sea_orm_cli"}: cargo::core::compiler::fingerprint: fingerprint error for sea-orm-cli v1.1.19/Check { test: false }/TargetInner { ..: lib_target("sea_orm_cli", ["lib"], "/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-orm-cli-1.1.19/src/lib.rs", Edition2021) }
+   0.121862426s  INFO prepare_target{force=false package_id=sea-orm-cli v1.1.19 target="sea_orm_cli"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/sea-orm-cli-a22a645ac7647582/lib-sea_orm_cli`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <unknown>
+   1: <unknown>
+   2: <unknown>
+   3: <unknown>
+   4: <unknown>
+   5: <unknown>
+   6: <unknown>
+   7: <unknown>
+   8: <unknown>
+   9: <unknown>
+  10: <unknown>
+  11: <unknown>
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: <unknown>
+  16: __libc_start_main
+  17: <unknown>
+   0.124835073s  INFO prepare_target{force=false package_id=sea-schema v0.16.2 target="sea_schema"}: cargo::core::compiler::fingerprint: fingerprint error for sea-schema v0.16.2/Check { test: false }/TargetInner { ..: lib_target("sea_schema", ["lib"], "/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-schema-0.16.2/src/lib.rs", Edition2021) }
+   0.124841655s  INFO prepare_target{force=false package_id=sea-schema v0.16.2 target="sea_schema"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/sea-schema-8f58760a58825aa5/lib-sea_schema`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <unknown>
+   1: <unknown>
+   2: <unknown>
+   3: <unknown>
+   4: <unknown>
+   5: <unknown>
+   6: <unknown>
+   7: <unknown>
+   8: <unknown>
+   9: <unknown>
+  10: <unknown>
+  11: <unknown>
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: <unknown>
+  16: <unknown>
+  17: __libc_start_main
+  18: <unknown>
+   0.125408885s  INFO prepare_target{force=false package_id=sea-query-binder v0.7.0 target="sea_query_binder"}: cargo::core::compiler::fingerprint: fingerprint error for sea-query-binder v0.7.0/Check { test: false }/TargetInner { ..: lib_target("sea_query_binder", ["lib"], "/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-binder-0.7.0/src/lib.rs", Edition2021) }
+   0.125414887s  INFO prepare_target{force=false package_id=sea-query-binder v0.7.0 target="sea_query_binder"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/sea-query-binder-ea0995153e7a797c/lib-sea_query_binder`
+
+Caused by:
+    No such file or directory (os error 2)
+
+Stack backtrace:
+   0: <unknown>
+   1: <unknown>
+   2: <unknown>
+   3: <unknown>
+   4: <unknown>
+   5: <unknown>
+   6: <unknown>
+   7: <unknown>
+   8: <unknown>
+   9: <unknown>
+  10: <unknown>
+  11: <unknown>
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: <unknown>
+  16: <unknown>
+  17: <unknown>
+  18: __libc_start_main
+  19: <unknown>
+   0.130635173s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint: fingerprint error for chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be)/Check { test: true }/TargetInner { name: "chessplatform_be", doc: true, ..: with_path("/home/boris/Projects/chessplatform_be/src/main.rs", Edition2024) }
+   0.130647036s  INFO prepare_target{force=false package_id=chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be) target="chessplatform_be"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/boris/Projects/chessplatform_be/target/debug/.fingerprint/chessplatform_be-ff2137bf846225c9/test-bin-chessplatform_be`
 
 Caused by:
     No such file or directory (os error 2)
@@ -46,7 +124,5 @@ Stack backtrace:
   14: <unknown>
   15: __libc_start_main
   16: <unknown>
-    Checking chessplatform_be v0.1.0 (/home/boris/Projects/chessplatform_be)
-error: could not compile `chessplatform_be` (bin "chessplatform_be" test) due to 8 previous errors; 2 warnings emitted
-warning: build failed, waiting for other jobs to finish...
-error: could not compile `chessplatform_be` (bin "chessplatform_be") due to 8 previous errors; 2 warnings emitted
+    Checking sea-query-binder v0.7.0
+error: could not compile `sea-query-binder` (lib) due to 3 previous errors
