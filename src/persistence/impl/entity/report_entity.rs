@@ -6,11 +6,11 @@ use sea_orm::entity::prelude::*;
 #[sea_orm(table_name = "report_entity")]
 pub struct Model {
     #[sea_orm(primary_key)]
-    pub id: i32,
+    pub id: u32,
     pub date_time: Option<DateTime>,
     pub description: Option<String>,
     pub r#type: Option<String>,
-    pub user_id: i32,
+    pub user_id: u32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

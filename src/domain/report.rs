@@ -1,11 +1,12 @@
 use chrono::NaiveDate;
 
+#[derive(Clone)]
 pub struct Report {
-    id: u32,
-    description: String,
-    r#type: String,
-    date_time: NaiveDate,
-    user_id: u32,
+    pub id: u32,
+    pub description: String,
+    pub r#type: String,
+    pub date_time: NaiveDate,
+    pub user_id: u32,
 }
 
 impl Report {

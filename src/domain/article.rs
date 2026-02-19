@@ -1,11 +1,11 @@
 pub struct Article {
-    id: u32,
-    article_title: String,
-    image_url: String,
-    author_id: u32,
-    author_name: String,
-    content_text: String,
-    comments_ids: Vec<u32>,
+    pub id: u32,
+    pub article_title: String,
+    pub image_url: String,
+    pub author_id: u32,
+    pub author_name: String,
+    pub content_text: String,
+    pub comments_ids: Vec<u32>,
 }
 
 impl Article {
