@@ -1,5 +1,4 @@
 use crate::domain::article::Article;
-use crate::domain::page::Page;
 
 pub trait ArticleService {
     fn get_article_by_id(&self, id: u32) -> Article;

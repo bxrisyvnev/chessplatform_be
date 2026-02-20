@@ -1,0 +1,10 @@
+/home/boris/Projects/chessplatform_be/migration/target/debug/deps/sea_query_derive-cac3bf845fb9175e.d: /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/lib.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/mod.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/attr.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/error.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/path.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/write_arm.rs
+
+/home/boris/Projects/chessplatform_be/migration/target/debug/deps/libsea_query_derive-cac3bf845fb9175e.so: /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/lib.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/mod.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/attr.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/error.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/path.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/write_arm.rs
+
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/lib.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/mod.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/attr.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/error.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/path.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sea-query-derive-0.4.3/src/iden/write_arm.rs:

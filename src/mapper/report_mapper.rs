@@ -7,22 +7,27 @@ pub struct ReportMapper;
 
 impl ReportMapper {
     pub fn entity_to_domain(entity: report_entity::Model) -> Report {
-        let return_report: Report = Report::new(
+        Report::new(
             entity.id,
-            entity.description,
-            entity.r#type,
-            entity.date_time,
+            entity.description.unwrap_or_default(),
+            entity.r#type.unwrap_or_default(),
+            entity
+                .date_time
+                .map(|dt| dt.date())
+                .unwrap_or_else(|| chrono::Utc::now().date_naive()),
             entity.user_id,
-        );
-        return_report
+        )
     }
 
-    pub fn object_to_active(domain: &Report) -> report::ActiveModel {
-        report::ActiveModel {
-            id: domain.id.map(Set).unwrap_or_default(),
-            description: Set(domain.description.clone()),
-            r#type: Set(domain.r#type.clone()),
-            date_time: Set(domain.date_time),
+    pub fn object_to_active(domain: &Report) -> report_entity::ActiveModel {
+        report_entity::ActiveModel {
+            id: Set(domain.id),
+
+            description: Set(Some(domain.description.clone())),
+            r#type: Set(Some(domain.r#type.clone())),
+
+            date_time: Set(Some(domain.date_time.and_hms_opt(0, 0, 0).unwrap())),
+
             user_id: Set(domain.user_id),
         }
     }

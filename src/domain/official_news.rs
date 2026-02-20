@@ -1,8 +1,10 @@
+use chrono::NaiveDate;
+
 pub struct OfficialNews {
     id: u32,
     title: String,
     link: String,
-    published_date: Date,
+    published_date: NaiveDate,
     description: String,
     author: String,
 }
@@ -12,7 +14,7 @@ impl OfficialNews {
         id: u32,
         title: String,
         link: String,
-        published_date: Date,
+        published_date: NaiveDate,
         description: String,
         author: String,
     ) -> Self {

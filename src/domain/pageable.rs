@@ -1,10 +1,10 @@
 pub struct Pageable {
-    pub page: usize,
-    pub size: usize,
+    pub page: u64,
+    pub size: u64,
 }
 
 impl Pageable {
-    fn offset(&self) -> usize {
+    fn offset(&self) -> u64 {
         self.page * self.size
     }
 }

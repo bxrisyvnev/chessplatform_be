@@ -7,4 +7,4 @@ const ARTICLE_REPOSITORY: Vec<Article> = Vec::new();
 
 pub struct ArticleServiceImpl;
 
-impl ArticleService for ArticleServiceImpl {}
+//impl ArticleService for ArticleServiceImpl {}

@@ -1,7 +1,4 @@
-use sea_orm::{
-    prelude::async_trait, sea_query::error::Result, DatabaseConnection, DbErr, EntityTrait,
-    PaginatorTrait,
-};
+use sea_orm::{prelude::async_trait, DatabaseConnection, DbErr, EntityTrait, PaginatorTrait};
 
 use crate::{
     domain::{
@@ -26,9 +23,9 @@ impl ReportRepositoryImpl {
 #[async_trait::async_trait]
 impl ReportRepository for ReportRepositoryImpl {
     async fn find_by_id(&self, id: u32) -> Result<Option<Report>, DbErr> {
-        let entity = report_entity::Entity::find_by_id(id).one(&self.db).await?;
+        let entity = report_entity::Entity::find_by_id(id).one(&self.db).await?; // ✅ unwrap Result
 
-        Ok(entity.map(ReportMapper::object_to_active))
+        Ok(entity.map(ReportMapper::entity_to_domain))
     }
 
     async fn get_report_page(&self, pageable: Pageable) -> Result<Page<Report>, DbErr> {
@@ -36,27 +33,22 @@ impl ReportRepository for ReportRepositoryImpl {
 
         let total = paginator.num_items().await?;
 
-        let entities = paginator.fetch + page(pageable.page).await?;
+        let entities = paginator.fetch_page(pageable.page).await?; // ✅ fixed syntax
 
-        let reports = entities
+        let reports: Vec<Report> = entities
             .into_iter()
             .map(ReportMapper::entity_to_domain)
             .collect();
 
-        let return_page = page::Page::new(&reports, total, &pageable);
+        let return_page = page::Page::new(reports, total, &pageable);
 
-        Ok((return_page))
+        Ok(return_page)
     }
 
     async fn save(&self, object: Report) -> Result<Report, DbErr> {
-        let user_exists = user::Entity::find_by_id(object.user_id)
-            .one(&self.db)
-            .await?
-            .ok_or(DbErr::RecordNotFound("User not found".into()))?;
-
         let active_model = ReportMapper::object_to_active(&object);
 
-        let saved = report::Entity::insert(active_model)
+        let saved = report_entity::Entity::insert(active_model)
             .exec_with_returning(&self.db)
             .await?;
 
@@ -64,9 +56,9 @@ impl ReportRepository for ReportRepositoryImpl {
     }
 
     async fn delete(&self, object: Report) -> Result<(), DbErr> {
-        if let Some(id) = object.id {
-            report::Entity::delete_by_id(id).exec(&self.db).await?;
-        }
-        Ok(());
+        report_entity::Entity::delete_by_id(object.id)
+            .exec(&self.db)
+            .await?;
+        Ok(())
     }
 }

@@ -1,3 +1,5 @@
+use chrono::NaiveDate;
+
 pub struct Admin {
     pub id: u32,
     pub username: String,
@@ -7,8 +9,8 @@ pub struct Admin {
     pub nationality: String,
 
     pub monthly_salary: f32,
-    pub contract_start_date: Date,
-    pub contract_end_date: Date,
+    pub contract_start_date: NaiveDate,
+    pub contract_end_date: NaiveDate,
     pub adress: String,
 }
 
@@ -21,8 +23,8 @@ impl Admin {
         display_name: String,
         nationality: String,
         monthly_salary: f32,
-        contract_start_date: Date,
-        contract_end_date: Date,
+        contract_start_date: NaiveDate,
+        contract_end_date: NaiveDate,
         adress: String,
     ) -> Self {
         Self {

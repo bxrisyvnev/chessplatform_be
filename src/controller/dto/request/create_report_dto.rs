@@ -1,8 +1,10 @@
+use chrono::NaiveDate;
+
 pub struct CreateReportDTO {
     update_id: u32,
     description: String,
     r#type: String,
-    date_time: Date,
+    date_time: NaiveDate,
     user_id: u32,
 }
 
@@ -11,7 +13,7 @@ impl CreateReportDTO {
         update_id: u32,
         description: String,
         r#type: String,
-        date_time: Date,
+        date_time: NaiveDate,
         user_id: u32,
     ) -> Self {
         Self {

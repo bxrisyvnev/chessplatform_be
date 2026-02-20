@@ -1,3 +1,5 @@
+use chrono::NaiveDate;
+
 pub struct CreateAdmDTO {
     update_id: u32,
     username: String,
@@ -7,8 +9,8 @@ pub struct CreateAdmDTO {
     nationality: String,
 
     monthly_salary: f32,
-    contract_start_date: Date,
-    contract_end_date: Date,
+    contract_start_date: NaiveDate,
+    contract_end_date: NaiveDate,
     address: String,
 }
 
@@ -21,8 +23,8 @@ impl CreateAdmDTO {
         display_name: String,
         nationality: String,
         monthly_salary: f32,
-        contract_start_date: Date,
-        contract_end_date: Date,
+        contract_start_date: NaiveDate,
+        contract_end_date: NaiveDate,
         address: String,
     ) -> Self {
         Self {

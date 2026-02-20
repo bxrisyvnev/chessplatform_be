@@ -1,0 +1,13 @@
+/home/boris/Projects/chessplatform_be/target/debug/deps/uuid-7326099c7ac7df64.d: /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/lib.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/macros.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/builder.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/error.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/non_nil.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/parser.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/fmt.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/timestamp.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/external.rs
+
+/home/boris/Projects/chessplatform_be/target/debug/deps/libuuid-7326099c7ac7df64.rmeta: /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/lib.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/macros.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/builder.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/error.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/non_nil.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/parser.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/fmt.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/timestamp.rs /home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/external.rs
+
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/lib.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/macros.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/builder.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/error.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/non_nil.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/parser.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/fmt.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/timestamp.rs:
+/home/boris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/uuid-1.21.0/src/external.rs:
