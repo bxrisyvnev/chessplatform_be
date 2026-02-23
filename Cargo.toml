@@ -5,13 +5,3 @@ edition = "2024"
 
 [dependencies]
 chrono = "0.4.43"
-sea-orm-migration = { version = "1.1.19", features = [
-    "sqlx-mysql",
-    "runtime-tokio-native-tls",
-    "with-chrono", 
-    "with-uuid"
-] }
-sea-orm = "1.1.19"
-anyhow = "1.0"
-sqlx-mysql = "0.8.6"
-tokio = { version = "1.49", features = ["rt", "macros", "rt-multi-thread"] }

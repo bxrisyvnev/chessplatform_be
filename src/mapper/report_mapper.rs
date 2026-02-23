@@ -1,11 +1,7 @@
 use crate::domain::report::Report;
-use crate::persistence::r#impl::entity::report_entity;
-
-use sea_orm::ActiveValue::Set;
-
 pub struct ReportMapper;
 
-impl ReportMapper {
+/* impl ReportMapper {
     pub fn entity_to_domain(entity: report_entity::Model) -> Report {
         Report::new(
             entity.id,
@@ -31,4 +27,4 @@ impl ReportMapper {
             user_id: Set(domain.user_id),
         }
     }
-}
+}  */
