@@ -2,7 +2,8 @@ use chrono::NaiveDate;
 
 use crate::domain::pageable::Pageable;
 use crate::domain::report::Report;
-use crate::persistence::report_repository::ReportRepository;
+use crate::domain::report::ReportRepository;
+use crate::persistence::report_repository::ReportRepositoryTest;
 
 mod business;
 mod controller;
@@ -11,7 +12,7 @@ mod mapper;
 mod persistence;
 
 fn main() {
-    let mut repo = ReportRepository {
+    let mut repo = ReportRepositoryTest {
         report_db: Vec::new(),
     };
 

@@ -1,26 +1,27 @@
 use crate::domain::page::Page;
 use crate::domain::pageable::Pageable;
 use crate::domain::report::Report;
+use crate::domain::report::ReportRepository;
 
-pub struct ReportRepository {
+pub struct ReportRepositoryTest {
     pub report_db: Vec<Report>,
 }
 
-impl ReportRepository {
-    pub fn save(&mut self, report: Report) -> Report {
+impl ReportRepository for ReportRepositoryTest {
+    fn save(&mut self, report: Report) -> Report {
         self.report_db.push(report.clone());
         report
     }
 
-    pub fn delete(&mut self, report: Report) {
+    fn delete(&mut self, report: Report) {
         self.report_db.retain(|rep| rep.id != report.id);
     }
 
-    pub fn find_by_id(&self, id: u32) -> Option<Report> {
+    fn find_by_id(&self, id: u32) -> Option<Report> {
         self.report_db.iter().find(|rep| rep.id == id).cloned()
     }
 
-    pub fn get_report_page(&self, pageable: Pageable) -> Option<Page<Report>> {
+    fn get_report_page(&self, pageable: Pageable) -> Option<Page<Report>> {
         let size = pageable.size as usize;
         let page = pageable.page as usize;
 
