@@ -1,1 +1,0 @@
-/home/boris/Projects/chessplatform_be/src/migration/target/debug/migration: /home/boris/Projects/chessplatform_be/src/migration/src/lib.rs /home/boris/Projects/chessplatform_be/src/migration/src/m20220101_000001_create_table.rs /home/boris/Projects/chessplatform_be/src/migration/src/main.rs

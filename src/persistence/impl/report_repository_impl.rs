@@ -1,3 +1,5 @@
+use crate::domain::page::Page;
+use crate::domain::pageable::Pageable;
 use crate::domain::report::Report;
 use crate::persistence::report_repository::ReportRepository;
 
@@ -12,21 +14,29 @@ impl ReportRepository for ReportRepositoryImpl {
     }
 
     fn delete(&mut self, report: Report) {
-        let mut i = 0;
-        for rep in self.report_db.clone() {
-            if rep.id == report.id {
-                self.report_db.remove(i);
-            }
-            i += 1;
-        }
+        self.report_db.retain(|rep| rep.id != report.id);
     }
 
     fn find_by_id(&self, id: u32) -> Option<Report> {
-        for rep in self.report_db.clone() {
-            if rep.id == id {
-                return Some(rep);
-            }
+        self.report_db.iter().find(|rep| rep.id == id).cloned()
+    }
+
+    fn get_report_page(&self, pageable: Pageable) -> Option<Page<Report>> {
+        let size = pageable.size as usize;
+        let page = pageable.page as usize;
+
+        if page == 0 || size == 0 {
+            return None;
         }
-        None
+
+        let start = (page - 1) * size;
+        if start >= self.report_db.len() {
+            return None;
+        }
+
+        let end = (start + size).min(self.report_db.len());
+        let items: Vec<Report> = self.report_db[start..end].to_vec();
+
+        Some(Page::new(items, (end - start) as u32, &pageable))
     }
 }

@@ -1,15 +1,16 @@
 use crate::domain::pageable::Pageable;
 
+#[derive(Debug)]
 pub struct Page<T> {
     content: Vec<T>,
-    total_elements: u64,
-    total_pages: u64,
-    page_number: u64,
-    page_size: u64,
+    total_elements: u32,
+    total_pages: u32,
+    page_number: u32,
+    page_size: u32,
 }
 
 impl<T> Page<T> {
-    pub fn new(content: Vec<T>, total_elements: u64, pageable: &Pageable) -> Self {
+    pub fn new(content: Vec<T>, total_elements: u32, pageable: &Pageable) -> Self {
         let total_pages = (total_elements + pageable.size - 1) / pageable.size;
         Page {
             content,
