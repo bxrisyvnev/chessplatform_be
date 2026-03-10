@@ -2,11 +2,11 @@ use crate::domain::pageable::Pageable;
 
 #[derive(Debug)]
 pub struct Page<T> {
-    content: Vec<T>,
-    total_elements: u32,
-    total_pages: u32,
-    page_number: u32,
-    page_size: u32,
+    pub content: Vec<T>,
+    pub total_elements: u32,
+    pub total_pages: u32,
+    pub page_number: u32,
+    pub page_size: u32,
 }
 
 impl<T> Page<T> {

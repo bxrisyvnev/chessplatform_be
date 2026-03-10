@@ -1,11 +1,12 @@
 use chrono::NaiveDate;
 
+#[derive(Debug, Clone, Default)]
 pub struct Stream {
-    id: u32,
-    name: String,
-    creation_date_time: NaiveDate,
-    stream_url: String,
-    streamer_id: u32,
+    pub id: u32,
+    pub name: String,
+    pub creation_date_time: NaiveDate,
+    pub stream_url: String,
+    pub streamer_id: u32,
 }
 
 impl Stream {

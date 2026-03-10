@@ -2,7 +2,7 @@ use chrono::NaiveDate;
 
 use crate::domain::{page::Page, pageable::Pageable};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct Report {
     pub id: u32,
     pub description: String,

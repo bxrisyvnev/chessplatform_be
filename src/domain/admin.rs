@@ -1,5 +1,6 @@
 use chrono::NaiveDate;
 
+#[derive(Debug, Clone, Default)]
 pub struct Admin {
     pub id: u32,
     pub username: String,
