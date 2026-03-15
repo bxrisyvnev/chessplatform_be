@@ -3,7 +3,7 @@ use chrono::NaiveDate;
 use crate::domain::pageable::Pageable;
 use crate::domain::report::Report;
 use crate::domain::report::ReportRepository;
-use crate::persistence::report_repository::ReportRepositoryTest;
+use crate::persistence::test::report_repository::ReportRepositoryTest;
 
 mod business;
 mod controller;

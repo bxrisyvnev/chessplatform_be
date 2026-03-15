@@ -1,63 +1,61 @@
-use crate::{
-    domain::{article::Article, page::Page, pageable::Pageable},
-    persistence::{article_repository::ArticleRepositoryTest, user_repository::UserRepositoryTest},
-};
+use mysql::Result;
 
-pub struct ArticleService {
-    pub art_repo: ArticleRepositoryTest,
-    pub usr_repo: UserRepositoryTest,
+use crate::domain::{article::Article, page::Page, pageable::Pageable};
+use crate::persistence::traits::ArticleRepository;
+
+pub struct ArticleService<R: ArticleRepository> {
+    pub art_repo: R,
 }
 
-impl ArticleService {
-    pub fn get_article_by_id(&self, id: u32) -> Option<Article> {
-        self.art_repo.find_by_id(id)
+impl<R: ArticleRepository> ArticleService<R> {
+    pub fn new(art_repo: R) -> Self {
+        Self { art_repo }
     }
 
-    pub fn get_article_page(&self, pageable: Pageable) -> Option<Page<Article>> {
+    pub fn get_article_by_id(&self, id: u32) -> Result<Option<Article>> {
+        self.art_repo.find_article_by_id(id)
+    }
+
+    pub fn get_article_page(&self, pageable: &Pageable) -> Result<Option<Page<Article>>> {
         self.art_repo.get_article_page(pageable)
     }
 
-    pub fn create_article(&mut self, article: Article) -> Article {
-        self.art_repo.save(article)
+    pub fn create_article(&self, article: Article) -> Result<u64> {
+        self.art_repo.insert_article(article)
     }
 
-    pub fn update_article(&mut self, article: Article, update_id: u32) {
-        self.art_repo.update(article, update_id)
+    pub fn update_article(&self, article: &Article, update_id: u32) -> Result<bool> {
+        self.art_repo.update_article(article, update_id)
     }
 
-    pub fn delete_article(&mut self, id: u32) {
-        if let Some(article) = self.art_repo.find_by_id(id) {
-            self.art_repo.delete(article);
+    pub fn delete_article(&self, id: u32) -> Result<bool> {
+        if let Some(article) = self.art_repo.find_article_by_id(id)? {
+            self.art_repo.delete_article(article)?;
+            Ok(true)
+        } else {
+            Ok(false)
         }
     }
 
-    pub fn get_by_title(&self, title: &str) -> Option<Article> {
-        self.art_repo.find_by_title(title)
+    pub fn get_by_title(&self, title: &str) -> Result<Option<Article>> {
+        self.art_repo.get_by_title(title)
     }
 
-    pub fn get_article_page_by_title() {
-        todo!()
+    pub fn get_article_page_by_title(
+        &self,
+        title: &str,
+        pageable: &Pageable,
+    ) -> Result<Option<Page<Article>>> {
+        self.art_repo.get_articles_by_title_page(title, pageable)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::domain::{article::Article, pageable::Pageable};
-    use crate::persistence::{
-        article_repository::ArticleRepositoryTest, user_repository::UserRepositoryTest,
-    };
-
-    fn make_service() -> ArticleService {
-        ArticleService {
-            art_repo: ArticleRepositoryTest { article_db: vec![] },
-            usr_repo: UserRepositoryTest {
-                admin_db: vec![],
-                pro_db: vec![],
-                spec_db: vec![],
-            },
-        }
-    }
+    use crate::domain::article::Article;
+    use crate::domain::pageable::Pageable;
+    use crate::persistence::test::article_repository::ArticleRepositoryTest;
 
     fn make_article(id: u32, title: &str) -> Article {
         Article {
@@ -67,125 +65,201 @@ mod tests {
         }
     }
 
-    #[test]
-    fn create_article_should_save_and_return_article() {
-        let mut service = make_service();
-        let article = make_article(1, "Rust");
-
-        let saved = service.create_article(article.clone());
-
-        assert_eq!(saved.id, 1);
-        assert_eq!(service.art_repo.article_db.len(), 1);
-        assert_eq!(service.art_repo.article_db[0].article_title, "Rust");
+    fn make_service() -> ArticleService<ArticleRepositoryTest> {
+        ArticleService::new(ArticleRepositoryTest::new())
     }
 
     #[test]
-    fn get_article_by_id_should_return_article_when_found() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "Test"));
+    fn get_article_by_id_returns_article_when_found() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Rust"))
+            .unwrap();
 
-        let result = service.get_article_by_id(1);
+        let result = service.get_article_by_id(1).unwrap();
 
         assert!(result.is_some());
-        assert_eq!(result.unwrap().article_title, "Test");
+        assert_eq!(result.unwrap().article_title, "Rust");
     }
 
     #[test]
-    fn get_article_by_id_should_return_none_when_not_found() {
+    fn get_article_by_id_returns_none_when_not_found() {
         let service = make_service();
 
-        let result = service.get_article_by_id(999);
+        let result = service.get_article_by_id(999).unwrap();
 
         assert!(result.is_none());
     }
 
     #[test]
-    fn delete_article_should_remove_article() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "A"));
-        service.create_article(make_article(2, "B"));
+    fn get_article_page_returns_page() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "A"))
+            .unwrap();
+        service
+            .art_repo
+            .insert_article(make_article(2, "B"))
+            .unwrap();
+        service
+            .art_repo
+            .insert_article(make_article(3, "C"))
+            .unwrap();
 
-        service.delete_article(1);
-
-        assert_eq!(service.art_repo.article_db.len(), 1);
-        assert_eq!(service.art_repo.article_db[0].id, 2);
-    }
-
-    #[test]
-    fn delete_article_should_do_nothing_if_article_not_found() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "A"));
-
-        service.delete_article(999);
-
-        assert_eq!(service.art_repo.article_db.len(), 1);
-    }
-
-    #[test]
-    fn update_article_should_modify_existing_article() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "Old"));
-
-        let updated = make_article(1, "New");
-        service.update_article(updated, 1);
-
-        assert_eq!(service.art_repo.article_db[0].article_title, "New");
-    }
-
-    #[test]
-    fn get_by_title_should_return_article_when_found() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "Rust"));
-        service.create_article(make_article(2, "Java"));
-
-        let result = service.get_by_title("Java");
-
-        assert!(result.is_some());
-        assert_eq!(result.unwrap().id, 2);
-    }
-
-    #[test]
-    fn get_by_title_should_return_none_when_not_found() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "Rust"));
-
-        let result = service.get_by_title("Python");
-
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn get_article_page_should_return_first_page() {
-        let mut service = make_service();
-        service.create_article(make_article(1, "A"));
-        service.create_article(make_article(2, "B"));
-        service.create_article(make_article(3, "C"));
-
-        let pageable = Pageable { page: 1, size: 2 };
-
-        let result = service.get_article_page(pageable);
+        let result = service
+            .get_article_page(&Pageable { page: 1, size: 2 })
+            .unwrap();
 
         assert!(result.is_some());
         let page = result.unwrap();
-
         assert_eq!(page.content.len(), 2);
         assert_eq!(page.content[0].id, 1);
         assert_eq!(page.content[1].id, 2);
     }
 
     #[test]
-    fn get_article_page_should_return_none_for_invalid_page() {
+    fn get_article_page_returns_none_for_invalid_page() {
         let service = make_service();
-        let pageable = Pageable { page: 0, size: 10 };
 
-        let result = service.get_article_page(pageable);
+        let result = service
+            .get_article_page(&Pageable { page: 0, size: 10 })
+            .unwrap();
 
         assert!(result.is_none());
     }
 
     #[test]
-    #[should_panic]
-    fn get_article_page_by_title_should_panic_until_implemented() {
-        ArticleService::get_article_page_by_title();
+    fn create_article_returns_inserted_id() {
+        let service = make_service();
+
+        let id = service.create_article(make_article(1, "Rust")).unwrap();
+
+        assert_eq!(id, 1);
+    }
+
+    #[test]
+    fn update_article_returns_true_when_found() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Old"))
+            .unwrap();
+
+        let updated = make_article(1, "New");
+        let result = service.update_article(&updated, 1).unwrap();
+
+        assert!(result);
+        let article = service.get_article_by_id(1).unwrap().unwrap();
+        assert_eq!(article.article_title, "New");
+    }
+
+    #[test]
+    fn update_article_returns_false_when_missing() {
+        let service = make_service();
+
+        let updated = make_article(1, "New");
+        let result = service.update_article(&updated, 999).unwrap();
+
+        assert!(!result);
+    }
+
+    #[test]
+    fn delete_article_returns_true_when_found() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Delete"))
+            .unwrap();
+
+        let result = service.delete_article(1).unwrap();
+
+        assert!(result);
+        assert!(service.get_article_by_id(1).unwrap().is_none());
+    }
+
+    #[test]
+    fn delete_article_returns_false_when_missing() {
+        let service = make_service();
+
+        let result = service.delete_article(999).unwrap();
+
+        assert!(!result);
+    }
+
+    #[test]
+    fn get_by_title_returns_article_when_found() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Rust"))
+            .unwrap();
+        service
+            .art_repo
+            .insert_article(make_article(2, "Java"))
+            .unwrap();
+
+        let result = service.get_by_title("Java").unwrap();
+
+        assert!(result.is_some());
+        assert_eq!(result.unwrap().id, 2);
+    }
+
+    #[test]
+    fn get_by_title_returns_none_when_missing() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Rust"))
+            .unwrap();
+
+        let result = service.get_by_title("Python").unwrap();
+
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn get_article_page_by_title_returns_filtered_page() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Rust basics"))
+            .unwrap();
+        service
+            .art_repo
+            .insert_article(make_article(2, "Advanced Rust"))
+            .unwrap();
+        service
+            .art_repo
+            .insert_article(make_article(3, "Java basics"))
+            .unwrap();
+
+        let result = service
+            .get_article_page_by_title("Rust", &Pageable { page: 1, size: 10 })
+            .unwrap();
+
+        assert!(result.is_some());
+        let page = result.unwrap();
+        assert_eq!(page.content.len(), 2);
+        assert!(page
+            .content
+            .iter()
+            .all(|a| a.article_title.contains("Rust")));
+    }
+
+    #[test]
+    fn get_article_page_by_title_returns_none_when_no_match() {
+        let service = make_service();
+        service
+            .art_repo
+            .insert_article(make_article(1, "Rust basics"))
+            .unwrap();
+
+        let result = service
+            .get_article_page_by_title("Python", &Pageable { page: 1, size: 10 })
+            .unwrap();
+
+        assert!(result.is_none());
     }
 }

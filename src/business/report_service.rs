@@ -1,6 +1,6 @@
 use crate::{
     domain::{page::Page, pageable::Pageable, report::Report},
-    persistence::report_repository::ReportRepositoryTest,
+    persistence::test::report_repository::ReportRepositoryTest,
 };
 
 pub struct ReportService {
@@ -30,7 +30,7 @@ mod tests {
     use super::*;
     use crate::domain::pageable::Pageable;
     use crate::domain::report::Report;
-    use crate::persistence::report_repository::ReportRepositoryTest;
+    use crate::persistence::test::report_repository::ReportRepositoryTest;
 
     fn make_service() -> ReportService {
         ReportService {

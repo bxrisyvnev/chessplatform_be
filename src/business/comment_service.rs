@@ -1,4 +1,6 @@
-use crate::{domain::comment::Comment, persistence::comment_repository::CommentRepositoryTest};
+use crate::{
+    domain::comment::Comment, persistence::test::comment_repository::CommentRepositoryTest,
+};
 
 pub struct CommentService {
     comm_repo: CommentRepositoryTest,
@@ -34,7 +36,7 @@ impl CommentService {
 mod tests {
     use super::*;
     use crate::domain::comment::Comment;
-    use crate::persistence::comment_repository::CommentRepositoryTest;
+    use crate::persistence::test::comment_repository::CommentRepositoryTest;
 
     fn make_service() -> CommentService {
         CommentService {

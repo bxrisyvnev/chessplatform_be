@@ -1,221 +1,128 @@
+use std::sync::Mutex;
+
+use mysql::Result;
+
 use crate::domain::article::Article;
 use crate::domain::page::Page;
 use crate::domain::pageable::Pageable;
+use crate::persistence::traits::ArticleRepository;
 
 pub struct ArticleRepositoryTest {
-    pub article_db: Vec<Article>,
+    pub article_db: Mutex<Vec<Article>>,
+    pub next_id: Mutex<u32>,
 }
 
 impl ArticleRepositoryTest {
-    pub fn save(&mut self, article: Article) -> Article {
-        self.article_db.push(article.clone());
-        article
+    pub fn new() -> Self {
+        Self {
+            article_db: Mutex::new(vec![]),
+            next_id: Mutex::new(1),
+        }
+    }
+}
+
+impl ArticleRepository for ArticleRepositoryTest {
+    fn insert_article(&self, mut article: Article) -> Result<u64> {
+        if article.id == 0 {
+            let mut next_id = self.next_id.lock().unwrap();
+            article.id = *next_id;
+            *next_id += 1;
+        }
+
+        let id = article.id as u64;
+        self.article_db.lock().unwrap().push(article);
+        Ok(id)
     }
 
-    pub fn delete(&mut self, article: Article) {
-        self.article_db.retain(|art| art.id != article.id);
+    fn delete_article(&self, article: Article) -> Result<()> {
+        self.article_db
+            .lock()
+            .unwrap()
+            .retain(|a| a.id != article.id);
+        Ok(())
     }
 
-    pub fn find_by_id(&self, id: u32) -> Option<Article> {
-        self.article_db.iter().find(|art| art.id == id).cloned()
-    }
+    fn get_article_page(&self, pageable: &Pageable) -> Result<Option<Page<Article>>> {
+        let data = self.article_db.lock().unwrap();
 
-    pub fn get_article_page(&self, pageable: Pageable) -> Option<Page<Article>> {
         let size = pageable.size as usize;
         let page = pageable.page as usize;
 
         if page == 0 || size == 0 {
-            return None;
+            return Ok(None);
         }
 
         let start = (page - 1) * size;
-        if start >= self.article_db.len() {
-            return None;
+        if start >= data.len() {
+            return Ok(None);
         }
 
-        let end = (start + size).min(self.article_db.len());
-        let items: Vec<Article> = self.article_db[start..end].to_vec();
+        let end = (start + size).min(data.len());
+        let items = data[start..end].to_vec();
 
-        Some(Page::new(items, (end - start) as u32, &pageable))
+        Ok(Some(Page::new(items, data.len() as u32, pageable)))
     }
 
-    pub fn update(&mut self, article: Article, update_id: u32) {
-        self.article_db[(update_id - 1) as usize] = article
+    fn find_article_by_id(&self, article_id: u32) -> Result<Option<Article>> {
+        Ok(self
+            .article_db
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|art| art.id == article_id)
+            .cloned())
     }
 
-    pub fn find_by_title(&self, title: &str) -> Option<Article> {
-        self.article_db
+    fn get_by_title(&self, title: &str) -> Result<Option<Article>> {
+        Ok(self
+            .article_db
+            .lock()
+            .unwrap()
             .iter()
             .find(|art| art.article_title == title)
-            .cloned()
+            .cloned())
     }
 
-    pub fn grt_articles_by_title_page() {
-        todo!()
-    }
-}
+    fn update_article(&self, article: &Article, update_id: u32) -> Result<bool> {
+        let mut data = self.article_db.lock().unwrap();
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::domain::article::Article;
-    use crate::domain::pageable::Pageable;
-
-    fn make_repo() -> ArticleRepositoryTest {
-        ArticleRepositoryTest { article_db: vec![] }
-    }
-
-    fn make_article(id: u32, title: &str) -> Article {
-        Article {
-            id,
-            article_title: title.to_string(),
-            ..Default::default()
+        if let Some(existing) = data.iter_mut().find(|a| a.id == update_id) {
+            *existing = article.clone();
+            return Ok(true);
         }
+
+        Ok(false)
     }
 
-    #[test]
-    fn save_should_store_article_and_return_it() {
-        let mut repo = make_repo();
-        let article = make_article(1, "Test");
+    fn get_articles_by_title_page(
+        &self,
+        title_query: &str,
+        pageable: &Pageable,
+    ) -> Result<Option<Page<Article>>> {
+        let size = pageable.size as usize;
+        let page = pageable.page as usize;
 
-        let saved = repo.save(article.clone());
+        if page == 0 || size == 0 {
+            return Ok(None);
+        }
 
-        assert_eq!(saved.id, 1);
-        assert_eq!(repo.article_db.len(), 1);
-        assert_eq!(repo.article_db[0].article_title, "Test");
-    }
+        let filtered: Vec<Article> = self
+            .article_db
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|art| art.article_title.contains(title_query))
+            .cloned()
+            .collect();
 
-    #[test]
-    fn delete_should_remove_article_by_id() {
-        let mut repo = make_repo();
-        let a1 = make_article(1, "A");
-        let a2 = make_article(2, "B");
+        let start = (page - 1) * size;
+        if start >= filtered.len() {
+            return Ok(None);
+        }
 
-        repo.save(a1.clone());
-        repo.save(a2.clone());
+        let end = (start + size).min(filtered.len());
+        let items = filtered[start..end].to_vec();
 
-        repo.delete(a1);
-
-        assert_eq!(repo.article_db.len(), 1);
-        assert_eq!(repo.article_db[0].id, 2);
-    }
-
-    #[test]
-    fn find_by_id_should_return_article_when_found() {
-        let mut repo = make_repo();
-        repo.save(make_article(10, "Hello"));
-
-        let result = repo.find_by_id(10);
-
-        assert!(result.is_some());
-        assert_eq!(result.unwrap().article_title, "Hello");
-    }
-
-    #[test]
-    fn find_by_id_should_return_none_when_not_found() {
-        let repo = make_repo();
-
-        let result = repo.find_by_id(999);
-
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn find_by_title_should_return_article_when_found() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "Rust"));
-        repo.save(make_article(2, "Java"));
-
-        let result = repo.find_by_title("Java");
-
-        assert!(result.is_some());
-        let article = result.unwrap();
-        assert_eq!(article.id, 2);
-    }
-
-    #[test]
-    fn find_by_title_should_return_none_when_not_found() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "Rust"));
-
-        let result = repo.find_by_title("Python");
-
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn update_should_replace_article() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "Old"));
-
-        let updated = make_article(1, "New");
-        repo.update(updated, 1);
-
-        assert_eq!(repo.article_db[0].article_title, "New");
-    }
-
-    #[test]
-    fn get_article_page_should_return_first_page() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "A"));
-        repo.save(make_article(2, "B"));
-        repo.save(make_article(3, "C"));
-
-        let pageable = Pageable { page: 1, size: 2 };
-
-        let result = repo.get_article_page(pageable);
-
-        assert!(result.is_some());
-        let page = result.unwrap();
-
-        assert_eq!(page.content.len(), 2);
-        assert_eq!(page.content[0].id, 1);
-        assert_eq!(page.content[1].id, 2);
-    }
-
-    #[test]
-    fn get_article_page_should_return_last_partial_page() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "A"));
-        repo.save(make_article(2, "B"));
-        repo.save(make_article(3, "C"));
-
-        let pageable = Pageable { page: 2, size: 2 };
-
-        let result = repo.get_article_page(pageable);
-
-        assert!(result.is_some());
-        let page = result.unwrap();
-
-        assert_eq!(page.content.len(), 1);
-        assert_eq!(page.content[0].id, 3);
-    }
-
-    #[test]
-    fn get_article_page_should_return_none_for_invalid_page() {
-        let repo = make_repo();
-        let pageable = Pageable { page: 0, size: 10 };
-
-        let result = repo.get_article_page(pageable);
-
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn get_article_page_should_return_none_when_page_out_of_bounds() {
-        let mut repo = make_repo();
-        repo.save(make_article(1, "A"));
-
-        let pageable = Pageable { page: 2, size: 10 };
-
-        let result = repo.get_article_page(pageable);
-
-        assert!(result.is_none());
-    }
-
-    #[test]
-    #[should_panic]
-    fn grt_articles_by_title_page_should_panic_until_implemented() {
-        ArticleRepositoryTest::grt_articles_by_title_page();
+        Ok(Some(Page::new(items, filtered.len() as u32, pageable)))
     }
 }
