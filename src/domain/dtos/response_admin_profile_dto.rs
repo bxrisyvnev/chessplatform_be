@@ -1,4 +1,4 @@
-use crate::controller::response_comment_dto::CommentResponseDTO;
+use crate::domain::dtos::response_comment_dto::CommentResponseDTO;
 
 pub struct AdminProfileDTO {
     username: String,
