@@ -1,5 +1,6 @@
 pub mod article;
 pub mod comment;
+pub mod dtos;
 pub mod log_in_token;
 pub mod official_news;
 pub mod page;
