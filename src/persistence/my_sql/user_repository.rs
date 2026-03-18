@@ -1,8 +1,7 @@
 use chrono::NaiveDate;
 use dotenvy::dotenv;
 use mysql::prelude::*;
-use mysql::{params, params::Params, Opts, Pool, PooledConn, Result, Value};
-use std::collections::HashMap;
+use mysql::{params, Opts, Pool, PooledConn, Result};
 use std::env;
 
 use crate::domain::user::{User, UserType};

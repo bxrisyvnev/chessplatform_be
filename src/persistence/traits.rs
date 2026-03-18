@@ -1,4 +1,5 @@
 use crate::domain::article::Article;
+use crate::domain::comment::Comment;
 use crate::domain::page::Page;
 use crate::domain::pageable::Pageable;
 use crate::domain::user::User;
@@ -24,4 +25,12 @@ pub trait UserRepository: Send + Sync {
     fn find_user_by_id(&self, user_id: u32) -> Result<Option<User>>;
     fn find_user_by_username(&self, username: &str) -> Result<Option<User>>;
     fn get_average_comments_by_user_id(&self, user_id: u32) -> Result<Option<f32>>;
+}
+
+pub trait CommentRepository: Send + Sync {
+    fn insert_comment(&self, comment: Comment) -> Result<u64>;
+    fn delete_comment(&self, comment: Comment) -> Result<()>;
+    fn find_comment_by_id(&self, comment_id: u32) -> Result<Option<Comment>>;
+    fn find_comment_by_article_id(&self, article_id: u32) -> Result<Option<Comment>>;
+    fn find_comment_by_username(&self, username: &str) -> Result<Option<Comment>>;
 }
